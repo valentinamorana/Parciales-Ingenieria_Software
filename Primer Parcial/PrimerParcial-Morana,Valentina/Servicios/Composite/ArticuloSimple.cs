@@ -16,6 +16,6 @@ namespace Servicios.Composite
 
         public override void Agregar(IUnidadDeVenta unidad) { }
         public override void Quitar(IUnidadDeVenta unidad) { }
-        public override IList<IUnidadDeVenta> ObtenerHijos() => null;
+        public override IList<IUnidadDeVenta> ObtenerHijos() => new List<IUnidadDeVenta>();
     }
 }

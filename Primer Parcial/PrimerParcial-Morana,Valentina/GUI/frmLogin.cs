@@ -41,8 +41,11 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                _bitacora.Registrar("LOGIN_FALLIDO",
-                    $"Intento fallido — usuario: {txtUsuario.Text.Trim()}", CriticidadEvento.Alta);
+                bool bloqueado = ex.Message.Contains("bloqueada");
+                _bitacora.Registrar(
+                    bloqueado ? "BLOQUEO_CUENTA" : "LOGIN_FALLIDO",
+                    $"Intento fallido — usuario: {txtUsuario.Text.Trim()}",
+                    bloqueado ? CriticidadEvento.BloqueosCuenta : CriticidadEvento.IntentosLogin);
                 MostrarError(ex.Message);
             }
             finally

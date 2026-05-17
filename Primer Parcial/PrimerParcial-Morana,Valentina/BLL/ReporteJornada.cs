@@ -66,13 +66,11 @@ namespace BLL
         {
             string indent = new string(' ', nivel * 4);
             string bullet = nivel == 0 ? "▸" : "└─";
-            string tipo   = unidad.ObtenerHijos() != null ? "[LOTE]" : "[ART] ";
+            string tipo   = unidad is LoteArticulos ? "[LOTE]" : "[ART] ";
             sb.AppendLine($"{indent}{bullet} {tipo} {unidad.Nombre}  — ${unidad.CalcularPrecioBase():N2}");
 
-            var hijos = unidad.ObtenerHijos();
-            if (hijos != null)
-                foreach (var hijo in hijos)
-                    RecorrerNodo(hijo, sb, nivel + 1);
+            foreach (var hijo in unidad.ObtenerHijos())
+                RecorrerNodo(hijo, sb, nivel + 1);
         }
     }
 }
