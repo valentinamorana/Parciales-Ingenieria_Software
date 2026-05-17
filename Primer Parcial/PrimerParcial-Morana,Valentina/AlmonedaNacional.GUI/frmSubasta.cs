@@ -110,25 +110,9 @@ namespace AlmonedaNacional.GUI
                 var usuario = cmbUsuarioSuscribir.SelectedItem as Usuario;
                 string canal = cmbCanal.SelectedItem?.ToString();
 
-                // STRATEGY: elige el canal de notificación
-                AlmonedaNacional.Servicios.Strategy.IEstrategiaNotificacion estrategia;
-                switch (canal)
-                {
-                    case "WEB":
-                        estrategia = new NotificacionGUI(rtbNotificaciones, "WEB");
-                        break;
-                    case "MÓVIL":
-                        estrategia = new NotificacionGUI(rtbNotificaciones, "MÓVIL");
-                        break;
-                    case "PANTALLA SALA":
-                        estrategia = new NotificacionGUI(rtbNotificaciones, "PANTALLA SALA");
-                        break;
-                    default:
-                        estrategia = new NotificacionGUI(rtbNotificaciones, "GUI");
-                        break;
-                }
-
-                var interesado = new Interesado(usuario, estrategia);
+                var interesado = new Interesado(usuario, canal);
+                interesado.NotificacionRecibida += (destinatario, mensaje) =>
+                    rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] [{canal}] {destinatario}: {mensaje}\r\n");
 
                 // OBSERVER: Sujeto registra al observador (RF-05)
                 _bll.Suscribir(_subastaActiva, interesado);
