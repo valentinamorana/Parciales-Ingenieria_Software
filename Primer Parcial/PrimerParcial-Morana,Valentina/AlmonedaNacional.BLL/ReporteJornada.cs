@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using AlmonedaNacional.BE;
 using AlmonedaNacional.Servicios.Composite;
-using AlmonedaNacional.Servicios.Iterator;
 
 namespace AlmonedaNacional.BLL
 {
@@ -22,19 +21,11 @@ namespace AlmonedaNacional.BLL
             sb.AppendLine("═══════════════════════════════════════════════════════");
             sb.AppendLine();
 
-            // 1. Recorrido Composite del catálogo — usando Patrón Iterator (RF-13)
-            sb.AppendLine("CATÁLOGO (Patrón Iterator sobre Composite — recorrido transparente):");
+            // 1. Recorrido Composite del catálogo (RF-13)
+            sb.AppendLine("CATÁLOGO (Patrón Composite — recorrido recursivo):");
             sb.AppendLine(new string('─', 55));
-            var iterador = new CatalogoIterador(catalogo);
-            while (iterador.TieneSiguiente)
-            {
-                var unidad = iterador.Siguiente();
-                int nivel  = iterador.NivelActual;
-                string indent  = new string(' ', nivel * 4);
-                string bullet  = nivel == 0 ? "▸" : "└─";
-                string tipo    = unidad.ObtenerHijos() != null ? "[LOTE]" : "[ART] ";
-                sb.AppendLine($"{indent}{bullet} {tipo} {unidad.Nombre}  — ${unidad.CalcularPrecioBase():N2}");
-            }
+            foreach (var u in catalogo)
+                RecorrerNodo(u, sb, 0);
             sb.AppendLine();
 
             // 2. Subastas del día
@@ -71,5 +62,17 @@ namespace AlmonedaNacional.BLL
             return sb.ToString();
         }
 
+        private static void RecorrerNodo(IUnidadDeVenta unidad, StringBuilder sb, int nivel)
+        {
+            string indent = new string(' ', nivel * 4);
+            string bullet = nivel == 0 ? "▸" : "└─";
+            string tipo   = unidad.ObtenerHijos() != null ? "[LOTE]" : "[ART] ";
+            sb.AppendLine($"{indent}{bullet} {tipo} {unidad.Nombre}  — ${unidad.CalcularPrecioBase():N2}");
+
+            var hijos = unidad.ObtenerHijos();
+            if (hijos != null)
+                foreach (var hijo in hijos)
+                    RecorrerNodo(hijo, sb, nivel + 1);
+        }
     }
 }
