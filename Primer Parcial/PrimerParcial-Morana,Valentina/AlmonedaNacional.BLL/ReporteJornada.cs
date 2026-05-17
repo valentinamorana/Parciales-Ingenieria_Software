@@ -33,7 +33,12 @@ namespace AlmonedaNacional.BLL
             sb.AppendLine(new string('─', 55));
 
             IList<ResultadoSubasta> historial;
-            try   { historial = _subastaBll.ObtenerHistorial(); }
+            try
+            {
+                historial = _subastaBll.ObtenerHistorial();
+                if (historial == null || historial.Count == 0)
+                    historial = DemoHistorial();
+            }
             catch { historial = DemoHistorial(); }
 
             decimal total    = 0;

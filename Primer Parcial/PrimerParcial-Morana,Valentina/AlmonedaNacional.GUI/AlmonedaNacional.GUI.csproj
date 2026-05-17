@@ -13,4 +13,7 @@
     <ProjectReference Include="..\AlmonedaNacional.DAL\AlmonedaNacional.DAL.csproj" />
     <ProjectReference Include="..\AlmonedaNacional.BLL\AlmonedaNacional.BLL.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+  </ItemGroup>
 </Project>

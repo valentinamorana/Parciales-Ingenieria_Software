@@ -23,6 +23,7 @@ namespace AlmonedaNacional.GUI
             this.dtpJornada    = new System.Windows.Forms.DateTimePicker();
             this.btnGenerar    = new System.Windows.Forms.Button();
             this.btnExportar   = new System.Windows.Forms.Button();
+            this.btnExportarPdf= new System.Windows.Forms.Button();
             this.rtbReporte    = new System.Windows.Forms.RichTextBox();
             this.panelStatus   = new System.Windows.Forms.Panel();
             this.lblStatus     = new System.Windows.Forms.Label();
@@ -68,6 +69,7 @@ namespace AlmonedaNacional.GUI
             this.panelControles.Controls.Add(this.dtpJornada);
             this.panelControles.Controls.Add(this.btnGenerar);
             this.panelControles.Controls.Add(this.btnExportar);
+            this.panelControles.Controls.Add(this.btnExportarPdf);
             this.panelControles.Location = new System.Drawing.Point(10, 66);
             this.panelControles.Name = "panelControles";
             this.panelControles.Size = new System.Drawing.Size(1160, 50);
@@ -115,6 +117,20 @@ namespace AlmonedaNacional.GUI
             this.btnExportar.Text = "Exportar .txt";
             this.btnExportar.UseVisualStyleBackColor = false;
             this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
+            //
+            // btnExportarPdf
+            //
+            this.btnExportarPdf.BackColor = System.Drawing.Color.FromArgb(160, 60, 100);
+            this.btnExportarPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportarPdf.FlatAppearance.BorderSize = 0;
+            this.btnExportarPdf.ForeColor = System.Drawing.Color.White;
+            this.btnExportarPdf.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnExportarPdf.Location = new System.Drawing.Point(534, 11);
+            this.btnExportarPdf.Name = "btnExportarPdf";
+            this.btnExportarPdf.Size = new System.Drawing.Size(140, 28);
+            this.btnExportarPdf.Text = "Exportar PDF";
+            this.btnExportarPdf.UseVisualStyleBackColor = false;
+            this.btnExportarPdf.Click += new System.EventHandler(this.btnExportarPdf_Click);
             //
             // rtbReporte — consola oscura igual que notificaciones en frmSubasta
             //
@@ -176,6 +192,7 @@ namespace AlmonedaNacional.GUI
         private System.Windows.Forms.DateTimePicker dtpJornada;
         private System.Windows.Forms.Button       btnGenerar;
         private System.Windows.Forms.Button       btnExportar;
+        private System.Windows.Forms.Button       btnExportarPdf;
         private System.Windows.Forms.RichTextBox  rtbReporte;
         private System.Windows.Forms.Panel        panelStatus;
         private System.Windows.Forms.Label        lblStatus;

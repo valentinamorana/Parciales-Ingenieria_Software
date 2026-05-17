@@ -70,5 +70,34 @@ namespace AlmonedaNacional.GUI
                 MessageBox.Show(ex.Message, "Error al exportar", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnExportarPdf_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var dlg = new SaveFileDialog())
+                {
+                    dlg.Title            = "Exportar reporte como PDF";
+                    dlg.Filter           = "PDF (*.pdf)|*.pdf";
+                    dlg.FileName         = $"ReporteJornada_{dtpJornada.Value:yyyyMMdd}.pdf";
+                    dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        PdfExporter.ExportarReporte(
+                            dlg.FileName,
+                            $"Reporte de Jornada — {dtpJornada.Value:dd/MM/yyyy}",
+                            rtbReporte.Text);
+                        lblStatus.Text = $"PDF exportado: {Path.GetFileName(dlg.FileName)}";
+                        MessageBox.Show($"PDF exportado:\n{dlg.FileName}", "Éxito",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al exportar PDF", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

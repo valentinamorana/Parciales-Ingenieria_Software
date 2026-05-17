@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using AlmonedaNacional.BE;
 using AlmonedaNacional.BLL;
@@ -11,6 +13,7 @@ namespace AlmonedaNacional.GUI
     public partial class frmBitacora : Form
     {
         private readonly BitacoraBLL _bll = new BitacoraBLL();
+        private DataTable _tablaActual;
 
         public frmBitacora()
         {
@@ -89,6 +92,44 @@ namespace AlmonedaNacional.GUI
                     e.NombreMartillero);
 
             dgvBitacora.DataSource = tabla;
+            _tablaActual = tabla;
+        }
+
+        private void btnExportarPdf_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_tablaActual == null || _tablaActual.Rows.Count == 0)
+                {
+                    MessageBox.Show("No hay registros para exportar.", "Sin datos",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                using (var dlg = new SaveFileDialog())
+                {
+                    dlg.Title            = "Exportar bitácora como PDF";
+                    dlg.Filter           = "PDF (*.pdf)|*.pdf";
+                    dlg.FileName         = $"Bitacora_{DateTime.Now:yyyyMMdd_HHmm}.pdf";
+                    dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        string crit = cmbCriticidad.SelectedItem?.ToString() ?? "Todas";
+                        string op   = cmbOperacion.SelectedItem?.ToString()  ?? "Todas";
+                        int    dias = (int)nudDias.Value;
+                        string filtros = $"Criticidad: {crit}  |  Operación: {op}  |  Días: {(dias == 0 ? "todos" : dias.ToString())}";
+
+                        PdfExporter.ExportarBitacora(dlg.FileName, _tablaActual, filtros);
+                        lblConteo.Text = $"Registros: {_tablaActual.Rows.Count}  —  PDF exportado";
+                        MessageBox.Show($"PDF exportado:\n{dlg.FileName}", "Éxito",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al exportar PDF", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // Coloreo de filas por criticidad (igual a WardrobeFlow Bitácora)

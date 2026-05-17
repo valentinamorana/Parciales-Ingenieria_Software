@@ -15,25 +15,26 @@ namespace AlmonedaNacional.GUI
 
         private void InitializeComponent()
         {
-            this.menuStrip1      = new System.Windows.Forms.MenuStrip();
-            this.mnuCatalogo     = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSubasta      = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuHistorial    = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuBitacora     = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuReporte      = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSeparador    = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuCerrarSesion = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1       = new System.Windows.Forms.MenuStrip();
+            this.mnuCatalogo      = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSubasta       = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHistoricos    = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHistorial     = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBitacora      = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSepHistoricos = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuReporte       = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSeparador     = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuCerrarSesion  = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             //
-            // menuStrip1  — fondo rosa brand igual que WardrobeFlow
+            // menuStrip1
             //
             this.menuStrip1.BackColor = System.Drawing.Color.FromArgb(210, 100, 135);
             this.menuStrip1.ForeColor = System.Drawing.Color.White;
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                this.mnuCatalogo, this.mnuSubasta, this.mnuHistorial,
-                this.mnuBitacora, this.mnuReporte,
+                this.mnuCatalogo, this.mnuSubasta, this.mnuHistoricos,
                 this.mnuSeparador, this.mnuCerrarSesion });
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -44,7 +45,6 @@ namespace AlmonedaNacional.GUI
             //
             this.mnuCatalogo.ForeColor = System.Drawing.Color.White;
             this.mnuCatalogo.Name = "mnuCatalogo";
-            this.mnuCatalogo.Size = new System.Drawing.Size(185, 22);
             this.mnuCatalogo.Text = "Catálogo  [Patrón: COMPOSITE]";
             this.mnuCatalogo.Click += new System.EventHandler(this.mnuCatalogo_Click);
             //
@@ -52,31 +52,37 @@ namespace AlmonedaNacional.GUI
             //
             this.mnuSubasta.ForeColor = System.Drawing.Color.White;
             this.mnuSubasta.Name = "mnuSubasta";
-            this.mnuSubasta.Size = new System.Drawing.Size(220, 22);
             this.mnuSubasta.Text = "Subasta  [OBSERVER + SINGLETON]";
             this.mnuSubasta.Click += new System.EventHandler(this.mnuSubasta_Click);
             //
+            // mnuHistoricos — submenú desplegable
+            //
+            this.mnuHistoricos.ForeColor = System.Drawing.Color.White;
+            this.mnuHistoricos.Name = "mnuHistoricos";
+            this.mnuHistoricos.Text = "Históricos  ▾";
+            this.mnuHistoricos.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.mnuHistorial, this.mnuBitacora,
+                this.mnuSepHistoricos, this.mnuReporte });
+            //
             // mnuHistorial
             //
-            this.mnuHistorial.ForeColor = System.Drawing.Color.White;
             this.mnuHistorial.Name = "mnuHistorial";
-            this.mnuHistorial.Size = new System.Drawing.Size(130, 22);
             this.mnuHistorial.Text = "Historial de Subastas";
             this.mnuHistorial.Click += new System.EventHandler(this.mnuHistorial_Click);
             //
             // mnuBitacora
             //
-            this.mnuBitacora.ForeColor = System.Drawing.Color.White;
             this.mnuBitacora.Name = "mnuBitacora";
-            this.mnuBitacora.Size = new System.Drawing.Size(120, 22);
-            this.mnuBitacora.Text = "Bitácora";
+            this.mnuBitacora.Text = "Bitácora de Operaciones";
             this.mnuBitacora.Click += new System.EventHandler(this.mnuBitacora_Click);
+            //
+            // mnuSepHistoricos
+            //
+            this.mnuSepHistoricos.Name = "mnuSepHistoricos";
             //
             // mnuReporte
             //
-            this.mnuReporte.ForeColor = System.Drawing.Color.White;
             this.mnuReporte.Name = "mnuReporte";
-            this.mnuReporte.Size = new System.Drawing.Size(200, 22);
             this.mnuReporte.Text = "Reporte de Jornada  [RF-13]";
             this.mnuReporte.Click += new System.EventHandler(this.mnuReporte_Click);
             //
@@ -88,7 +94,6 @@ namespace AlmonedaNacional.GUI
             //
             this.mnuCerrarSesion.ForeColor = System.Drawing.Color.FromArgb(255, 200, 210);
             this.mnuCerrarSesion.Name = "mnuCerrarSesion";
-            this.mnuCerrarSesion.Size = new System.Drawing.Size(130, 22);
             this.mnuCerrarSesion.Text = "Cerrar Sesión";
             this.mnuCerrarSesion.Click += new System.EventHandler(this.mnuCerrarSesion_Click);
             //
@@ -113,13 +118,15 @@ namespace AlmonedaNacional.GUI
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip          menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem  mnuCatalogo;
-        private System.Windows.Forms.ToolStripMenuItem  mnuSubasta;
-        private System.Windows.Forms.ToolStripMenuItem  mnuHistorial;
-        private System.Windows.Forms.ToolStripMenuItem  mnuBitacora;
-        private System.Windows.Forms.ToolStripMenuItem  mnuReporte;
-        private System.Windows.Forms.ToolStripSeparator mnuSeparador;
-        private System.Windows.Forms.ToolStripMenuItem  mnuCerrarSesion;
+        private System.Windows.Forms.MenuStrip           menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem   mnuCatalogo;
+        private System.Windows.Forms.ToolStripMenuItem   mnuSubasta;
+        private System.Windows.Forms.ToolStripMenuItem   mnuHistoricos;
+        private System.Windows.Forms.ToolStripMenuItem   mnuHistorial;
+        private System.Windows.Forms.ToolStripMenuItem   mnuBitacora;
+        private System.Windows.Forms.ToolStripSeparator  mnuSepHistoricos;
+        private System.Windows.Forms.ToolStripMenuItem   mnuReporte;
+        private System.Windows.Forms.ToolStripSeparator  mnuSeparador;
+        private System.Windows.Forms.ToolStripMenuItem   mnuCerrarSesion;
     }
 }

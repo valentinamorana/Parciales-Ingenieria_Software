@@ -28,6 +28,7 @@ namespace AlmonedaNacional.GUI
             this.cmbOperacion   = new System.Windows.Forms.ComboBox();
             this.btnBuscar      = new System.Windows.Forms.Button();
             this.btnLimpiar     = new System.Windows.Forms.Button();
+            this.btnExportarPdf = new System.Windows.Forms.Button();
             this.dgvBitacora    = new System.Windows.Forms.DataGridView();
             this.panelStatus    = new System.Windows.Forms.Panel();
             this.lblConteo      = new System.Windows.Forms.Label();
@@ -80,6 +81,7 @@ namespace AlmonedaNacional.GUI
             this.panelFiltros.Controls.Add(this.cmbOperacion);
             this.panelFiltros.Controls.Add(this.btnBuscar);
             this.panelFiltros.Controls.Add(this.btnLimpiar);
+            this.panelFiltros.Controls.Add(this.btnExportarPdf);
             this.panelFiltros.Location = new System.Drawing.Point(10, 66);
             this.panelFiltros.Name = "panelFiltros";
             this.panelFiltros.Size = new System.Drawing.Size(1160, 52);
@@ -173,6 +175,20 @@ namespace AlmonedaNacional.GUI
             this.btnLimpiar.UseVisualStyleBackColor = false;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             //
+            // btnExportarPdf
+            //
+            this.btnExportarPdf.BackColor = System.Drawing.Color.FromArgb(160, 60, 100);
+            this.btnExportarPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportarPdf.FlatAppearance.BorderSize = 0;
+            this.btnExportarPdf.ForeColor = System.Drawing.Color.White;
+            this.btnExportarPdf.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnExportarPdf.Location = new System.Drawing.Point(970, 11);
+            this.btnExportarPdf.Name = "btnExportarPdf";
+            this.btnExportarPdf.Size = new System.Drawing.Size(140, 28);
+            this.btnExportarPdf.Text = "Exportar PDF";
+            this.btnExportarPdf.UseVisualStyleBackColor = false;
+            this.btnExportarPdf.Click += new System.EventHandler(this.btnExportarPdf_Click);
+            //
             // dgvBitacora
             //
             this.dgvBitacora.AllowUserToAddRows = false;
@@ -247,6 +263,7 @@ namespace AlmonedaNacional.GUI
         private System.Windows.Forms.ComboBox        cmbOperacion;
         private System.Windows.Forms.Button          btnBuscar;
         private System.Windows.Forms.Button          btnLimpiar;
+        private System.Windows.Forms.Button          btnExportarPdf;
         private System.Windows.Forms.DataGridView    dgvBitacora;
         private System.Windows.Forms.Panel           panelStatus;
         private System.Windows.Forms.Label           lblConteo;
