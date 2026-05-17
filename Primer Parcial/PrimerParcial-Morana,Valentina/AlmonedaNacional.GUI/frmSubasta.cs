@@ -6,6 +6,7 @@ using AlmonedaNacional.BE;
 using AlmonedaNacional.BLL;
 using AlmonedaNacional.Servicios;
 using AlmonedaNacional.Servicios.Composite;
+using AlmonedaNacional.Servicios.Seguridad;
 
 namespace AlmonedaNacional.GUI
 {
@@ -21,6 +22,7 @@ namespace AlmonedaNacional.GUI
         private List<Interesado> _interesados;
         private List<IUnidadDeVenta> _catalogo;
         private List<Usuario> _usuarios;
+        private readonly BitacoraBLL _bitacora = new BitacoraBLL();
 
         private const int DURACION_INICIAL     = 120;  // 2 minutos por subasta
         private const int UMBRAL_ANTISNIPING   = 30;   // últimos N segundos disparan extensión
@@ -91,6 +93,10 @@ namespace AlmonedaNacional.GUI
                 _segundosRestantes = DURACION_INICIAL;
                 ActualizarLblTimer();
                 _timer.Start();
+
+                _bitacora.Registrar("INICIAR_SUBASTA",
+                    $"Subasta iniciada: {unidad.Nombre} — Base: ${_subastaActiva.PrecioActual:N2}",
+                    CriticidadEvento.Media);
 
                 rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] Subasta iniciada: {unidad.Nombre}  |  Precio base: ${_subastaActiva.PrecioActual:N2}  |  Tiempo: {DURACION_INICIAL / 60} min\r\n");
                 ActualizarPanelSubasta();
@@ -173,6 +179,10 @@ namespace AlmonedaNacional.GUI
                 // OBSERVER: al actualizarse el precio, Notificar() avisa a todos (RF-06)
                 _bll.RealizarOferta(_subastaActiva, usuario, monto);
 
+                _bitacora.Registrar("OFERTA_ACEPTADA",
+                    $"{usuario.Nombre} — ${monto:N2} — {_subastaActiva.Unidad.Nombre}",
+                    CriticidadEvento.Baja);
+
                 // ANTI-SNIPING: si la oferta llega en los últimos N segundos, extender
                 if (_segundosRestantes <= UMBRAL_ANTISNIPING)
                 {
@@ -187,6 +197,9 @@ namespace AlmonedaNacional.GUI
             }
             catch (Exception ex)
             {
+                _bitacora.Registrar("OFERTA_RECHAZADA",
+                    $"{(cmbOfertante.SelectedItem as Usuario)?.Nombre} — ${txtMonto.Text} — {ex.Message}",
+                    CriticidadEvento.Baja);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -221,6 +234,10 @@ namespace AlmonedaNacional.GUI
 
                 // Cierra subasta → notifica a todos (RF-07) → persiste en BD
                 var resultado = _bll.CerrarSubasta(_subastaActiva);
+
+                _bitacora.Registrar("CERRAR_SUBASTA",
+                    $"Cierre manual — {_subastaActiva.Unidad.Nombre} — Ganador: {resultado.NombreGanador} — ${resultado.PrecioFinal:N2}",
+                    CriticidadEvento.Alta);
 
                 lblPrecioActual.Text      = $"CERRADA — ${resultado.PrecioFinal:N2}";
                 lblPrecioActual.ForeColor = Color.Red;
@@ -286,6 +303,10 @@ namespace AlmonedaNacional.GUI
             try
             {
                 var resultado = _bll.CerrarSubasta(_subastaActiva);
+
+                _bitacora.Registrar("CIERRE_AUTOMATICO",
+                    $"Tiempo agotado — {_subastaActiva?.Unidad?.Nombre} — Ganador: {resultado.NombreGanador} — ${resultado.PrecioFinal:N2}",
+                    CriticidadEvento.Alta);
 
                 lblPrecioActual.Text      = $"CERRADA — ${resultado.PrecioFinal:N2}";
                 lblPrecioActual.ForeColor = Color.Red;

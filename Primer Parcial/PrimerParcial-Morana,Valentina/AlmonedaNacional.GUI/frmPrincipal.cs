@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using AlmonedaNacional.BE;
+using AlmonedaNacional.BLL;
 using AlmonedaNacional.Servicios.Composite;
+using AlmonedaNacional.Servicios.Seguridad;
 
 namespace AlmonedaNacional.GUI
 {
     public partial class frmPrincipal : Form
     {
-        // Catálogo compartido entre frmCatalogo y frmSubasta (misma referencia).
-        private readonly List<IUnidadDeVenta> _catalogo = new List<IUnidadDeVenta>();
+        private readonly List<IUnidadDeVenta> _catalogo  = new List<IUnidadDeVenta>();
+        private readonly BitacoraBLL          _bitacora  = new BitacoraBLL();
 
         public frmPrincipal()
         {
@@ -41,11 +44,26 @@ namespace AlmonedaNacional.GUI
             _catalogo.AddRange(new IUnidadDeVenta[] { taladro, amoladora, repuestos, maquinaCNC, loteHerr, seccion });
         }
 
-        private void mnuCatalogo_Click(object sender, EventArgs e) => AbrirCatalogo();
-
-        private void mnuSubasta_Click(object sender, EventArgs e) => AbrirForm(new frmSubasta(_catalogo));
-
+        private void mnuCatalogo_Click(object sender, EventArgs e)  => AbrirCatalogo();
+        private void mnuSubasta_Click(object sender, EventArgs e)   => AbrirForm(new frmSubasta(_catalogo));
         private void mnuHistorial_Click(object sender, EventArgs e) => AbrirForm(new frmHistorial());
+        private void mnuBitacora_Click(object sender, EventArgs e)  => AbrirForm(new frmBitacora());
+        private void mnuReporte_Click(object sender, EventArgs e)   => AbrirForm(new frmReporte(_catalogo));
+
+        private void mnuCerrarSesion_Click(object sender, EventArgs e)
+        {
+            var resp = MessageBox.Show(
+                "¿Cerrar la sesión actual?",
+                "Cerrar sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resp != DialogResult.Yes) return;
+
+            _bitacora.Registrar("LOGOUT",
+                $"Cierre de sesión — usuario: {SessionManager.Instancia.Martillero.Username}",
+                CriticidadEvento.Baja);
+
+            SessionManager.Logout();
+            Application.Restart();
+        }
 
         private void AbrirCatalogo() => AbrirForm(new frmCatalogo(_catalogo));
 

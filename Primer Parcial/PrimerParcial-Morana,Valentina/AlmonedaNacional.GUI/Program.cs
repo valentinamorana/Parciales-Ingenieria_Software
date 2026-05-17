@@ -10,9 +10,9 @@ namespace AlmonedaNacional.GUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            using (var bienvenida = new frmBienvenida())
+            using (var login = new frmLogin())
             {
-                if (bienvenida.ShowDialog() == DialogResult.OK)
+                if (login.ShowDialog() == DialogResult.OK)
                     Application.Run(new frmPrincipal());
             }
         }
