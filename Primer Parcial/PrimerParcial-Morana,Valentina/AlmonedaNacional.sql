@@ -55,7 +55,7 @@ END
 GO
 
 -- ─────────────────────────────────────────────
---  TABLA: Subastas  (resultado final — RF: producto, precio final, ganador, fecha/hora)
+--  TABLA: Subastas  (resultado final — se inserta al cerrar)
 -- ─────────────────────────────────────────────
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Subastas')
 BEGIN
@@ -72,18 +72,21 @@ END
 GO
 
 -- ─────────────────────────────────────────────
---  TABLA: Ofertas  (historial de cada puja)
+--  TABLA: Pujas  (historial completo de ofertas: aceptadas y rechazadas)
+--  Se persisten en bloque al cerrar la subasta (junto con ResultadoSubasta).
+--  EstadoPuja: 'Aceptada' | 'Rechazada'
 -- ─────────────────────────────────────────────
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Ofertas')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Pujas')
 BEGIN
-    CREATE TABLE Ofertas (
-        Id          INT           PRIMARY KEY IDENTITY(1,1),
-        SubastaId   INT           NOT NULL,
-        UsuarioId   INT           NOT NULL,
-        Monto       DECIMAL(18,2) NOT NULL,
-        FechaHora   DATETIME      NOT NULL DEFAULT GETDATE(),
-        CONSTRAINT FK_Ofertas_Subasta  FOREIGN KEY (SubastaId) REFERENCES Subastas(Id),
-        CONSTRAINT FK_Ofertas_Usuario  FOREIGN KEY (UsuarioId) REFERENCES Usuarios(Id)
+    CREATE TABLE Pujas (
+        Id              INT             PRIMARY KEY IDENTITY(1,1),
+        SubastaId       INT             NOT NULL,
+        NombreUsuario   VARCHAR(100)    NOT NULL,
+        Monto           DECIMAL(18,2)   NOT NULL,
+        FechaHora       DATETIME        NOT NULL,
+        Estado          VARCHAR(20)     NOT NULL CHECK (Estado IN ('Aceptada', 'Rechazada')),
+        MotivoRechazo   VARCHAR(500)    NULL,
+        CONSTRAINT FK_Pujas_Subasta FOREIGN KEY (SubastaId) REFERENCES Subastas(Id)
     );
 END
 GO
@@ -116,8 +119,24 @@ INSERT INTO LoteContenido (LoteId, ContenidoId) VALUES
 GO
 
 -- ─────────────────────────────────────────────
---  CONSULTA RF-13: reporte consolidado
+--  CONSULTAS DE REFERENCIA
 -- ─────────────────────────────────────────────
+
+-- RF-13: reporte consolidado de subastas
 -- SELECT NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora
 -- FROM   Subastas
 -- ORDER  BY FechaHora DESC;
+
+-- Historial completo de pujas de una subasta (aceptadas + rechazadas)
+-- SELECT p.Id, p.NombreUsuario, p.Monto, p.FechaHora, p.Estado, p.MotivoRechazo
+-- FROM   Pujas p
+-- WHERE  p.SubastaId = <id>
+-- ORDER  BY p.FechaHora;
+
+-- Métricas: cantidad de pujas aceptadas vs rechazadas por subasta
+-- SELECT s.NombreUnidadVenta,
+--        COUNT(CASE WHEN p.Estado = 'Aceptada'  THEN 1 END) AS Aceptadas,
+--        COUNT(CASE WHEN p.Estado = 'Rechazada' THEN 1 END) AS Rechazadas
+-- FROM   Subastas s
+-- LEFT JOIN Pujas p ON p.SubastaId = s.Id
+-- GROUP BY s.Id, s.NombreUnidadVenta;

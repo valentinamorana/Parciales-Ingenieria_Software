@@ -7,99 +7,72 @@ namespace AlmonedaNacional.DAL
 {
     public class SubastaDAL : AbstractDAL<ResultadoSubasta>
     {
-        // Persiste el resultado final de la subasta (RF: producto, precio final, ganador, fecha/hora)
         public override void Guardar(ResultadoSubasta resultado)
         {
-            using (var conn = new SqlConnection(ConnectionString))
+            SqlParameter[] p =
             {
-                conn.Open();
-                var cmd = new SqlCommand(
-                    @"INSERT INTO Subastas (NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora)
-                      VALUES (@nombre, @base, @final, @ganador, @email, @fecha);
-                      SELECT SCOPE_IDENTITY();", conn);
+                new SqlParameter("@nombre",  resultado.NombreUnidadVenta),
+                new SqlParameter("@base",    resultado.PrecioBase),
+                new SqlParameter("@final",   resultado.PrecioFinal),
+                new SqlParameter("@ganador", resultado.NombreGanador),
+                new SqlParameter("@email",   resultado.EmailGanador),
+                new SqlParameter("@fecha",   resultado.FechaHora)
+            };
 
-                cmd.Parameters.AddWithValue("@nombre",  resultado.NombreUnidadVenta);
-                cmd.Parameters.AddWithValue("@base",    resultado.PrecioBase);
-                cmd.Parameters.AddWithValue("@final",   resultado.PrecioFinal);
-                cmd.Parameters.AddWithValue("@ganador", resultado.NombreGanador);
-                cmd.Parameters.AddWithValue("@email",   resultado.EmailGanador);
-                cmd.Parameters.AddWithValue("@fecha",   resultado.FechaHora);
-
-                resultado.Id = Convert.ToInt32(cmd.ExecuteScalar());
-            }
+            resultado.Id = _acceso.EjecutarEscalar(
+                @"INSERT INTO Subastas (NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora)
+                  VALUES (@nombre, @base, @final, @ganador, @email, @fecha);
+                  SELECT SCOPE_IDENTITY();", p);
         }
 
-        // RF-13: reporte consolidado de todas las subastas
         public override IList<ResultadoSubasta> ObtenerTodos()
         {
-            var lista = new List<ResultadoSubasta>();
-            using (var conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand(
-                    @"SELECT Id, NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora
-                      FROM Subastas
-                      ORDER BY FechaHora DESC", conn);
+            var tabla = _acceso.Leer(
+                "SELECT Id, NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora " +
+                "FROM Subastas ORDER BY FechaHora DESC");
 
-                using (var reader = cmd.ExecuteReader())
+            var lista = new List<ResultadoSubasta>();
+            foreach (System.Data.DataRow fila in tabla.Rows)
+            {
+                lista.Add(new ResultadoSubasta
                 {
-                    while (reader.Read())
-                    {
-                        lista.Add(new ResultadoSubasta
-                        {
-                            Id                = reader.GetInt32(0),
-                            NombreUnidadVenta = reader.GetString(1),
-                            PrecioBase        = reader.GetDecimal(2),
-                            PrecioFinal       = reader.GetDecimal(3),
-                            NombreGanador     = reader.GetString(4),
-                            EmailGanador      = reader.GetString(5),
-                            FechaHora         = reader.GetDateTime(6)
-                        });
-                    }
-                }
+                    Id                = (int)fila["Id"],
+                    NombreUnidadVenta = (string)fila["NombreUnidadVenta"],
+                    PrecioBase        = (decimal)fila["PrecioBase"],
+                    PrecioFinal       = (decimal)fila["PrecioFinal"],
+                    NombreGanador     = (string)fila["NombreGanador"],
+                    EmailGanador      = (string)fila["EmailGanador"],
+                    FechaHora         = (DateTime)fila["FechaHora"]
+                });
             }
             return lista;
         }
 
         public override ResultadoSubasta ObtenerPorId(int id)
         {
-            using (var conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand(
-                    @"SELECT Id, NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora
-                      FROM Subastas WHERE Id = @id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
+            var tabla = _acceso.Leer(
+                "SELECT Id, NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora " +
+                "FROM Subastas WHERE Id = @id",
+                new[] { new SqlParameter("@id", id) });
 
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        return new ResultadoSubasta
-                        {
-                            Id                = reader.GetInt32(0),
-                            NombreUnidadVenta = reader.GetString(1),
-                            PrecioBase        = reader.GetDecimal(2),
-                            PrecioFinal       = reader.GetDecimal(3),
-                            NombreGanador     = reader.GetString(4),
-                            EmailGanador      = reader.GetString(5),
-                            FechaHora         = reader.GetDateTime(6)
-                        };
-                    }
-                    return null;
-                }
-            }
+            if (tabla.Rows.Count == 0) return null;
+            var fila = tabla.Rows[0];
+            return new ResultadoSubasta
+            {
+                Id                = (int)fila["Id"],
+                NombreUnidadVenta = (string)fila["NombreUnidadVenta"],
+                PrecioBase        = (decimal)fila["PrecioBase"],
+                PrecioFinal       = (decimal)fila["PrecioFinal"],
+                NombreGanador     = (string)fila["NombreGanador"],
+                EmailGanador      = (string)fila["EmailGanador"],
+                FechaHora         = (DateTime)fila["FechaHora"]
+            };
         }
 
         public override void Eliminar(ResultadoSubasta entidad)
         {
-            using (var conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("DELETE FROM Subastas WHERE Id = @id", conn);
-                cmd.Parameters.AddWithValue("@id", entidad.Id);
-                cmd.ExecuteNonQuery();
-            }
+            _acceso.Escribir("DELETE FROM Subastas WHERE Id = @id",
+                new[] { new SqlParameter("@id", entidad.Id) });
         }
     }
 }

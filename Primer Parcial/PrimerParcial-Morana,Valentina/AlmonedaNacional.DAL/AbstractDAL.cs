@@ -4,10 +4,11 @@ using AlmonedaNacional.Interfaces;
 
 namespace AlmonedaNacional.DAL
 {
-    // Igual al AbstractDAL del ejemplo: implementa ICrud<T> y expone ConnectionString.
+    // Igual al AbstractDAL del ejemplo: implementa ICrud<T>.
+    // Todos los DAL concretos acceden a la BD a través del Singleton Acceso.
     public abstract class AbstractDAL<T> : ICrud<T> where T : Entidad
     {
-        protected string ConnectionString => Conexion.ConnectionString;
+        protected readonly Acceso _acceso = Acceso.Instancia;
 
         public abstract void Guardar(T entidad);
         public abstract IList<T> ObtenerTodos();

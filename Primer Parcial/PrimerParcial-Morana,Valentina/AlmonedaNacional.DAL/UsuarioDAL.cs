@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using AlmonedaNacional.BE;
@@ -9,81 +8,61 @@ namespace AlmonedaNacional.DAL
     {
         public override void Guardar(Usuario usuario)
         {
-            using (var conn = new SqlConnection(ConnectionString))
+            if (usuario.Id == 0)
             {
-                conn.Open();
-                if (usuario.Id == 0)
+                SqlParameter[] p =
                 {
-                    var cmd = new SqlCommand(
-                        @"INSERT INTO Usuarios (Nombre, Email) VALUES (@nombre, @email);
-                          SELECT SCOPE_IDENTITY();", conn);
-                    cmd.Parameters.AddWithValue("@nombre", usuario.Nombre);
-                    cmd.Parameters.AddWithValue("@email",  usuario.Email);
-                    usuario.Id = Convert.ToInt32(cmd.ExecuteScalar());
-                }
-                else
+                    new SqlParameter("@nombre", usuario.Nombre),
+                    new SqlParameter("@email",  usuario.Email)
+                };
+                usuario.Id = _acceso.EjecutarEscalar(
+                    "INSERT INTO Usuarios (Nombre, Email) VALUES (@nombre, @email); SELECT SCOPE_IDENTITY();", p);
+            }
+            else
+            {
+                SqlParameter[] p =
                 {
-                    var cmd = new SqlCommand(
-                        "UPDATE Usuarios SET Nombre = @nombre, Email = @email WHERE Id = @id", conn);
-                    cmd.Parameters.AddWithValue("@nombre", usuario.Nombre);
-                    cmd.Parameters.AddWithValue("@email",  usuario.Email);
-                    cmd.Parameters.AddWithValue("@id",     usuario.Id);
-                    cmd.ExecuteNonQuery();
-                }
+                    new SqlParameter("@nombre", usuario.Nombre),
+                    new SqlParameter("@email",  usuario.Email),
+                    new SqlParameter("@id",     usuario.Id)
+                };
+                _acceso.Escribir("UPDATE Usuarios SET Nombre = @nombre, Email = @email WHERE Id = @id", p);
             }
         }
 
         public override IList<Usuario> ObtenerTodos()
         {
+            var tabla = _acceso.Leer("SELECT Id, Nombre, Email FROM Usuarios ORDER BY Nombre");
             var lista = new List<Usuario>();
-            using (var conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT Id, Nombre, Email FROM Usuarios ORDER BY Nombre", conn);
-                using (var reader = cmd.ExecuteReader())
+            foreach (System.Data.DataRow fila in tabla.Rows)
+                lista.Add(new Usuario
                 {
-                    while (reader.Read())
-                        lista.Add(new Usuario
-                        {
-                            Id     = reader.GetInt32(0),
-                            Nombre = reader.GetString(1),
-                            Email  = reader.GetString(2)
-                        });
-                }
-            }
+                    Id     = (int)fila["Id"],
+                    Nombre = (string)fila["Nombre"],
+                    Email  = (string)fila["Email"]
+                });
             return lista;
         }
 
         public override Usuario ObtenerPorId(int id)
         {
-            using (var conn = new SqlConnection(ConnectionString))
+            var tabla = _acceso.Leer("SELECT Id, Nombre, Email FROM Usuarios WHERE Id = @id",
+                new[] { new SqlParameter("@id", id) });
+
+            if (tabla.Rows.Count == 0) return null;
+            var fila = tabla.Rows[0];
+            return new Usuario
             {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT Id, Nombre, Email FROM Usuarios WHERE Id = @id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                        return new Usuario
-                        {
-                            Id     = reader.GetInt32(0),
-                            Nombre = reader.GetString(1),
-                            Email  = reader.GetString(2)
-                        };
-                    return null;
-                }
-            }
+                Id     = (int)fila["Id"],
+                Nombre = (string)fila["Nombre"],
+                Email  = (string)fila["Email"]
+            };
         }
 
         public override void Eliminar(Usuario entidad)
         {
-            using (var conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                var cmd = new SqlCommand("DELETE FROM Usuarios WHERE Id = @id", conn);
-                cmd.Parameters.AddWithValue("@id", entidad.Id);
-                cmd.ExecuteNonQuery();
-            }
+            _acceso.Escribir("DELETE FROM Usuarios WHERE Id = @id",
+                new[] { new SqlParameter("@id", entidad.Id) });
         }
     }
 }

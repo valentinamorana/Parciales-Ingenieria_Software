@@ -9,29 +9,36 @@ namespace AlmonedaNacional.Servicios
 {
     // Sujeto del patrón Observer.
     // Usa IUnidadDeVenta (Composite) como elemento subastado.
-    // Delega el control de concurrencia al GestorDePujasSingleton.
+    // Delega el control de concurrencia al GestorDePujasSingleton (RF-09).
+    // Acumula en memoria todas las pujas (aceptadas y rechazadas)
+    // para que el BLL las persista en bloque al cerrar la subasta.
     public class SubastaActiva : ISujetoSubasta
     {
-        private readonly IUnidadDeVenta _unidad;
-        private readonly IList<IObservadorSubasta> _observadores;
-        private decimal _precioActual;
-        private Usuario _ultimoPujador;
-        private bool _estaActiva;
+        private readonly IUnidadDeVenta              _unidad;
+        private readonly IList<IObservadorSubasta>   _observadores;
+        private readonly List<Puja>                  _pujas;
+        private decimal  _precioActual;
+        private Usuario  _ultimoPujador;
+        private bool     _estaActiva;
 
         public SubastaActiva(IUnidadDeVenta unidad)
         {
             _unidad       = unidad ?? throw new ArgumentNullException(nameof(unidad));
             _observadores = new List<IObservadorSubasta>();
+            _pujas        = new List<Puja>();
             _precioActual = unidad.CalcularPrecioBase();
             _estaActiva   = true;
         }
 
-        public IUnidadDeVenta Unidad      => _unidad;
-        public decimal PrecioActual       => _precioActual;
-        public Usuario UltimoPujador      => _ultimoPujador;
-        public bool EstaActiva            => _estaActiva;
+        public IUnidadDeVenta    Unidad        => _unidad;
+        public decimal           PrecioActual  => _precioActual;
+        public Usuario           UltimoPujador => _ultimoPujador;
+        public bool              EstaActiva    => _estaActiva;
 
-        // RF-05: suscribir interesado
+        // Copia de sólo lectura — el BLL persiste estas pujas al cerrar
+        public IReadOnlyList<Puja> Pujas => _pujas.AsReadOnly();
+
+        // RF-05
         public void Suscribir(IObservadorSubasta observador)
         {
             if (observador == null) throw new ArgumentNullException(nameof(observador));
@@ -40,7 +47,7 @@ namespace AlmonedaNacional.Servicios
             _observadores.Add(observador);
         }
 
-        // RF-08: desuscribir interesado
+        // RF-08
         public void Desuscribir(IObservadorSubasta observador)
         {
             if (observador == null) throw new ArgumentNullException(nameof(observador));
@@ -49,14 +56,18 @@ namespace AlmonedaNacional.Servicios
             _observadores.Remove(observador);
         }
 
-        // RF-06 / RF-07: notifica a todos los suscriptores
+        // RF-06 / RF-07
         public void Notificar(string evento)
         {
-            foreach (var obs in _observadores)
+            // Iteramos sobre copia para evitar problemas si un observer se da de baja durante la notificación
+            var copia = new List<IObservadorSubasta>(_observadores);
+            foreach (var obs in copia)
                 obs.Actualizar(_unidad.Nombre, _precioActual, evento);
         }
 
-        // RF-10: valida y procesa oferta bajo lock del Singleton (RF-09)
+        // RF-10: valida y procesa oferta bajo lock del Singleton (RF-09).
+        // Registra la puja (Aceptada o Rechazada) en la lista interna.
+        // Lanza excepción si es rechazada para que el formulario informe al usuario.
         public void RealizarOferta(Usuario usuario, decimal monto)
         {
             if (!_estaActiva)
@@ -67,8 +78,27 @@ namespace AlmonedaNacional.Servicios
             GestorDePujasSingleton.Instancia.EjecutarBajoLock(() =>
             {
                 if (monto <= _precioActual)
+                {
+                    // Puja rechazada — la registramos antes de lanzar la excepción
+                    _pujas.Add(new Puja
+                    {
+                        NombreUsuario = usuario.Nombre,
+                        Monto         = monto,
+                        FechaHora     = DateTime.Now,
+                        Estado        = EstadoPuja.Rechazada,
+                        MotivoRechazo = $"${monto:N2} no supera el precio vigente ${_precioActual:N2}."
+                    });
                     throw new InvalidOperationException(
                         $"La oferta de ${monto:N2} debe superar el precio actual de ${_precioActual:N2}.");
+                }
+
+                _pujas.Add(new Puja
+                {
+                    NombreUsuario = usuario.Nombre,
+                    Monto         = monto,
+                    FechaHora     = DateTime.Now,
+                    Estado        = EstadoPuja.Aceptada
+                });
 
                 _precioActual  = monto;
                 _ultimoPujador = usuario;
@@ -76,7 +106,6 @@ namespace AlmonedaNacional.Servicios
             });
         }
 
-        // Cierra la subasta y retorna el resultado para persistir
         public ResultadoSubasta Cerrar()
         {
             if (!_estaActiva)
