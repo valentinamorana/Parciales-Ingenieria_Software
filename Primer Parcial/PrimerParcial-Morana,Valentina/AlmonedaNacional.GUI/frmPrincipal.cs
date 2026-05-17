@@ -20,28 +20,24 @@ namespace AlmonedaNacional.GUI
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
-            InicializarCatalogo();
+            CargarCatalogo();
             AbrirCatalogo();
         }
 
-        // Datos de demo precargados — el martillero puede agregar más desde frmCatalogo.
-        private void InicializarCatalogo()
+        private void CargarCatalogo()
         {
-            var taladro    = new ArticuloSimple { Id = 1, Nombre = "Taladro Industrial",  Descripcion = "Bosch 1500W",           PrecioBase = 15000m };
-            var amoladora  = new ArticuloSimple { Id = 2, Nombre = "Amoladora",           Descripcion = "Makita 9\"",             PrecioBase =  8000m };
-            var repuestos  = new ArticuloSimple { Id = 3, Nombre = "Set de Repuestos",    Descripcion = "200 unidades",           PrecioBase =  5000m };
-            var maquinaCNC = new ArticuloSimple { Id = 4, Nombre = "Máquina CNC",         Descripcion = "Control numérico 3 ejes", PrecioBase = 250000m };
-
-            var loteHerr = new LoteArticulos { Id = 10, Nombre = "Lote Herramientas" };
-            loteHerr.Agregar(taladro);
-            loteHerr.Agregar(amoladora);
-
-            var seccion = new LoteArticulos { Id = 11, Nombre = "Sección Producción Completa" };
-            seccion.Agregar(loteHerr);
-            seccion.Agregar(repuestos);
-            seccion.Agregar(maquinaCNC);
-
-            _catalogo.AddRange(new IUnidadDeVenta[] { taladro, amoladora, repuestos, maquinaCNC, loteHerr, seccion });
+            try
+            {
+                var items = new CatalogoBLL().ObtenerCatalogo();
+                _catalogo.Clear();
+                _catalogo.AddRange(items);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"No se pudo cargar el catálogo desde la BD:\n{ex.Message}",
+                    "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void mnuCatalogo_Click(object sender, EventArgs e)  => AbrirCatalogo();

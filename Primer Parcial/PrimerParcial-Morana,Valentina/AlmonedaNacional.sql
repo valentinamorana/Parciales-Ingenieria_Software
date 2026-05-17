@@ -73,8 +73,6 @@ GO
 
 -- ─────────────────────────────────────────────
 --  TABLA: Pujas  (historial completo de ofertas: aceptadas y rechazadas)
---  Se persisten en bloque al cerrar la subasta (junto con ResultadoSubasta).
---  EstadoPuja: 'Aceptada' | 'Rechazada'
 -- ─────────────────────────────────────────────
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Pujas')
 BEGIN
@@ -92,30 +90,83 @@ END
 GO
 
 -- ─────────────────────────────────────────────
---  DATOS DE PRUEBA
+--  TABLA: Martilleros  (autenticación con bloqueo por intentos fallidos)
 -- ─────────────────────────────────────────────
-INSERT INTO Usuarios (Nombre, Email) VALUES
-    ('Carlos Méndez',    'carlos@web.com'),
-    ('Laura Rodríguez',  'laura@movil.com'),
-    ('Tomás García',     'tomas@sala.com');
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Martilleros')
+BEGIN
+    CREATE TABLE Martilleros (
+        Id               INT           PRIMARY KEY IDENTITY(1,1),
+        Username         VARCHAR(100)  NOT NULL UNIQUE,
+        PasswordHash     VARCHAR(64)   NOT NULL,
+        IntentosFallidos INT           NOT NULL DEFAULT 0,
+        BloqueadoHasta   DATETIME      NULL
+    );
+END
 GO
 
-INSERT INTO UnidadesDeVenta (Nombre, Descripcion, PrecioBase, TipoUnidad) VALUES
-    ('Taladro Industrial',           'Bosch 1500W',                  15000.00, 'Articulo'),
-    ('Amoladora',                    'Makita 9 pulgadas',             8000.00, 'Articulo'),
-    ('Set de Repuestos',             '200 unidades',                  5000.00, 'Articulo'),
-    ('Máquina CNC',                  'Control numérico 3 ejes',     250000.00, 'Articulo'),
-    ('Lote Herramientas Manuales',   'Taladro + Amoladora',          23000.00, 'Lote'),
-    ('Sección Producción',           'Herramientas + Repuestos + CNC', 278000.00, 'Lote');
+-- ─────────────────────────────────────────────
+--  TABLA: Bitacora  (auditoría de operaciones del sistema)
+-- ─────────────────────────────────────────────
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Bitacora')
+BEGIN
+    CREATE TABLE Bitacora (
+        Id               INT           PRIMARY KEY IDENTITY(1,1),
+        Fecha            DATETIME      NOT NULL DEFAULT GETDATE(),
+        Operacion        VARCHAR(50)   NOT NULL,
+        Detalle          VARCHAR(500)  NOT NULL,
+        Criticidad       VARCHAR(10)   NOT NULL CHECK (Criticidad IN ('Baja', 'Media', 'Alta')),
+        NombreMartillero VARCHAR(100)  NOT NULL
+    );
+END
 GO
 
--- Relaciones Composite: lote → contenido
-INSERT INTO LoteContenido (LoteId, ContenidoId) VALUES
-    (5, 1),   -- Lote Herramientas → Taladro
-    (5, 2),   -- Lote Herramientas → Amoladora
-    (6, 5),   -- Sección Producción → Lote Herramientas (lote dentro de lote)
-    (6, 3),   -- Sección Producción → Set Repuestos
-    (6, 4);   -- Sección Producción → Máquina CNC
+-- ─────────────────────────────────────────────
+--  DATOS INICIALES
+-- ─────────────────────────────────────────────
+
+-- Martillero por defecto (password: Admin1234)
+-- Hash SHA-256 de "Admin1234" en minúsculas
+IF NOT EXISTS (SELECT 1 FROM Martilleros WHERE Username = 'martillero')
+    INSERT INTO Martilleros (Username, PasswordHash, IntentosFallidos)
+    VALUES ('martillero', '60fe74406e7f353ed979f350f2fbb6a2e8690a5fa7d1b0c32983d1d8b3f95f67', 0);
+GO
+
+-- Usuarios que realizan pujas
+IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE Email = 'carlos@web.com')
+    INSERT INTO Usuarios (Nombre, Email) VALUES
+        ('Carlos Méndez',   'carlos@web.com'),
+        ('Laura Rodríguez', 'laura@movil.com'),
+        ('Tomás García',    'tomas@sala.com');
+GO
+
+-- Catálogo inicial de unidades de venta
+IF NOT EXISTS (SELECT 1 FROM UnidadesDeVenta WHERE Nombre = 'Taladro Industrial')
+BEGIN
+    INSERT INTO UnidadesDeVenta (Nombre, Descripcion, PrecioBase, TipoUnidad) VALUES
+        ('Taladro Industrial',         'Bosch 1500W',                  15000.00, 'Articulo'),
+        ('Amoladora',                  'Makita 9 pulgadas',             8000.00, 'Articulo'),
+        ('Set de Repuestos',           '200 unidades',                  5000.00, 'Articulo'),
+        ('Máquina CNC',                'Control numérico 3 ejes',     250000.00, 'Articulo'),
+        ('Lote Herramientas',          'Taladro + Amoladora',          23000.00, 'Lote'),
+        ('Sección Producción Completa','Herramientas + Repuestos + CNC',278000.00,'Lote');
+
+    -- Relaciones Composite: lote → contenido
+    -- Lote Herramientas (Id=5) → Taladro (1) + Amoladora (2)
+    -- Sección Producción (Id=6) → Lote Herramientas (5) + Repuestos (3) + CNC (4)
+    DECLARE @idTaladro  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Taladro Industrial');
+    DECLARE @idAmolad   INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Amoladora');
+    DECLARE @idRepuest  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Set de Repuestos');
+    DECLARE @idCNC      INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Máquina CNC');
+    DECLARE @idLoteH    INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Lote Herramientas');
+    DECLARE @idSeccion  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Sección Producción Completa');
+
+    INSERT INTO LoteContenido (LoteId, ContenidoId) VALUES
+        (@idLoteH,   @idTaladro),
+        (@idLoteH,   @idAmolad),
+        (@idSeccion, @idLoteH),
+        (@idSeccion, @idRepuest),
+        (@idSeccion, @idCNC);
+END
 GO
 
 -- ─────────────────────────────────────────────
@@ -124,19 +175,11 @@ GO
 
 -- RF-13: reporte consolidado de subastas
 -- SELECT NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora
--- FROM   Subastas
--- ORDER  BY FechaHora DESC;
+-- FROM   Subastas ORDER BY FechaHora DESC;
 
--- Historial completo de pujas de una subasta (aceptadas + rechazadas)
+-- Historial completo de pujas de una subasta
 -- SELECT p.Id, p.NombreUsuario, p.Monto, p.FechaHora, p.Estado, p.MotivoRechazo
--- FROM   Pujas p
--- WHERE  p.SubastaId = <id>
--- ORDER  BY p.FechaHora;
+-- FROM   Pujas p WHERE p.SubastaId = <id> ORDER BY p.FechaHora;
 
--- Métricas: cantidad de pujas aceptadas vs rechazadas por subasta
--- SELECT s.NombreUnidadVenta,
---        COUNT(CASE WHEN p.Estado = 'Aceptada'  THEN 1 END) AS Aceptadas,
---        COUNT(CASE WHEN p.Estado = 'Rechazada' THEN 1 END) AS Rechazadas
--- FROM   Subastas s
--- LEFT JOIN Pujas p ON p.SubastaId = s.Id
--- GROUP BY s.Id, s.NombreUnidadVenta;
+-- Auditoría por criticidad
+-- SELECT * FROM Bitacora WHERE Criticidad = 'Alta' ORDER BY Fecha DESC;

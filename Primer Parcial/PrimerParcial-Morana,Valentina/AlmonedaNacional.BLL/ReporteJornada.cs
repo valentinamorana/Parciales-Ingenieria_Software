@@ -32,20 +32,13 @@ namespace AlmonedaNacional.BLL
             sb.AppendLine("SUBASTAS DE LA JORNADA:");
             sb.AppendLine(new string('─', 55));
 
-            IList<ResultadoSubasta> historial;
-            try
-            {
-                historial = _subastaBll.ObtenerHistorial();
-                if (historial == null || historial.Count == 0)
-                    historial = DemoHistorial();
-            }
-            catch { historial = DemoHistorial(); }
+            IList<ResultadoSubasta> historial = _subastaBll.ObtenerHistorial();
 
             decimal total    = 0;
             int     cantidad = 0;
             foreach (var r in historial)
             {
-                if (r.FechaHora.Date == fecha.Date || historial.Count <= 5)
+                if (r.FechaHora.Date == fecha.Date)
                 {
                     cantidad++;
                     sb.AppendLine($"  {cantidad,2}. {r.NombreUnidadVenta}");
@@ -69,7 +62,6 @@ namespace AlmonedaNacional.BLL
             return sb.ToString();
         }
 
-        // Recorre el árbol Composite con indentación para mostrar jerarquía (RF-04)
         private static void RecorrerNodo(IUnidadDeVenta unidad, StringBuilder sb, int nivel)
         {
             string indent = new string(' ', nivel * 4);
@@ -83,12 +75,5 @@ namespace AlmonedaNacional.BLL
                 foreach (var hijo in hijos)
                     RecorrerNodo(hijo, sb, nivel + 1);
         }
-
-        private static IList<ResultadoSubasta> DemoHistorial() => new List<ResultadoSubasta>
-        {
-            new ResultadoSubasta { NombreUnidadVenta="Taladro Industrial",         PrecioBase=15000m,  PrecioFinal=21500m,  NombreGanador="Carlos Méndez",   FechaHora=DateTime.Today.AddHours(10) },
-            new ResultadoSubasta { NombreUnidadVenta="Lote Herramientas Manuales", PrecioBase=23000m,  PrecioFinal=38000m,  NombreGanador="Laura Rodríguez", FechaHora=DateTime.Today.AddHours(11).AddMinutes(45) },
-            new ResultadoSubasta { NombreUnidadVenta="Máquina CNC",                PrecioBase=250000m, PrecioFinal=310000m, NombreGanador="Tomás García",    FechaHora=DateTime.Today.AddHours(14) }
-        };
     }
 }
