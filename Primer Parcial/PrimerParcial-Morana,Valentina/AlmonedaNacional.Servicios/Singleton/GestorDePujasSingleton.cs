@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using AlmonedaNacional.BE;
 
 namespace AlmonedaNacional.Servicios.Singleton
 {
@@ -11,6 +13,9 @@ namespace AlmonedaNacional.Servicios.Singleton
 
         // Lock exclusivo para procesar una puja a la vez — evita adjudicaciones simultáneas
         private readonly object _lockPuja = new object();
+
+        // Tiempo máximo de espera antes de lanzar PujaSimultaneaException (ms)
+        private const int TimeoutMs = 3000;
 
         private GestorDePujasSingleton() { }
 
@@ -27,13 +32,24 @@ namespace AlmonedaNacional.Servicios.Singleton
             }
         }
 
-        // Ejecuta la operación de puja bajo exclusión mutua para garantizar unicidad de transacción
+        // Ejecuta la operación de puja bajo exclusión mutua.
+        // Si el lock no está disponible en TimeoutMs, lanza PujaSimultaneaException.
         public void EjecutarBajoLock(Action operacion)
         {
             if (operacion == null) throw new ArgumentNullException(nameof(operacion));
-            lock (_lockPuja)
+
+            bool lockAdquirido = false;
+            try
             {
+                Monitor.TryEnter(_lockPuja, TimeoutMs, ref lockAdquirido);
+                if (!lockAdquirido)
+                    throw new PujaSimultaneaException();
                 operacion();
+            }
+            finally
+            {
+                if (lockAdquirido)
+                    Monitor.Exit(_lockPuja);
             }
         }
     }

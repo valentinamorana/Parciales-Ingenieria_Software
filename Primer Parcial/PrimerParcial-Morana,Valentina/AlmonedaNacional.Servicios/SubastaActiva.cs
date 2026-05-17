@@ -66,16 +66,30 @@ namespace AlmonedaNacional.Servicios
 
         // RF-10: valida y procesa oferta bajo lock del Singleton (RF-09).
         // Registra la puja (Aceptada o Rechazada) en la lista interna.
-        // Lanza excepción si es rechazada para que el formulario informe al usuario.
+        // Lanza excepción tipada si es rechazada para que el formulario informe al usuario.
         public void RealizarOferta(Usuario usuario, decimal monto)
         {
             if (!_estaActiva)
-                throw new InvalidOperationException("No se pueden realizar ofertas: la subasta está cerrada.");
+                throw new SubastaNoActivaException("No se pueden realizar ofertas: la subasta está cerrada.");
             if (usuario == null)
                 throw new ArgumentNullException(nameof(usuario));
 
             GestorDePujasSingleton.Instancia.EjecutarBajoLock(() =>
             {
+                if (_ultimoPujador != null && usuario.Id == _ultimoPujador.Id)
+                {
+                    _pujas.Add(new Puja
+                    {
+                        NombreUsuario = usuario.Nombre,
+                        Monto         = monto,
+                        FechaHora     = DateTime.Now,
+                        Estado        = EstadoPuja.Rechazada,
+                        MotivoRechazo = $"{usuario.Nombre} ya es el pujador actual."
+                    });
+                    throw new OfertaInvalidaException(
+                        $"{usuario.Nombre} ya tiene la oferta más alta. Debe esperar a que otro puje.");
+                }
+
                 if (monto <= _precioActual)
                 {
                     // Puja rechazada — la registramos antes de lanzar la excepción
@@ -87,7 +101,7 @@ namespace AlmonedaNacional.Servicios
                         Estado        = EstadoPuja.Rechazada,
                         MotivoRechazo = $"${monto:N2} no supera el precio vigente ${_precioActual:N2}."
                     });
-                    throw new InvalidOperationException(
+                    throw new OfertaInvalidaException(
                         $"La oferta de ${monto:N2} debe superar el precio actual de ${_precioActual:N2}.");
                 }
 
@@ -108,9 +122,9 @@ namespace AlmonedaNacional.Servicios
         public ResultadoSubasta Cerrar()
         {
             if (!_estaActiva)
-                throw new InvalidOperationException("La subasta ya está cerrada.");
+                throw new SubastaNoActivaException("La subasta ya está cerrada.");
             if (_ultimoPujador == null)
-                throw new InvalidOperationException("No se puede cerrar la subasta: no se registraron ofertas.");
+                throw new SubastaNoActivaException("No se puede cerrar la subasta: no se registraron ofertas.");
 
             _estaActiva = false;
             Notificar();
