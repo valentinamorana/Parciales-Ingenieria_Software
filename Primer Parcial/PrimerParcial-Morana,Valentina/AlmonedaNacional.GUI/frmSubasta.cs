@@ -9,10 +9,11 @@ using AlmonedaNacional.Servicios.Composite;
 
 namespace AlmonedaNacional.GUI
 {
-    // Demuestra en un solo form los 3 patrones restantes:
+    // Demuestra en un solo form los 3 patrones:
     //   OBSERVER  : suscribir/desuscribir interesados, notificación automática al pujar
-    //   STRATEGY  : cada interesado elige su canal (Web / Móvil / Pantalla Sala / GUI)
     //   SINGLETON : GestorDePujasSingleton procesa una puja a la vez (lock exclusivo)
+    //   COMPOSITE : el catálogo usa ArticuloSimple / LoteArticulos
+    // Plus: Temporizador regresivo + Anti-Sniping automático
     public partial class frmSubasta : Form
     {
         private SubastaBLL _bll;
@@ -21,12 +22,17 @@ namespace AlmonedaNacional.GUI
         private List<IUnidadDeVenta> _catalogo;
         private List<Usuario> _usuarios;
 
+        private const int DURACION_INICIAL     = 120;  // 2 minutos por subasta
+        private const int UMBRAL_ANTISNIPING   = 30;   // últimos N segundos disparan extensión
+        private const int EXTENSION_ANTISNIPING = 120; // se agregan N segundos al tiempo restante
+        private int _segundosRestantes;
+
         public frmSubasta(List<IUnidadDeVenta> catalogo)
         {
             InitializeComponent();
-            _bll      = new SubastaBLL();
+            _bll         = new SubastaBLL();
             _interesados = new List<Interesado>();
-            _catalogo = catalogo;
+            _catalogo    = catalogo;
         }
 
         private void frmSubasta_Load(object sender, EventArgs e)
@@ -82,7 +88,11 @@ namespace AlmonedaNacional.GUI
                 lstInteresados.Items.Clear();
                 rtbNotificaciones.Clear();
 
-                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] Subasta iniciada: {unidad.Nombre}  |  Precio base: ${_subastaActiva.PrecioActual:N2}\r\n");
+                _segundosRestantes = DURACION_INICIAL;
+                ActualizarLblTimer();
+                _timer.Start();
+
+                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] Subasta iniciada: {unidad.Nombre}  |  Precio base: ${_subastaActiva.PrecioActual:N2}  |  Tiempo: {DURACION_INICIAL / 60} min\r\n");
                 ActualizarPanelSubasta();
                 ActualizarEstadoControles();
             }
@@ -93,7 +103,7 @@ namespace AlmonedaNacional.GUI
         }
 
         // ─────────────────────────────────────────────
-        //  2. SUSCRIBIR INTERESADO (OBSERVER + STRATEGY)
+        //  2. SUSCRIBIR INTERESADO (OBSERVER)
         // ─────────────────────────────────────────────
         private void btnSuscribir_Click(object sender, EventArgs e)
         {
@@ -148,7 +158,7 @@ namespace AlmonedaNacional.GUI
         }
 
         // ─────────────────────────────────────────────
-        //  4. REALIZAR OFERTA (SINGLETON + OBSERVER)
+        //  4. REALIZAR OFERTA (SINGLETON + OBSERVER + ANTI-SNIPING)
         // ─────────────────────────────────────────────
         private void btnOfertar_Click(object sender, EventArgs e)
         {
@@ -160,11 +170,20 @@ namespace AlmonedaNacional.GUI
                     throw new ArgumentException("Ingrese un monto válido mayor a cero.");
 
                 // SINGLETON: GestorDePujasSingleton garantiza exclusión mutua (RF-09)
-                // OBSERVER: al actualizarse el precio, Notificar() avisa a todos los suscriptores (RF-06)
+                // OBSERVER: al actualizarse el precio, Notificar() avisa a todos (RF-06)
                 _bll.RealizarOferta(_subastaActiva, usuario, monto);
+
+                // ANTI-SNIPING: si la oferta llega en los últimos N segundos, extender
+                if (_segundosRestantes <= UMBRAL_ANTISNIPING)
+                {
+                    _segundosRestantes += EXTENSION_ANTISNIPING;
+                    rtbNotificaciones.AppendText(
+                        $"[{DateTime.Now:HH:mm:ss}] ⚡ ANTI-SNIPING activado — tiempo extendido +{EXTENSION_ANTISNIPING / 60} min\r\n");
+                }
 
                 txtMonto.Clear();
                 ActualizarPanelSubasta();
+                ActualizarLblTimer();
             }
             catch (Exception ex)
             {
@@ -188,11 +207,15 @@ namespace AlmonedaNacional.GUI
 
                 if (confirm != DialogResult.Yes) return;
 
+                _timer.Stop();
+
                 // Cierra subasta → notifica a todos (RF-07) → persiste en BD
                 var resultado = _bll.CerrarSubasta(_subastaActiva);
 
-                lblPrecioActual.Text  = $"CERRADA — ${resultado.PrecioFinal:N2}";
+                lblPrecioActual.Text      = $"CERRADA — ${resultado.PrecioFinal:N2}";
                 lblPrecioActual.ForeColor = Color.Red;
+                lblTimer.Text             = "⏱  --:--";
+                lblTimer.ForeColor        = Color.DimGray;
 
                 rtbNotificaciones.AppendText($"\r\n[{DateTime.Now:HH:mm:ss}] ══ SUBASTA CERRADA ══\r\n");
                 rtbNotificaciones.AppendText($"  Ganador: {resultado.NombreGanador}\r\n");
@@ -204,6 +227,55 @@ namespace AlmonedaNacional.GUI
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  TEMPORIZADOR
+        // ─────────────────────────────────────────────
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (_segundosRestantes <= 0)
+            {
+                _timer.Stop();
+                AutoCerrarSubasta();
+                return;
+            }
+            _segundosRestantes--;
+            ActualizarLblTimer();
+        }
+
+        private void ActualizarLblTimer()
+        {
+            int m = _segundosRestantes / 60;
+            int s = _segundosRestantes % 60;
+            lblTimer.Text = $"⏱  {m:00}:{s:00}";
+            lblTimer.ForeColor = _segundosRestantes <= UMBRAL_ANTISNIPING
+                ? Color.FromArgb(200, 60, 60)   // rojo urgente
+                : Color.FromArgb(30, 140, 80);  // verde normal
+        }
+
+        private void AutoCerrarSubasta()
+        {
+            if (_subastaActiva == null || !_subastaActiva.EstaActiva) return;
+            try
+            {
+                var resultado = _bll.CerrarSubasta(_subastaActiva);
+
+                lblTimer.Text             = "⏱  00:00";
+                lblTimer.ForeColor        = Color.FromArgb(200, 60, 60);
+                lblPrecioActual.Text      = $"CERRADA — ${resultado.PrecioFinal:N2}";
+                lblPrecioActual.ForeColor = Color.Red;
+
+                rtbNotificaciones.AppendText($"\r\n[{DateTime.Now:HH:mm:ss}] ══ TIEMPO AGOTADO — SUBASTA CERRADA AUTOMÁTICAMENTE ══\r\n");
+                rtbNotificaciones.AppendText($"  Ganador: {resultado.NombreGanador}\r\n");
+                rtbNotificaciones.AppendText($"  Precio final: ${resultado.PrecioFinal:N2}\r\n");
+
+                ActualizarEstadoControles();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al cerrar automáticamente", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -230,11 +302,11 @@ namespace AlmonedaNacional.GUI
         {
             bool haySubasta = _subastaActiva != null && _subastaActiva.EstaActiva;
 
-            grpInteresados.Enabled   = haySubasta;
-            grpOferta.Enabled        = haySubasta;
-            btnCerrarSubasta.Enabled = haySubasta;
+            grpInteresados.Enabled    = haySubasta;
+            grpOferta.Enabled         = haySubasta;
+            btnCerrarSubasta.Enabled  = haySubasta;
             btnIniciarSubasta.Enabled = !haySubasta;
-            cmbUnidad.Enabled        = !haySubasta;
+            cmbUnidad.Enabled         = !haySubasta;
         }
     }
 }

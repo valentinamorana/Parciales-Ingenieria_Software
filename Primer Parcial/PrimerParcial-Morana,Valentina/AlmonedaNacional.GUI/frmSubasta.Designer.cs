@@ -52,6 +52,9 @@ namespace AlmonedaNacional.GUI
             this.grpNotificaciones  = new System.Windows.Forms.GroupBox();
             this.rtbNotificaciones  = new System.Windows.Forms.RichTextBox();
             this.btnCerrarSubasta   = new System.Windows.Forms.Button();
+            this.components         = new System.ComponentModel.Container();
+            this._timer             = new System.Windows.Forms.Timer(this.components);
+            this.lblTimer           = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.panelStatus.SuspendLayout();
             this.grpIniciar.SuspendLayout();
@@ -90,7 +93,7 @@ namespace AlmonedaNacional.GUI
             this.lblSubtitulo.Location = new System.Drawing.Point(12, 34);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(750, 16);
-            this.lblSubtitulo.Text = "Patrones: Observer + Singleton + Strategy — RF-05 a RF-12";
+            this.lblSubtitulo.Text = "Patrones: Observer + Singleton — RF-05 a RF-12  |  Plus: Temporizador + Anti-Sniping";
             //
             // panelStatus
             //
@@ -170,6 +173,7 @@ namespace AlmonedaNacional.GUI
             this.grpEstado.Controls.Add(this.lblPrecioActual);
             this.grpEstado.Controls.Add(this.lblPujadorLabel);
             this.grpEstado.Controls.Add(this.lblUltimoPujador);
+            this.grpEstado.Controls.Add(this.lblTimer);
             //
             // lblNombreLabel
             //
@@ -235,6 +239,22 @@ namespace AlmonedaNacional.GUI
             this.lblUltimoPujador.Location = new System.Drawing.Point(506, 50);
             this.lblUltimoPujador.Text = "—";
             //
+            // lblTimer — countdown en grpEstado (Plus: Temporizador + Anti-Sniping)
+            //
+            this.lblTimer.AutoSize = false;
+            this.lblTimer.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTimer.ForeColor = System.Drawing.Color.DimGray;
+            this.lblTimer.Location = new System.Drawing.Point(870, 14);
+            this.lblTimer.Name = "lblTimer";
+            this.lblTimer.Size = new System.Drawing.Size(268, 52);
+            this.lblTimer.Text = "⏱  --:--";
+            this.lblTimer.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            //
+            // _timer
+            //
+            this._timer.Interval = 1000;
+            this._timer.Tick += new System.EventHandler(this.Timer_Tick);
+            //
             // grpInteresados
             //
             this.grpInteresados.BackColor = System.Drawing.Color.FromArgb(252, 228, 235);
@@ -243,7 +263,7 @@ namespace AlmonedaNacional.GUI
             this.grpInteresados.Location = new System.Drawing.Point(10, 224);
             this.grpInteresados.Name = "grpInteresados";
             this.grpInteresados.Size = new System.Drawing.Size(560, 208);
-            this.grpInteresados.Text = "2. Interesados  [OBSERVER + STRATEGY]";
+            this.grpInteresados.Text = "2. Interesados  [OBSERVER]";
             this.grpInteresados.Controls.Add(this.lblPatronObs);
             this.grpInteresados.Controls.Add(this.lstInteresados);
             this.grpInteresados.Controls.Add(this.lblUsuarioSusc);
@@ -262,7 +282,7 @@ namespace AlmonedaNacional.GUI
             this.lblPatronObs.Location = new System.Drawing.Point(6, 18);
             this.lblPatronObs.Size = new System.Drawing.Size(546, 18);
             this.lblPatronObs.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblPatronObs.Text = "Observer: SubastaActiva notifica a cada Interesado vía Strategy (canal elegido)";
+            this.lblPatronObs.Text = "Observer: SubastaActiva notifica a cada Interesado suscripto (RF-05/RF-06/RF-07/RF-08)";
             //
             // lstInteresados
             //
@@ -297,7 +317,7 @@ namespace AlmonedaNacional.GUI
             this.lblCanal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblCanal.ForeColor = System.Drawing.Color.FromArgb(64, 64, 64);
             this.lblCanal.Location = new System.Drawing.Point(254, 90);
-            this.lblCanal.Text = "Canal  [STRATEGY]:";
+            this.lblCanal.Text = "Canal de notificación:";
             //
             // cmbCanal
             //
@@ -419,7 +439,7 @@ namespace AlmonedaNacional.GUI
             this.grpNotificaciones.Location = new System.Drawing.Point(10, 442);
             this.grpNotificaciones.Name = "grpNotificaciones";
             this.grpNotificaciones.Size = new System.Drawing.Size(1150, 220);
-            this.grpNotificaciones.Text = "Notificaciones  [OBSERVER RF-06/RF-07 + STRATEGY]";
+            this.grpNotificaciones.Text = "Notificaciones  [OBSERVER RF-06/RF-07]";
             this.grpNotificaciones.Controls.Add(this.rtbNotificaciones);
             //
             // rtbNotificaciones — consola oscura (contraste con el rosa)
@@ -462,7 +482,7 @@ namespace AlmonedaNacional.GUI
             this.Controls.Add(this.panelStatus);
             this.Controls.Add(this.panelTop);
             this.Name = "frmSubasta";
-            this.Text = "Gestión de Subasta — OBSERVER + SINGLETON + STRATEGY";
+            this.Text = "Gestión de Subasta — OBSERVER + SINGLETON";
             this.Load += new System.EventHandler(this.frmSubasta_Load);
             this.panelTop.ResumeLayout(false);
             this.panelStatus.ResumeLayout(false);
@@ -518,5 +538,7 @@ namespace AlmonedaNacional.GUI
         private System.Windows.Forms.GroupBox grpNotificaciones;
         private System.Windows.Forms.RichTextBox rtbNotificaciones;
         private System.Windows.Forms.Button btnCerrarSubasta;
+        private System.Windows.Forms.Timer _timer;
+        private System.Windows.Forms.Label lblTimer;
     }
 }
