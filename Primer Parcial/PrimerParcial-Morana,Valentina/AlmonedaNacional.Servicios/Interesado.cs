@@ -20,14 +20,12 @@ namespace AlmonedaNacional.Servicios
         public Usuario Usuario      => _usuario;
         public string NombreCanal   => _estrategia.NombreCanal;
 
-        // Recibe la notificación del Sujeto y la entrega por el canal elegido (Strategy)
-        public void Actualizar(string nombreUnidad, decimal precioActual, string evento)
+        // Recibe el sujeto completo y extrae su estado (Observer canónico)
+        public void Actualizar(SubastaActiva subasta)
         {
-            string mensaje;
-            if (evento == "SUBASTA_CERRADA")
-                mensaje = $"SUBASTA CERRADA — {nombreUnidad} | Precio final: ${precioActual:N2}";
-            else
-                mensaje = $"Nueva puja en '{nombreUnidad}': ${precioActual:N2}";
+            string mensaje = subasta.EstaActiva
+                ? $"Nueva puja en '{subasta.Unidad.Nombre}': ${subasta.PrecioActual:N2}"
+                : $"SUBASTA CERRADA — {subasta.Unidad.Nombre} | Precio final: ${subasta.PrecioActual:N2}";
 
             _estrategia.EnviarNotificacion(_usuario.Nombre, mensaje);
         }

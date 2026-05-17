@@ -57,12 +57,11 @@ namespace AlmonedaNacional.Servicios
         }
 
         // RF-06 / RF-07
-        public void Notificar(string evento)
+        public void Notificar()
         {
-            // Iteramos sobre copia para evitar problemas si un observer se da de baja durante la notificación
             var copia = new List<IObservadorSubasta>(_observadores);
             foreach (var obs in copia)
-                obs.Actualizar(_unidad.Nombre, _precioActual, evento);
+                obs.Actualizar(this);
         }
 
         // RF-10: valida y procesa oferta bajo lock del Singleton (RF-09).
@@ -102,7 +101,7 @@ namespace AlmonedaNacional.Servicios
 
                 _precioActual  = monto;
                 _ultimoPujador = usuario;
-                Notificar("NUEVA_PUJA");
+                Notificar();
             });
         }
 
@@ -114,7 +113,7 @@ namespace AlmonedaNacional.Servicios
                 throw new InvalidOperationException("No se puede cerrar la subasta: no se registraron ofertas.");
 
             _estaActiva = false;
-            Notificar("SUBASTA_CERRADA");
+            Notificar();
 
             return new ResultadoSubasta
             {

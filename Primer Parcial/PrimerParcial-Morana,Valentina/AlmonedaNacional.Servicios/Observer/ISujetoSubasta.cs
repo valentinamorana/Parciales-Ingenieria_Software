@@ -5,6 +5,6 @@ namespace AlmonedaNacional.Servicios.Observer
     {
         void Suscribir(IObservadorSubasta observador);    // RF-05
         void Desuscribir(IObservadorSubasta observador);  // RF-08
-        void Notificar(string evento);                    // RF-06 / RF-07
+        void Notificar();                                  // RF-06 / RF-07
     }
 }

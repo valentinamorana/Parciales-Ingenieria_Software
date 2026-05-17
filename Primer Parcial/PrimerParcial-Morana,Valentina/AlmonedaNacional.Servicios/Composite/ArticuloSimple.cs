@@ -14,14 +14,8 @@ namespace AlmonedaNacional.Servicios.Composite
         public override string ObtenerDescripcion()
             => $"[Artículo] {Nombre}: {Descripcion} — ${PrecioBase:N2}";
 
-        // Las hojas no admiten operaciones de composición
-        public override void Agregar(IUnidadDeVenta unidad)
-            => throw new NotSupportedException("Un artículo simple no puede contener otros artículos.");
-
-        public override void Quitar(IUnidadDeVenta unidad)
-            => throw new NotSupportedException("Un artículo simple no puede contener otros artículos.");
-
-        public override IList<IUnidadDeVenta> ObtenerHijos()
-            => new List<IUnidadDeVenta>();
+        public override void Agregar(IUnidadDeVenta unidad) { }
+        public override void Quitar(IUnidadDeVenta unidad) { }
+        public override IList<IUnidadDeVenta> ObtenerHijos() => null;
     }
 }

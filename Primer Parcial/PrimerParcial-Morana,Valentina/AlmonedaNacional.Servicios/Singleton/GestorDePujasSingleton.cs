@@ -22,8 +22,8 @@ namespace AlmonedaNacional.Servicios.Singleton
                 {
                     if (_instancia == null)
                         _instancia = new GestorDePujasSingleton();
-                    return _instancia;
                 }
+                return _instancia;
             }
         }
 
