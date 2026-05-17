@@ -175,6 +175,13 @@ namespace GUI
         // ─────────────────────────────────────────────
         //  4. REALIZAR OFERTA (SINGLETON + OBSERVER + ANTI-SNIPING)
         // ─────────────────────────────────────────────
+        private void txtMonto_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                e.KeyChar != ',' && e.KeyChar != '.')
+                e.Handled = true;
+        }
+
         private void btnOfertar_Click(object sender, EventArgs e)
         {
             try

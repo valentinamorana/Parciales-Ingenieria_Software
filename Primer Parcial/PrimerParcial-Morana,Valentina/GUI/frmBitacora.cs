@@ -29,13 +29,13 @@ namespace GUI
         private void CargarFiltros()
         {
             cmbCriticidad.Items.Clear();
-            cmbCriticidad.Items.AddRange(new object[] { "Todas", "Baja", "Media", "Alta" });
+            cmbCriticidad.Items.AddRange(new object[] { "Todas", "Baja", "Media", "Alta", "IntentosLogin", "BloqueosCuenta" });
             cmbCriticidad.SelectedIndex = 0;
 
             cmbOperacion.Items.Clear();
             cmbOperacion.Items.AddRange(new object[]
             {
-                "Todas", "LOGIN", "LOGIN_FALLIDO", "INICIAR_SUBASTA",
+                "Todas", "LOGIN", "LOGIN_FALLIDO", "BLOQUEO_CUENTA", "INICIAR_SUBASTA",
                 "CERRAR_SUBASTA", "CIERRE_AUTOMATICO",
                 "OFERTA_ACEPTADA", "OFERTA_RECHAZADA", "LOGOUT"
             });

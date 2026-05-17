@@ -417,6 +417,7 @@ namespace GUI
             this.txtMonto.MaxLength = 15;
             this.txtMonto.Name = "txtMonto";
             this.txtMonto.Size = new System.Drawing.Size(554, 26);
+            this.txtMonto.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMonto_KeyPress);
             //
             // btnOfertar
             //

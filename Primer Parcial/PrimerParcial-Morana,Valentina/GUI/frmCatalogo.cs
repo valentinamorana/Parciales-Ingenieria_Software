@@ -152,9 +152,9 @@ namespace GUI
                 header.Controls.Add(lblH);
                 dlg.Controls.Add(header);
 
-                TextBox txtNombre = Campo(dlg, "Nombre:",          50);
-                TextBox txtDesc   = Campo(dlg, "Descripción:",     90);
-                TextBox txtPrecio = Campo(dlg, "Precio Base ($):", 130);
+                TextBox txtNombre = Campo(dlg, "Nombre:",          50);  txtNombre.MaxLength = 200;
+                TextBox txtDesc   = Campo(dlg, "Descripción:",     90);  txtDesc.MaxLength   = 500;
+                TextBox txtPrecio = Campo(dlg, "Precio Base ($):", 130); txtPrecio.MaxLength = 15;
 
                 var btnOk  = Boton(dlg, "Agregar",   DialogResult.OK,     80, 178, Color.FromArgb(210, 100, 135), Color.White);
                 var btnCan = Boton(dlg, "Cancelar",  DialogResult.Cancel, 190, 178, Color.FromArgb(200, 200, 210), Color.FromArgb(64,64,64));
@@ -218,7 +218,7 @@ namespace GUI
                 header.Controls.Add(lblH);
                 dlg.Controls.Add(header);
 
-                TextBox txtNombre = Campo(dlg, "Nombre del lote:", 50);
+                TextBox txtNombre = Campo(dlg, "Nombre del lote:", 50);  txtNombre.MaxLength = 200;
 
                 var lblItems = new Label { Text = "Unidades a incluir:", Location = new Point(12, 92), AutoSize = true, Font = new Font("Segoe UI", 9F), ForeColor = Color.FromArgb(64, 64, 64) };
                 dlg.Controls.Add(lblItems);
