@@ -21,11 +21,12 @@ namespace AlmonedaNacional.GUI
         private List<IUnidadDeVenta> _catalogo;
         private List<Usuario> _usuarios;
 
-        public frmSubasta()
+        public frmSubasta(List<IUnidadDeVenta> catalogo)
         {
             InitializeComponent();
-            _bll        = new SubastaBLL();
+            _bll      = new SubastaBLL();
             _interesados = new List<Interesado>();
+            _catalogo = catalogo;
         }
 
         private void frmSubasta_Load(object sender, EventArgs e)
@@ -39,14 +40,6 @@ namespace AlmonedaNacional.GUI
         // ─────────────────────────────────────────────
         private void InicializarDatos()
         {
-            var taladro   = new ArticuloSimple { Id = 1, Nombre = "Taladro Industrial",  Descripcion = "Bosch 1500W",             PrecioBase = 15000m };
-            var amoladora = new ArticuloSimple { Id = 2, Nombre = "Amoladora",           Descripcion = "Makita 9\"",               PrecioBase =  8000m };
-            var loteHerr  = new LoteArticulos  { Id = 10, Nombre = "Lote Herramientas" };
-            loteHerr.Agregar(taladro);
-            loteHerr.Agregar(amoladora);
-            var maquinaCNC = new ArticuloSimple { Id = 4, Nombre = "Máquina CNC", Descripcion = "3 ejes", PrecioBase = 250000m };
-
-            _catalogo = new List<IUnidadDeVenta> { taladro, amoladora, loteHerr, maquinaCNC };
             _usuarios = new List<Usuario>
             {
                 new Usuario { Id = 1, Nombre = "Carlos Méndez",   Email = "carlos@web.com"   },

@@ -6,78 +6,48 @@ using AlmonedaNacional.Servicios.Composite;
 
 namespace AlmonedaNacional.GUI
 {
-    // Demuestra el patrón COMPOSITE:
-    //   - TreeView muestra la jerarquía artículo/lote sin límite de profundidad (RF-02)
-    //   - ObtenerDescripcion() recorre toda la estructura recursivamente (RF-04)
-    //   - CalcularPrecioBase() suma recursivamente todos los hijos (RF-03)
+    // Patrón COMPOSITE — demuestra RF-01/02/03/04.
+    // El catálogo es compartido con frmSubasta vía frmPrincipal (misma referencia).
     public partial class frmCatalogo : Form
     {
-        private List<IUnidadDeVenta> _catalogo;
+        private readonly List<IUnidadDeVenta> _catalogo;
 
-        public frmCatalogo()
+        public frmCatalogo(List<IUnidadDeVenta> catalogo)
         {
             InitializeComponent();
-            _catalogo = new List<IUnidadDeVenta>();
+            _catalogo = catalogo;
         }
 
         private void frmCatalogo_Load(object sender, EventArgs e)
         {
-            CargarCatalogo();
+            RefrescarVistas();
         }
 
-        private void CargarCatalogo()
+        // ── Vistas ───────────────────────────────────────────────────────────
+
+        private void RefrescarVistas()
         {
-            // ── Artículos simples (hojas del Composite) ──────────────────────────
-            var taladro   = new ArticuloSimple { Id = 1, Nombre = "Taladro Industrial",  Descripcion = "Bosch 1500W",             PrecioBase = 15000m };
-            var amoladora = new ArticuloSimple { Id = 2, Nombre = "Amoladora",           Descripcion = "Makita 9\"",               PrecioBase =  8000m };
-            var repuestos = new ArticuloSimple { Id = 3, Nombre = "Set de Repuestos",    Descripcion = "200 unidades",             PrecioBase =  5000m };
-            var maquinaCNC= new ArticuloSimple { Id = 4, Nombre = "Máquina CNC",         Descripcion = "Control numérico 3 ejes", PrecioBase = 250000m };
-
-            // ── Lote nivel 1 (compuesto del Composite) ───────────────────────────
-            var loteHerr = new LoteArticulos { Id = 10, Nombre = "Lote Herramientas Manuales" };
-            loteHerr.Agregar(taladro);
-            loteHerr.Agregar(amoladora);
-
-            // ── Lote nivel 2 (lote dentro de lote — RF-02 sin límite de profundidad) ─
-            var seccion = new LoteArticulos { Id = 11, Nombre = "Sección Producción Completa" };
-            seccion.Agregar(loteHerr);    // lote dentro de lote
-            seccion.Agregar(repuestos);
-            seccion.Agregar(maquinaCNC);
-
-            _catalogo.Clear();
-            _catalogo.Add(taladro);
-            _catalogo.Add(amoladora);
-            _catalogo.Add(repuestos);
-            _catalogo.Add(maquinaCNC);
-            _catalogo.Add(loteHerr);
-            _catalogo.Add(seccion);
-
             LlenarTreeView();
             LlenarGrilla();
+            lblStatus.Text = $"{_catalogo.Count} unidades en el catálogo.";
         }
 
         private void LlenarTreeView()
         {
             treeViewCatalogo.Nodes.Clear();
-
-            var articulos = new TreeNode("Artículos Simples (Hojas)");
-            var lotes     = new TreeNode("Lotes (Compuestos)");
+            var nArticulos = new TreeNode("Artículos Simples  (Hojas)");
+            var nLotes     = new TreeNode("Lotes  (Compuestos)");
 
             foreach (var u in _catalogo)
             {
                 if (u is ArticuloSimple art)
-                {
-                    articulos.Nodes.Add(new TreeNode($"{art.Nombre}  —  ${art.PrecioBase:N2}") { Tag = art });
-                }
+                    nArticulos.Nodes.Add(new TreeNode($"{art.Nombre}  —  ${art.PrecioBase:N2}") { Tag = art });
                 else if (u is LoteArticulos lote)
-                {
-                    var nodo = CrearNodoLote(lote);
-                    lotes.Nodes.Add(nodo);
-                }
+                    nLotes.Nodes.Add(CrearNodoLote(lote));
             }
 
-            treeViewCatalogo.Nodes.Add(articulos);
-            treeViewCatalogo.Nodes.Add(lotes);
+            treeViewCatalogo.Nodes.Add(nArticulos);
+            treeViewCatalogo.Nodes.Add(nLotes);
             treeViewCatalogo.ExpandAll();
         }
 
@@ -97,37 +67,32 @@ namespace AlmonedaNacional.GUI
         private void LlenarGrilla()
         {
             dgvCatalogo.DataSource = null;
-
-            var filas = new System.Data.DataTable();
-            filas.Columns.Add("Tipo");
-            filas.Columns.Add("Nombre");
-            filas.Columns.Add("Precio Base", typeof(decimal));
+            var tabla = new System.Data.DataTable();
+            tabla.Columns.Add("Tipo");
+            tabla.Columns.Add("Nombre");
+            tabla.Columns.Add("Precio Base", typeof(decimal));
 
             foreach (var u in _catalogo)
-            {
-                filas.Rows.Add(
-                    u is LoteArticulos ? "LOTE" : "Artículo",
-                    u.Nombre,
-                    u.CalcularPrecioBase());
-            }
+                tabla.Rows.Add(u is LoteArticulos ? "LOTE" : "Artículo", u.Nombre, u.CalcularPrecioBase());
 
-            dgvCatalogo.DataSource = filas;
-            dgvCatalogo.Columns["Precio Base"].DefaultCellStyle.Format = "C2";
+            dgvCatalogo.DataSource = tabla;
+            if (dgvCatalogo.Columns.Contains("Precio Base"))
+                dgvCatalogo.Columns["Precio Base"].DefaultCellStyle.Format = "C2";
         }
+
+        // ── Eventos de selección ─────────────────────────────────────────────
 
         private void treeViewCatalogo_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (e.Node?.Tag is IUnidadDeVenta unidad)
-                MostrarDetalle(unidad);
+            if (e.Node?.Tag is IUnidadDeVenta u) MostrarDetalle(u);
         }
 
         private void dgvCatalogo_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvCatalogo.SelectedRows.Count == 0) return;
             string nombre = dgvCatalogo.SelectedRows[0].Cells["Nombre"].Value?.ToString();
-            var unidad = _catalogo.Find(u => u.Nombre == nombre);
-            if (unidad != null)
-                MostrarDetalle(unidad);
+            var u = _catalogo.Find(x => x.Nombre == nombre);
+            if (u != null) MostrarDetalle(u);
         }
 
         private void MostrarDetalle(IUnidadDeVenta unidad)
@@ -141,15 +106,178 @@ namespace AlmonedaNacional.GUI
         {
             try
             {
-                if (treeViewCatalogo.SelectedNode?.Tag is IUnidadDeVenta unidad)
-                    MostrarDetalle(unidad);
+                if (treeViewCatalogo.SelectedNode?.Tag is IUnidadDeVenta u)
+                    MostrarDetalle(u);
                 else
-                    MessageBox.Show("Seleccione una unidad en el árbol.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Seleccioná una unidad en el árbol.", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // ── RF-01: Agregar artículo ──────────────────────────────────────────
+
+        private void btnAgregarArticulo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var art = DialogoAgregarArticulo();
+                if (art == null) return;
+                _catalogo.Add(art);
+                RefrescarVistas();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private ArticuloSimple DialogoAgregarArticulo()
+        {
+            using (var dlg = new Form())
+            {
+                dlg.Text            = "Nuevo Artículo Simple — RF-01";
+                dlg.ClientSize      = new Size(360, 230);
+                dlg.StartPosition   = FormStartPosition.CenterParent;
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.MaximizeBox     = false;
+                dlg.MinimizeBox     = false;
+                dlg.BackColor       = Color.FromArgb(252, 228, 235);
+
+                var header = new Panel { Location = Point.Empty, Size = new Size(360, 38), BackColor = Color.FromArgb(210, 100, 135) };
+                var lblH   = new Label  { Text = "Artículo Simple (Composite — Hoja)", Dock = DockStyle.Fill, ForeColor = Color.White, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter };
+                header.Controls.Add(lblH);
+                dlg.Controls.Add(header);
+
+                TextBox txtNombre = Campo(dlg, "Nombre:",          50);
+                TextBox txtDesc   = Campo(dlg, "Descripción:",     90);
+                TextBox txtPrecio = Campo(dlg, "Precio Base ($):", 130);
+
+                var btnOk  = Boton(dlg, "Agregar",   DialogResult.OK,     80, 178, Color.FromArgb(210, 100, 135), Color.White);
+                var btnCan = Boton(dlg, "Cancelar",  DialogResult.Cancel, 190, 178, Color.FromArgb(200, 200, 210), Color.FromArgb(64,64,64));
+                dlg.AcceptButton = btnOk;
+                dlg.CancelButton = btnCan;
+
+                if (dlg.ShowDialog(this) != DialogResult.OK) return null;
+
+                if (string.IsNullOrWhiteSpace(txtNombre.Text))
+                    throw new InvalidOperationException("El nombre es obligatorio.");
+                if (!decimal.TryParse(txtPrecio.Text, out decimal precio) || precio <= 0)
+                    throw new InvalidOperationException("Ingresá un precio mayor a cero.");
+
+                return new ArticuloSimple
+                {
+                    Id          = _catalogo.Count + 1,
+                    Nombre      = txtNombre.Text.Trim(),
+                    Descripcion = txtDesc.Text.Trim(),
+                    PrecioBase  = precio
+                };
+            }
+        }
+
+        // ── RF-01/02: Agregar lote ───────────────────────────────────────────
+
+        private void btnAgregarLote_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_catalogo.Count == 0)
+                {
+                    MessageBox.Show("Agregá al menos un artículo antes de crear un lote.", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                var lote = DialogoAgregarLote();
+                if (lote == null) return;
+                _catalogo.Add(lote);
+                RefrescarVistas();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private LoteArticulos DialogoAgregarLote()
+        {
+            using (var dlg = new Form())
+            {
+                dlg.Text            = "Nuevo Lote — RF-01/02";
+                dlg.ClientSize      = new Size(380, 340);
+                dlg.StartPosition   = FormStartPosition.CenterParent;
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.MaximizeBox     = false;
+                dlg.MinimizeBox     = false;
+                dlg.BackColor       = Color.FromArgb(252, 228, 235);
+
+                var header = new Panel { Location = Point.Empty, Size = new Size(380, 38), BackColor = Color.FromArgb(210, 100, 135) };
+                var lblH   = new Label  { Text = "Lote (Composite — Compuesto, RF-02)", Dock = DockStyle.Fill, ForeColor = Color.White, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter };
+                header.Controls.Add(lblH);
+                dlg.Controls.Add(header);
+
+                TextBox txtNombre = Campo(dlg, "Nombre del lote:", 50);
+
+                var lblItems = new Label { Text = "Unidades a incluir:", Location = new Point(12, 92), AutoSize = true, Font = new Font("Segoe UI", 9F), ForeColor = Color.FromArgb(64, 64, 64) };
+                dlg.Controls.Add(lblItems);
+
+                var clb = new CheckedListBox
+                {
+                    Location    = new Point(12, 112),
+                    Size        = new Size(354, 160),
+                    BackColor   = Color.FromArgb(245, 245, 248),
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Font        = new Font("Segoe UI", 9F)
+                };
+                foreach (var u in _catalogo) clb.Items.Add(u.Nombre, false);
+                dlg.Controls.Add(clb);
+
+                var btnOk  = Boton(dlg, "Crear Lote",  DialogResult.OK,     60, 286, Color.FromArgb(210, 100, 135), Color.White);
+                var btnCan = Boton(dlg, "Cancelar",    DialogResult.Cancel, 210, 286, Color.FromArgb(200, 200, 210), Color.FromArgb(64,64,64));
+                dlg.AcceptButton = btnOk;
+                dlg.CancelButton = btnCan;
+
+                if (dlg.ShowDialog(this) != DialogResult.OK) return null;
+
+                if (string.IsNullOrWhiteSpace(txtNombre.Text))
+                    throw new InvalidOperationException("El nombre es obligatorio.");
+                if (clb.CheckedItems.Count == 0)
+                    throw new InvalidOperationException("Seleccioná al menos una unidad para el lote.");
+
+                var lote = new LoteArticulos { Id = _catalogo.Count + 100, Nombre = txtNombre.Text.Trim() };
+                foreach (string nombre in clb.CheckedItems)
+                {
+                    var u = _catalogo.Find(x => x.Nombre == nombre);
+                    if (u != null) lote.Agregar(u);
+                }
+                return lote;
+            }
+        }
+
+        // ── Helpers de UI para dialogs inline ────────────────────────────────
+
+        private static TextBox Campo(Form f, string etiqueta, int y)
+        {
+            f.Controls.Add(new Label { Text = etiqueta, Location = new Point(12, y + 3), AutoSize = true, Font = new Font("Segoe UI", 9F), ForeColor = Color.FromArgb(64, 64, 64) });
+            var txt = new TextBox { Location = new Point(160, y), Size = new Size(180, 24), BackColor = Color.FromArgb(245, 245, 248) };
+            f.Controls.Add(txt);
+            return txt;
+        }
+
+        private static Button Boton(Form f, string texto, DialogResult dr, int x, int y, Color bg, Color fg)
+        {
+            var btn = new Button
+            {
+                Text = texto, DialogResult = dr,
+                Location = new Point(x, y), Size = new Size(100, 30),
+                BackColor = bg, ForeColor = fg,
+                FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+            };
+            btn.FlatAppearance.BorderSize = 0;
+            f.Controls.Add(btn);
+            return btn;
         }
     }
 }

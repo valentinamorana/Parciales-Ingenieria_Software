@@ -20,11 +20,13 @@ namespace AlmonedaNacional.GUI
             this.lblSubtitulo      = new System.Windows.Forms.Label();
             this.panelStatus       = new System.Windows.Forms.Panel();
             this.lblStatus         = new System.Windows.Forms.Label();
-            this.panelIzquierdo    = new System.Windows.Forms.Panel();
-            this.pnlHeaderArbol    = new System.Windows.Forms.Panel();
-            this.lblTituloArbol    = new System.Windows.Forms.Label();
-            this.treeViewCatalogo  = new System.Windows.Forms.TreeView();
-            this.btnVerDescripcion = new System.Windows.Forms.Button();
+            this.panelIzquierdo     = new System.Windows.Forms.Panel();
+            this.pnlHeaderArbol     = new System.Windows.Forms.Panel();
+            this.lblTituloArbol     = new System.Windows.Forms.Label();
+            this.btnAgregarArticulo = new System.Windows.Forms.Button();
+            this.btnAgregarLote     = new System.Windows.Forms.Button();
+            this.treeViewCatalogo   = new System.Windows.Forms.TreeView();
+            this.btnVerDescripcion  = new System.Windows.Forms.Button();
             this.panelDerecho      = new System.Windows.Forms.Panel();
             this.pnlHeaderGrilla   = new System.Windows.Forms.Panel();
             this.lblTituloGrilla   = new System.Windows.Forms.Label();
@@ -99,6 +101,8 @@ namespace AlmonedaNacional.GUI
             this.panelIzquierdo.BackColor = System.Drawing.Color.FromArgb(245, 245, 250);
             this.panelIzquierdo.Controls.Add(this.btnVerDescripcion);
             this.panelIzquierdo.Controls.Add(this.treeViewCatalogo);
+            this.panelIzquierdo.Controls.Add(this.btnAgregarLote);
+            this.panelIzquierdo.Controls.Add(this.btnAgregarArticulo);
             this.panelIzquierdo.Controls.Add(this.pnlHeaderArbol);
             this.panelIzquierdo.Location = new System.Drawing.Point(5, 62);
             this.panelIzquierdo.Name = "panelIzquierdo";
@@ -129,9 +133,9 @@ namespace AlmonedaNacional.GUI
             this.treeViewCatalogo.BackColor = System.Drawing.Color.FromArgb(252, 248, 250);
             this.treeViewCatalogo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeViewCatalogo.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.treeViewCatalogo.Location = new System.Drawing.Point(0, 28);
+            this.treeViewCatalogo.Location = new System.Drawing.Point(0, 90);
             this.treeViewCatalogo.Name = "treeViewCatalogo";
-            this.treeViewCatalogo.Size = new System.Drawing.Size(265, 542);
+            this.treeViewCatalogo.Size = new System.Drawing.Size(265, 480);
             this.treeViewCatalogo.TabIndex = 0;
             this.treeViewCatalogo.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewCatalogo_AfterSelect);
             //
@@ -149,6 +153,36 @@ namespace AlmonedaNacional.GUI
             this.btnVerDescripcion.Text = "Ver Descripción Completa";
             this.btnVerDescripcion.UseVisualStyleBackColor = false;
             this.btnVerDescripcion.Click += new System.EventHandler(this.btnVerDescripcion_Click);
+            //
+            // btnAgregarArticulo
+            //
+            this.btnAgregarArticulo.BackColor = System.Drawing.Color.FromArgb(210, 100, 135);
+            this.btnAgregarArticulo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAgregarArticulo.FlatAppearance.BorderSize = 0;
+            this.btnAgregarArticulo.ForeColor = System.Drawing.Color.White;
+            this.btnAgregarArticulo.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.btnAgregarArticulo.Location = new System.Drawing.Point(0, 30);
+            this.btnAgregarArticulo.Name = "btnAgregarArticulo";
+            this.btnAgregarArticulo.Size = new System.Drawing.Size(265, 28);
+            this.btnAgregarArticulo.TabIndex = 2;
+            this.btnAgregarArticulo.Text = "+  Artículo Simple";
+            this.btnAgregarArticulo.UseVisualStyleBackColor = false;
+            this.btnAgregarArticulo.Click += new System.EventHandler(this.btnAgregarArticulo_Click);
+            //
+            // btnAgregarLote
+            //
+            this.btnAgregarLote.BackColor = System.Drawing.Color.FromArgb(180, 80, 110);
+            this.btnAgregarLote.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAgregarLote.FlatAppearance.BorderSize = 0;
+            this.btnAgregarLote.ForeColor = System.Drawing.Color.White;
+            this.btnAgregarLote.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.btnAgregarLote.Location = new System.Drawing.Point(0, 60);
+            this.btnAgregarLote.Name = "btnAgregarLote";
+            this.btnAgregarLote.Size = new System.Drawing.Size(265, 28);
+            this.btnAgregarLote.TabIndex = 3;
+            this.btnAgregarLote.Text = "+  Lote de Artículos";
+            this.btnAgregarLote.UseVisualStyleBackColor = false;
+            this.btnAgregarLote.Click += new System.EventHandler(this.btnAgregarLote_Click);
             //
             // panelDerecho
             //
@@ -301,6 +335,8 @@ namespace AlmonedaNacional.GUI
         private System.Windows.Forms.Label lblTituloArbol;
         private System.Windows.Forms.TreeView treeViewCatalogo;
         private System.Windows.Forms.Button btnVerDescripcion;
+        private System.Windows.Forms.Button btnAgregarArticulo;
+        private System.Windows.Forms.Button btnAgregarLote;
         private System.Windows.Forms.Panel panelDerecho;
         private System.Windows.Forms.Panel pnlHeaderGrilla;
         private System.Windows.Forms.Label lblTituloGrilla;
