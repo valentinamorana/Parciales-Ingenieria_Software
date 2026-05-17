@@ -26,7 +26,7 @@ namespace AlmonedaNacional.Servicios
         public void Actualizar(SubastaActiva subasta)
         {
             string mensaje = subasta.EstaActiva
-                ? $"Nueva puja en '{subasta.Unidad.Nombre}': ${subasta.PrecioActual:N2}"
+                ? $"Nueva puja de {subasta.UltimoPujador?.Nombre} en '{subasta.Unidad.Nombre}': ${subasta.PrecioActual:N2}"
                 : $"SUBASTA CERRADA — {subasta.Unidad.Nombre} | Precio final: ${subasta.PrecioActual:N2}";
 
             NotificacionRecibida?.Invoke(_usuario.Nombre, mensaje);

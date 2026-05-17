@@ -144,18 +144,20 @@ namespace AlmonedaNacional.GUI
             try
             {
                 ValidarSubastaActiva();
-                if (lstInteresados.SelectedIndex < 0)
-                    throw new InvalidOperationException("Seleccione un interesado para desuscribir.");
-
-                int idx = lstInteresados.SelectedIndex;
-                var interesado = _interesados[idx];
+                var usuario = cmbUsuarioSuscribir.SelectedItem as Usuario;
+                var interesado = _interesados.Find(i => i.Usuario.Id == usuario.Id);
+                if (interesado == null)
+                    throw new InvalidOperationException($"{usuario.Nombre} no está suscripto a esta subasta.");
 
                 // OBSERVER: Sujeto elimina al observador (RF-08)
                 _bll.Desuscribir(_subastaActiva, interesado);
-                _interesados.RemoveAt(idx);
-                lstInteresados.Items.RemoveAt(idx);
+                _interesados.Remove(interesado);
 
-                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] {interesado.Usuario.Nombre} desuscripto.\r\n");
+                for (int i = lstInteresados.Items.Count - 1; i >= 0; i--)
+                    if (lstInteresados.Items[i].ToString().Contains(usuario.Nombre))
+                    { lstInteresados.Items.RemoveAt(i); break; }
+
+                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] {usuario.Nombre} desuscripto.\r\n");
             }
             catch (Exception ex)
             {
