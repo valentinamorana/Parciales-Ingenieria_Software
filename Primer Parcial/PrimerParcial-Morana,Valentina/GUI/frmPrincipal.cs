@@ -21,6 +21,9 @@ namespace GUI
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
+            var m = SessionManager.Instancia.Martillero;
+            string nombre = !string.IsNullOrWhiteSpace(m.Nombre) ? m.Nombre : m.Username;
+            this.Text = $"La Almoneda Nacional — {nombre} — 1er Parcial IS 2026";
             CargarCatalogo();
             AbrirCatalogo();
         }

@@ -96,11 +96,22 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Marti
 BEGIN
     CREATE TABLE Martilleros (
         Id               INT           PRIMARY KEY IDENTITY(1,1),
+        Nombre           VARCHAR(100)  NOT NULL DEFAULT '',
         Username         VARCHAR(100)  NOT NULL UNIQUE,
         PasswordHash     VARCHAR(64)   NOT NULL,
         IntentosFallidos INT           NOT NULL DEFAULT 0,
         BloqueadoHasta   DATETIME      NULL
     );
+END
+GO
+
+-- Agregar columna Nombre si no existe (migracion)
+IF NOT EXISTS (
+    SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'Martilleros' AND COLUMN_NAME = 'Nombre'
+)
+BEGIN
+    ALTER TABLE Martilleros ADD Nombre VARCHAR(100) NOT NULL DEFAULT '';
 END
 GO
 
@@ -114,9 +125,41 @@ BEGIN
         Fecha            DATETIME      NOT NULL DEFAULT GETDATE(),
         Operacion        VARCHAR(50)   NOT NULL,
         Detalle          VARCHAR(500)  NOT NULL,
-        Criticidad       VARCHAR(10)   NOT NULL CHECK (Criticidad IN ('Baja', 'Media', 'Alta')),
+        Criticidad       VARCHAR(20)   NOT NULL CHECK (Criticidad IN ('Baja', 'Media', 'Alta', 'IntentosLogin', 'BloqueosCuenta')),
         NombreMartillero VARCHAR(100)  NOT NULL
     );
+END
+GO
+
+-- Ampliar columna Criticidad y actualizar CHECK (migracion)
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Bitacora')
+BEGIN
+    -- Eliminar el CHECK constraint existente sobre Criticidad (nombre autogenerado)
+    DECLARE @constraintName NVARCHAR(200);
+    SELECT @constraintName = cc.CONSTRAINT_NAME
+    FROM   INFORMATION_SCHEMA.CHECK_CONSTRAINTS cc
+    JOIN   INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu
+           ON cc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+    WHERE  ccu.TABLE_NAME = 'Bitacora' AND ccu.COLUMN_NAME = 'Criticidad';
+
+    IF @constraintName IS NOT NULL
+        EXEC ('ALTER TABLE Bitacora DROP CONSTRAINT ' + @constraintName);
+
+    -- Ampliar la columna a VARCHAR(20)
+    ALTER TABLE Bitacora ALTER COLUMN Criticidad VARCHAR(20) NOT NULL;
+
+    -- Agregar el nuevo CHECK con todos los valores validos
+    IF NOT EXISTS (
+        SELECT 1 FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS cc
+        JOIN   INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu
+               ON cc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+        WHERE  ccu.TABLE_NAME = 'Bitacora' AND ccu.COLUMN_NAME = 'Criticidad'
+    )
+    BEGIN
+        ALTER TABLE Bitacora
+            ADD CONSTRAINT CK_Bitacora_Criticidad
+            CHECK (Criticidad IN ('Baja', 'Media', 'Alta', 'IntentosLogin', 'BloqueosCuenta'));
+    END
 END
 GO
 
@@ -127,8 +170,10 @@ GO
 -- Martillero por defecto (password: Admin1234)
 -- Hash SHA-256 de "Admin1234" en minúsculas
 IF NOT EXISTS (SELECT 1 FROM Martilleros WHERE Username = 'martillero')
-    INSERT INTO Martilleros (Username, PasswordHash, IntentosFallidos)
-    VALUES ('martillero', '60fe74406e7f353ed979f350f2fbb6a2e8690a5fa7d1b0c32983d1d8b3f95f67', 0);
+    INSERT INTO Martilleros (Nombre, Username, PasswordHash, IntentosFallidos)
+    VALUES ('Morana, Valentina', 'martillero', '60fe74406e7f353ed979f350f2fbb6a2e8690a5fa7d1b0c32983d1d8b3f95f67', 0);
+ELSE
+    UPDATE Martilleros SET Nombre = 'Morana, Valentina' WHERE Username = 'martillero' AND Nombre = '';
 GO
 
 -- Usuarios que realizan pujas

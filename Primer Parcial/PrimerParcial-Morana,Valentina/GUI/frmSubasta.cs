@@ -48,12 +48,19 @@ namespace GUI
         // ─────────────────────────────────────────────
         private void InicializarDatos()
         {
-            _usuarios = new List<Usuario>
+            try
             {
-                new Usuario { Id = 1, Nombre = "Carlos Méndez",   Email = "carlos@web.com"   },
-                new Usuario { Id = 2, Nombre = "Laura Rodríguez", Email = "laura@movil.com"  },
-                new Usuario { Id = 3, Nombre = "Tomás García",    Email = "tomas@sala.com"   }
-            };
+                _usuarios = new List<Usuario>(new DAL.UsuarioDAL().ObtenerTodos());
+            }
+            catch
+            {
+                _usuarios = new List<Usuario>
+                {
+                    new Usuario { Id = 1, Nombre = "Carlos Méndez",   Email = "carlos@web.com"  },
+                    new Usuario { Id = 2, Nombre = "Laura Rodríguez", Email = "laura@movil.com" },
+                    new Usuario { Id = 3, Nombre = "Tomás García",    Email = "tomas@sala.com"  }
+                };
+            }
 
             cmbUnidad.DataSource    = null;
             cmbUnidad.DataSource    = _catalogo;

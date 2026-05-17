@@ -4,6 +4,7 @@ namespace BE
 {
     public class Martillero : Entidad
     {
+        public string    Nombre           { get; set; }
         public string    Username         { get; set; }
         public string    PasswordHash     { get; set; }
         public int       IntentosFallidos { get; set; }
