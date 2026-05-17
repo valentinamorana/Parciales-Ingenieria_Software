@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -13,10 +14,14 @@ namespace AlmonedaNacional.DAL
         private static volatile Acceso _instancia;
         private static readonly object _lockCreacion = new object();
 
-        private const string CadenaConexion =
-            @"Server=.\SQLEXPRESS;Database=AlmonedaNacional;Integrated Security=True;";
+        private readonly string _cadenaConexion;
 
-        private Acceso() { }
+        private Acceso()
+        {
+            _cadenaConexion = ConfigurationManager
+                .ConnectionStrings["AlmonedaNacionalDB"]
+                .ConnectionString;
+        }
 
         public static Acceso Instancia
         {
@@ -37,7 +42,7 @@ namespace AlmonedaNacional.DAL
         // SELECT — devuelve DataTable
         public DataTable Leer(string sql, SqlParameter[] parametros = null)
         {
-            using (var conn = new SqlConnection(CadenaConexion))
+            using (var conn = new SqlConnection(_cadenaConexion))
             using (var cmd  = new SqlCommand(sql, conn))
             {
                 if (parametros != null) cmd.Parameters.AddRange(parametros);
@@ -52,7 +57,7 @@ namespace AlmonedaNacional.DAL
         // INSERT / UPDATE / DELETE — devuelve filas afectadas
         public int Escribir(string sql, SqlParameter[] parametros = null)
         {
-            using (var conn = new SqlConnection(CadenaConexion))
+            using (var conn = new SqlConnection(_cadenaConexion))
             using (var cmd  = new SqlCommand(sql, conn))
             {
                 if (parametros != null) cmd.Parameters.AddRange(parametros);
@@ -64,7 +69,7 @@ namespace AlmonedaNacional.DAL
         // INSERT con SELECT SCOPE_IDENTITY() — devuelve el nuevo Id
         public int EjecutarEscalar(string sql, SqlParameter[] parametros = null)
         {
-            using (var conn = new SqlConnection(CadenaConexion))
+            using (var conn = new SqlConnection(_cadenaConexion))
             using (var cmd  = new SqlCommand(sql, conn))
             {
                 if (parametros != null) cmd.Parameters.AddRange(parametros);
@@ -76,7 +81,7 @@ namespace AlmonedaNacional.DAL
         // Bloque transaccional atómico — útil para cerrar subasta + insertar pujas
         public void EjecutarTransaccion(Action<SqlConnection, SqlTransaction> accion)
         {
-            using (var conn = new SqlConnection(CadenaConexion))
+            using (var conn = new SqlConnection(_cadenaConexion))
             {
                 conn.Open();
                 using (var tx = conn.BeginTransaction())

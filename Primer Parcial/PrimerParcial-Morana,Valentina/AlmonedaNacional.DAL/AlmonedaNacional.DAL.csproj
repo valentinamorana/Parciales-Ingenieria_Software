@@ -6,6 +6,9 @@
     <AssemblyName>AlmonedaNacional.DAL</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\AlmonedaNacional.Interfaces\AlmonedaNacional.Interfaces.csproj" />
     <ProjectReference Include="..\AlmonedaNacional.BE\AlmonedaNacional.BE.csproj" />
   </ItemGroup>
