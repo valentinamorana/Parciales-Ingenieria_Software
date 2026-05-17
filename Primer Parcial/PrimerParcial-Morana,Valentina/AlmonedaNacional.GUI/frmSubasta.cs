@@ -199,9 +199,19 @@ namespace AlmonedaNacional.GUI
             try
             {
                 ValidarSubastaActiva();
+
+                if (_subastaActiva.UltimoPujador == null)
+                {
+                    MessageBox.Show(
+                        "Esta subasta no tiene ofertas y no puede cerrarse con adjudicación.\n" +
+                        "Esperá una oferta o dejá que el tiempo expire.",
+                        "Sin ofertas", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 var confirm = MessageBox.Show(
                     $"¿Cerrar la subasta de '{_subastaActiva.Unidad.Nombre}'?\n" +
-                    $"Ganador: {_subastaActiva.UltimoPujador?.Nombre ?? "(sin ofertas)"}\n" +
+                    $"Ganador: {_subastaActiva.UltimoPujador.Nombre}\n" +
                     $"Precio final: ${_subastaActiva.PrecioActual:N2}",
                     "Confirmar cierre", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -226,6 +236,7 @@ namespace AlmonedaNacional.GUI
             }
             catch (Exception ex)
             {
+                _timer.Start();
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -258,12 +269,24 @@ namespace AlmonedaNacional.GUI
         private void AutoCerrarSubasta()
         {
             if (_subastaActiva == null || !_subastaActiva.EstaActiva) return;
+
+            lblTimer.Text      = "⏱  00:00";
+            lblTimer.ForeColor = Color.FromArgb(200, 60, 60);
+
+            if (_subastaActiva.UltimoPujador == null)
+            {
+                // Sin ofertas: no se puede adjudicar, se cancela sin persistir
+                _subastaActiva = null;
+                rtbNotificaciones.AppendText(
+                    $"\r\n[{DateTime.Now:HH:mm:ss}] ══ TIEMPO AGOTADO — sin ofertas, subasta cancelada sin adjudicación ══\r\n");
+                ActualizarEstadoControles();
+                return;
+            }
+
             try
             {
                 var resultado = _bll.CerrarSubasta(_subastaActiva);
 
-                lblTimer.Text             = "⏱  00:00";
-                lblTimer.ForeColor        = Color.FromArgb(200, 60, 60);
                 lblPrecioActual.Text      = $"CERRADA — ${resultado.PrecioFinal:N2}";
                 lblPrecioActual.ForeColor = Color.Red;
 
