@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <RootNamespace>AlmonedaNacional.BLL</RootNamespace>
+    <AssemblyName>AlmonedaNacional.BLL</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlmonedaNacional.Interfaces\AlmonedaNacional.Interfaces.csproj" />
+    <ProjectReference Include="..\AlmonedaNacional.BE\AlmonedaNacional.BE.csproj" />
+    <ProjectReference Include="..\AlmonedaNacional.Servicios\AlmonedaNacional.Servicios.csproj" />
+    <ProjectReference Include="..\AlmonedaNacional.DAL\AlmonedaNacional.DAL.csproj" />
+  </ItemGroup>
+</Project>

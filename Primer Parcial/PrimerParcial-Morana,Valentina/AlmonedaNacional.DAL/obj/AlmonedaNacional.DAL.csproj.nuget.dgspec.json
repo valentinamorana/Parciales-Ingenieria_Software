@@ -1,0 +1,169 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.DAL\\AlmonedaNacional.DAL.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj",
+        "projectName": "AlmonedaNacional.BE",
+        "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj",
+        "packagesPath": "C:\\Users\\valen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\valen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {
+              "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj": {
+                "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.200"
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.DAL\\AlmonedaNacional.DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.DAL\\AlmonedaNacional.DAL.csproj",
+        "projectName": "AlmonedaNacional.DAL",
+        "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.DAL\\AlmonedaNacional.DAL.csproj",
+        "packagesPath": "C:\\Users\\valen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.DAL\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\valen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {
+              "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj": {
+                "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj"
+              },
+              "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj": {
+                "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.200"
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj",
+        "projectName": "AlmonedaNacional.Interfaces",
+        "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj",
+        "packagesPath": "C:\\Users\\valen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\valen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.200"
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

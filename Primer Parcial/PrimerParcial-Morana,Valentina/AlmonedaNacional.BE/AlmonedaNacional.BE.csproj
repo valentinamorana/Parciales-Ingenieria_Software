@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <RootNamespace>AlmonedaNacional.BE</RootNamespace>
+    <AssemblyName>AlmonedaNacional.BE</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlmonedaNacional.Interfaces\AlmonedaNacional.Interfaces.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,254 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.7.2": {
+      "AlmonedaNacional.BE/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "AlmonedaNacional.Interfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.BE.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.BE.dll": {}
+        }
+      },
+      "AlmonedaNacional.BLL/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "AlmonedaNacional.BE": "1.0.0",
+          "AlmonedaNacional.DAL": "1.0.0",
+          "AlmonedaNacional.Interfaces": "1.0.0",
+          "AlmonedaNacional.Servicios": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.BLL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.BLL.dll": {}
+        }
+      },
+      "AlmonedaNacional.DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "AlmonedaNacional.BE": "1.0.0",
+          "AlmonedaNacional.Interfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.DAL.dll": {}
+        }
+      },
+      "AlmonedaNacional.Interfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.Interfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.Interfaces.dll": {}
+        }
+      },
+      "AlmonedaNacional.Servicios/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "AlmonedaNacional.BE": "1.0.0",
+          "AlmonedaNacional.Interfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.Servicios.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.Servicios.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win-x86": {
+      "AlmonedaNacional.BE/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "AlmonedaNacional.Interfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.BE.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.BE.dll": {}
+        }
+      },
+      "AlmonedaNacional.BLL/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "AlmonedaNacional.BE": "1.0.0",
+          "AlmonedaNacional.DAL": "1.0.0",
+          "AlmonedaNacional.Interfaces": "1.0.0",
+          "AlmonedaNacional.Servicios": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.BLL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.BLL.dll": {}
+        }
+      },
+      "AlmonedaNacional.DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "AlmonedaNacional.BE": "1.0.0",
+          "AlmonedaNacional.Interfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.DAL.dll": {}
+        }
+      },
+      "AlmonedaNacional.Interfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.Interfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.Interfaces.dll": {}
+        }
+      },
+      "AlmonedaNacional.Servicios/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "AlmonedaNacional.BE": "1.0.0",
+          "AlmonedaNacional.Interfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlmonedaNacional.Servicios.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlmonedaNacional.Servicios.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AlmonedaNacional.BE/1.0.0": {
+      "type": "project",
+      "path": "../AlmonedaNacional.BE/AlmonedaNacional.BE.csproj",
+      "msbuildProject": "../AlmonedaNacional.BE/AlmonedaNacional.BE.csproj"
+    },
+    "AlmonedaNacional.BLL/1.0.0": {
+      "type": "project",
+      "path": "../AlmonedaNacional.BLL/AlmonedaNacional.BLL.csproj",
+      "msbuildProject": "../AlmonedaNacional.BLL/AlmonedaNacional.BLL.csproj"
+    },
+    "AlmonedaNacional.DAL/1.0.0": {
+      "type": "project",
+      "path": "../AlmonedaNacional.DAL/AlmonedaNacional.DAL.csproj",
+      "msbuildProject": "../AlmonedaNacional.DAL/AlmonedaNacional.DAL.csproj"
+    },
+    "AlmonedaNacional.Interfaces/1.0.0": {
+      "type": "project",
+      "path": "../AlmonedaNacional.Interfaces/AlmonedaNacional.Interfaces.csproj",
+      "msbuildProject": "../AlmonedaNacional.Interfaces/AlmonedaNacional.Interfaces.csproj"
+    },
+    "AlmonedaNacional.Servicios/1.0.0": {
+      "type": "project",
+      "path": "../AlmonedaNacional.Servicios/AlmonedaNacional.Servicios.csproj",
+      "msbuildProject": "../AlmonedaNacional.Servicios/AlmonedaNacional.Servicios.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.7.2": [
+      "AlmonedaNacional.BE >= 1.0.0",
+      "AlmonedaNacional.BLL >= 1.0.0",
+      "AlmonedaNacional.DAL >= 1.0.0",
+      "AlmonedaNacional.Interfaces >= 1.0.0",
+      "AlmonedaNacional.Servicios >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\valen\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj",
+      "projectName": "AlmonedaNacional.GUI",
+      "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj",
+      "packagesPath": "C:\\Users\\valen\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\valen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net472"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "projectReferences": {
+            "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj": {
+              "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj"
+            },
+            "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BLL\\AlmonedaNacional.BLL.csproj": {
+              "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BLL\\AlmonedaNacional.BLL.csproj"
+            },
+            "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.DAL\\AlmonedaNacional.DAL.csproj": {
+              "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.DAL\\AlmonedaNacional.DAL.csproj"
+            },
+            "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj": {
+              "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj"
+            },
+            "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Servicios\\AlmonedaNacional.Servicios.csproj": {
+              "projectPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Servicios\\AlmonedaNacional.Servicios.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "10.0.200"
+    },
+    "frameworks": {
+      "net472": {
+        "targetAlias": "net472",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201\\RuntimeIdentifierGraph.json"
+      }
+    },
+    "runtimes": {
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}
