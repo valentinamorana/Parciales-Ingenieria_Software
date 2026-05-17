@@ -23,12 +23,13 @@ namespace AlmonedaNacional.GUI
             this.dgvHistorial     = new System.Windows.Forms.DataGridView();
             this.panelDetalle     = new System.Windows.Forms.Panel();
             this.lblDetalleTitulo = new System.Windows.Forms.Label();
-            this.rtbDetalle       = new System.Windows.Forms.RichTextBox();
+            this.dgvPujas         = new System.Windows.Forms.DataGridView();
             this.panelStatus      = new System.Windows.Forms.Panel();
             this.panelTop.SuspendLayout();
             this.panelDetalle.SuspendLayout();
             this.panelStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPujas)).BeginInit();
             this.SuspendLayout();
             //
             // panelTop — rosa brand (igual header de WardrobeFlow)
@@ -117,9 +118,9 @@ namespace AlmonedaNacional.GUI
             //
             // panelDetalle
             //
-            this.panelDetalle.BackColor = System.Drawing.Color.FromArgb(255, 252, 235);
+            this.panelDetalle.BackColor = System.Drawing.Color.White;
             this.panelDetalle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelDetalle.Controls.Add(this.rtbDetalle);
+            this.panelDetalle.Controls.Add(this.dgvPujas);
             this.panelDetalle.Controls.Add(this.lblDetalleTitulo);
             this.panelDetalle.Location = new System.Drawing.Point(10, 464);
             this.panelDetalle.Name = "panelDetalle";
@@ -132,20 +133,27 @@ namespace AlmonedaNacional.GUI
             this.lblDetalleTitulo.ForeColor = System.Drawing.Color.FromArgb(64, 64, 64);
             this.lblDetalleTitulo.Location = new System.Drawing.Point(6, 6);
             this.lblDetalleTitulo.Name = "lblDetalleTitulo";
-            this.lblDetalleTitulo.Text = "Detalle del registro seleccionado:";
+            this.lblDetalleTitulo.Text = "Pujas de la subasta seleccionada:";
             //
-            // rtbDetalle
+            // dgvPujas
             //
-            this.rtbDetalle.BackColor = System.Drawing.Color.FromArgb(255, 252, 235);
-            this.rtbDetalle.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbDetalle.Font = new System.Drawing.Font("Consolas", 9F);
-            this.rtbDetalle.ForeColor = System.Drawing.Color.FromArgb(64, 64, 64);
-            this.rtbDetalle.Location = new System.Drawing.Point(6, 26);
-            this.rtbDetalle.Name = "rtbDetalle";
-            this.rtbDetalle.ReadOnly = true;
-            this.rtbDetalle.Size = new System.Drawing.Size(1146, 152);
-            this.rtbDetalle.TabIndex = 0;
-            this.rtbDetalle.Text = "";
+            this.dgvPujas.AllowUserToAddRows = false;
+            this.dgvPujas.AllowUserToDeleteRows = false;
+            this.dgvPujas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvPujas.BackgroundColor = System.Drawing.Color.White;
+            this.dgvPujas.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvPujas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPujas.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(200, 230, 200);
+            this.dgvPujas.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
+            this.dgvPujas.Location = new System.Drawing.Point(6, 26);
+            this.dgvPujas.MultiSelect = false;
+            this.dgvPujas.Name = "dgvPujas";
+            this.dgvPujas.ReadOnly = true;
+            this.dgvPujas.RowHeadersVisible = false;
+            this.dgvPujas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvPujas.Size = new System.Drawing.Size(1146, 152);
+            this.dgvPujas.TabIndex = 0;
+            this.dgvPujas.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPujas_CellFormatting);
             //
             // frmHistorial
             //
@@ -167,6 +175,7 @@ namespace AlmonedaNacional.GUI
             this.panelStatus.ResumeLayout(false);
             this.panelStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPujas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -181,7 +190,7 @@ namespace AlmonedaNacional.GUI
         private System.Windows.Forms.DataGridView dgvHistorial;
         private System.Windows.Forms.Panel panelDetalle;
         private System.Windows.Forms.Label lblDetalleTitulo;
-        private System.Windows.Forms.RichTextBox rtbDetalle;
+        private System.Windows.Forms.DataGridView dgvPujas;
         private System.Windows.Forms.Panel panelStatus;
     }
 }

@@ -65,13 +65,13 @@ namespace AlmonedaNacional.GUI
                     dgvHistorial.Columns["Precio Final"].DefaultCellStyle.Format = "C2";
 
                 lblTotal.Text = $"Total de subastas registradas: {lista.Count}";
+                dgvPujas.DataSource = null;
             }
             catch (Exception ex)
             {
-                // Si no hay BD configurada mostramos mensaje informativo en lugar de crash
                 lblTotal.Text = "Sin conexión a BD — mostrando datos de ejemplo";
                 CargarDatosDemo();
-                _ = ex; // supress warning; real apps would log
+                _ = ex;
             }
         }
 
@@ -96,25 +96,94 @@ namespace AlmonedaNacional.GUI
                 dgvHistorial.Columns["Precio Base"].DefaultCellStyle.Format  = "C2";
             if (dgvHistorial.Columns.Contains("Precio Final"))
                 dgvHistorial.Columns["Precio Final"].DefaultCellStyle.Format = "C2";
+
+            dgvPujas.DataSource = null;
+            CargarPujasDemo(1);
         }
+
+        // ── Selección de subasta → cargar sus pujas ──────────────────────────
 
         private void dgvHistorial_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvHistorial.SelectedRows.Count == 0)
             {
-                rtbDetalle.Clear();
+                dgvPujas.DataSource = null;
                 return;
             }
 
-            var fila = dgvHistorial.SelectedRows[0];
-            rtbDetalle.Clear();
-            rtbDetalle.AppendText($"ID Subasta   : {fila.Cells["ID"].Value}\r\n");
-            rtbDetalle.AppendText($"Unidad       : {fila.Cells["Unidad de Venta"].Value}\r\n");
-            rtbDetalle.AppendText($"Precio Base  : {fila.Cells["Precio Base"].Value:C2}\r\n");
-            rtbDetalle.AppendText($"Precio Final : {fila.Cells["Precio Final"].Value:C2}\r\n");
-            rtbDetalle.AppendText($"Ganador      : {fila.Cells["Ganador"].Value}\r\n");
-            rtbDetalle.AppendText($"Email        : {fila.Cells["Email Ganador"].Value}\r\n");
-            rtbDetalle.AppendText($"Fecha/Hora   : {fila.Cells["Fecha / Hora"].Value}\r\n");
+            var idCell = dgvHistorial.SelectedRows[0].Cells["ID"].Value;
+            if (idCell == null || idCell == DBNull.Value) return;
+
+            int idSubasta = Convert.ToInt32(idCell);
+
+            try
+            {
+                IList<Puja> pujas = _bll.ObtenerPujas(idSubasta);
+                CargarTablasPujas(pujas);
+            }
+            catch
+            {
+                CargarPujasDemo(idSubasta);
+            }
+        }
+
+        private void CargarTablasPujas(IList<Puja> pujas)
+        {
+            var tabla = BuildTablaPujas();
+            foreach (var p in pujas)
+                tabla.Rows.Add(
+                    p.NombreUsuario,
+                    p.Monto,
+                    p.FechaHora.ToString("dd/MM/yyyy HH:mm:ss"),
+                    p.Estado.ToString(),
+                    p.MotivoRechazo ?? "—");
+
+            dgvPujas.DataSource = tabla;
+            if (dgvPujas.Columns.Contains("Monto"))
+                dgvPujas.Columns["Monto"].DefaultCellStyle.Format = "C2";
+        }
+
+        private void CargarPujasDemo(int idSubasta)
+        {
+            var tabla = BuildTablaPujas();
+            tabla.Rows.Add("Carlos Méndez",   16000m, "15/05/2026 10:12:00", "Aceptada",  "—");
+            tabla.Rows.Add("Laura Rodríguez", 15500m, "15/05/2026 10:13:00", "Rechazada", "Monto inferior al precio actual");
+            tabla.Rows.Add("Tomás García",    18000m, "15/05/2026 10:20:00", "Aceptada",  "—");
+            tabla.Rows.Add("Carlos Méndez",   21500m, "15/05/2026 10:28:00", "Aceptada",  "—");
+
+            dgvPujas.DataSource = tabla;
+            if (dgvPujas.Columns.Contains("Monto"))
+                dgvPujas.Columns["Monto"].DefaultCellStyle.Format = "C2";
+        }
+
+        private static System.Data.DataTable BuildTablaPujas()
+        {
+            var t = new System.Data.DataTable();
+            t.Columns.Add("Usuario");
+            t.Columns.Add("Monto",      typeof(decimal));
+            t.Columns.Add("Fecha/Hora");
+            t.Columns.Add("Estado");
+            t.Columns.Add("Motivo");
+            return t;
+        }
+
+        // ── Color de fila según estado ────────────────────────────────────────
+
+        private void dgvPujas_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || dgvPujas.Rows[e.RowIndex].IsNewRow) return;
+
+            var estadoCell = dgvPujas.Rows[e.RowIndex].Cells["Estado"].Value?.ToString();
+            if (estadoCell == "Aceptada")
+            {
+                dgvPujas.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(210, 240, 210);
+                dgvPujas.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.FromArgb(30, 100, 30);
+            }
+            else if (estadoCell == "Rechazada")
+            {
+                dgvPujas.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(250, 210, 210);
+                dgvPujas.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.FromArgb(140, 20, 20);
+            }
         }
     }
 }
