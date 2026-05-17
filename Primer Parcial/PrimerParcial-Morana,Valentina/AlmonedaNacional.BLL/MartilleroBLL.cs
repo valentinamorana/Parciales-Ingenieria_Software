@@ -1,7 +1,7 @@
 using System;
 using AlmonedaNacional.BE;
 using AlmonedaNacional.DAL;
-using AlmonedaNacional.Servicios.Seguridad;
+using AlmonedaNacional.Seguridad;
 
 namespace AlmonedaNacional.BLL
 {

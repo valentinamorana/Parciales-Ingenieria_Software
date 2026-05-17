@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AlmonedaNacional.Servicios.Seguridad
+namespace AlmonedaNacional.Seguridad
 {
     public static class Encriptador
     {

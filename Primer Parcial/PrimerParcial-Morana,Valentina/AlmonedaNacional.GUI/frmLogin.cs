@@ -2,7 +2,7 @@ using System;
 using System.Windows.Forms;
 using AlmonedaNacional.BE;
 using AlmonedaNacional.BLL;
-using AlmonedaNacional.Servicios.Seguridad;
+using AlmonedaNacional.Seguridad;
 
 namespace AlmonedaNacional.GUI
 {

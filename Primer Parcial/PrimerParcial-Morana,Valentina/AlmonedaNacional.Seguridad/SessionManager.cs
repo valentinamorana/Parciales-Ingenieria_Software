@@ -1,9 +1,9 @@
 using System;
 using AlmonedaNacional.BE;
 
-namespace AlmonedaNacional.Servicios.Seguridad
+namespace AlmonedaNacional.Seguridad
 {
-    // SINGLETON — sesión única del martillero activo (igual que WardrobeFlow SessionManager)
+    // SINGLETON — sesión única del martillero activo durante toda la ejecución.
     public sealed class SessionManager
     {
         private static SessionManager    _instancia;
