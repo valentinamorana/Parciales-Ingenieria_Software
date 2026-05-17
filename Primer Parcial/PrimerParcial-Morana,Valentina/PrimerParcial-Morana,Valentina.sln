@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmonedaNacional.Interfaces", "AlmonedaNacional.Interfaces\AlmonedaNacional.Interfaces.csproj", "{11111111-1111-1111-1111-111111111111}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{11111111-1111-1111-1111-111111111111}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmonedaNacional.BE", "AlmonedaNacional.BE\AlmonedaNacional.BE.csproj", "{22222222-2222-2222-2222-222222222222}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE", "BE\BE.csproj", "{22222222-2222-2222-2222-222222222222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmonedaNacional.Servicios", "AlmonedaNacional.Servicios\AlmonedaNacional.Servicios.csproj", "{33333333-3333-3333-3333-333333333333}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servicios", "Servicios\Servicios.csproj", "{33333333-3333-3333-3333-333333333333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmonedaNacional.Seguridad", "AlmonedaNacional.Seguridad\AlmonedaNacional.Seguridad.csproj", "{77777777-7777-7777-7777-777777777777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seguridad", "Seguridad\Seguridad.csproj", "{77777777-7777-7777-7777-777777777777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmonedaNacional.DAL", "AlmonedaNacional.DAL\AlmonedaNacional.DAL.csproj", "{44444444-4444-4444-4444-444444444444}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{44444444-4444-4444-4444-444444444444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmonedaNacional.BLL", "AlmonedaNacional.BLL\AlmonedaNacional.BLL.csproj", "{55555555-5555-5555-5555-555555555555}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{55555555-5555-5555-5555-555555555555}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmonedaNacional.GUI", "AlmonedaNacional.GUI\AlmonedaNacional.GUI.csproj", "{66666666-6666-6666-6666-666666666666}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{66666666-6666-6666-6666-666666666666}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

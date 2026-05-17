@@ -1,7 +1,44 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Primer Parcial\\PrimerParcial-Morana,Valentina\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.gui\\frmbienvenida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj|solutionrelative:almonedanacional.gui\\frmbienvenida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.gui\\frmsubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj|solutionrelative:almonedanacional.gui\\frmsubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj|solutionrelative:almonedanacional.gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.gui\\frmhistorial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|AlmonedaNacional.GUI\\AlmonedaNacional.GUI.csproj|solutionrelative:almonedanacional.gui\\frmhistorial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22222222-2222-2222-2222-222222222222}|AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.be\\resultadosubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22222222-2222-2222-2222-222222222222}|AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj|solutionrelative:almonedanacional.be\\resultadosubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22222222-2222-2222-2222-222222222222}|AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.be\\estadopuja.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22222222-2222-2222-2222-222222222222}|AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj|solutionrelative:almonedanacional.be\\estadopuja.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{22222222-2222-2222-2222-222222222222}|AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.be\\entidad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22222222-2222-2222-2222-222222222222}|AlmonedaNacional.BE\\AlmonedaNacional.BE.csproj|solutionrelative:almonedanacional.be\\entidad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{11111111-1111-1111-1111-111111111111}|AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.interfaces\\ientidad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{11111111-1111-1111-1111-111111111111}|AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj|solutionrelative:almonedanacional.interfaces\\ientidad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{11111111-1111-1111-1111-111111111111}|AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\almonedanacional.interfaces\\icrud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{11111111-1111-1111-1111-111111111111}|AlmonedaNacional.Interfaces\\AlmonedaNacional.Interfaces.csproj|solutionrelative:almonedanacional.interfaces\\icrud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,6 +71,119 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "frmBienvenida.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmBienvenida.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.GUI\\frmBienvenida.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmBienvenida.cs [Design]",
+              "RelativeToolTip": "AlmonedaNacional.GUI\\frmBienvenida.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:13:05.971Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "frmSubasta.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmSubasta.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.GUI\\frmSubasta.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmSubasta.cs [Design]",
+              "RelativeToolTip": "AlmonedaNacional.GUI\\frmSubasta.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:13:04.62Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "frmPrincipal.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmPrincipal.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.GUI\\frmPrincipal.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmPrincipal.cs [Design]",
+              "RelativeToolTip": "AlmonedaNacional.GUI\\frmPrincipal.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:13:03.333Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "frmHistorial.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmHistorial.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.GUI\\frmHistorial.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmHistorial.cs [Design]",
+              "RelativeToolTip": "AlmonedaNacional.GUI\\frmHistorial.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:13:01.825Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ResultadoSubasta.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\ResultadoSubasta.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.BE\\ResultadoSubasta.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\ResultadoSubasta.cs",
+              "RelativeToolTip": "AlmonedaNacional.BE\\ResultadoSubasta.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:12:59.043Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "EstadoPuja.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\EstadoPuja.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.BE\\EstadoPuja.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\EstadoPuja.cs",
+              "RelativeToolTip": "AlmonedaNacional.BE\\EstadoPuja.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:12:56.276Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Entidad.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\Entidad.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.BE\\Entidad.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\Entidad.cs",
+              "RelativeToolTip": "AlmonedaNacional.BE\\Entidad.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:12:55.062Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IEntidad.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\IEntidad.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.Interfaces\\IEntidad.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\IEntidad.cs",
+              "RelativeToolTip": "AlmonedaNacional.Interfaces\\IEntidad.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:12:50.243Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ICrud.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\ICrud.cs",
+              "RelativeDocumentMoniker": "AlmonedaNacional.Interfaces\\ICrud.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\ICrud.cs",
+              "RelativeToolTip": "AlmonedaNacional.Interfaces\\ICrud.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T01:12:46.744Z",
+              "EditorCaption": ""
             }
           ]
         }
