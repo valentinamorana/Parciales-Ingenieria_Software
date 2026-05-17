@@ -414,6 +414,7 @@ namespace GUI
             this.txtMonto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtMonto.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtMonto.Location = new System.Drawing.Point(10, 116);
+            this.txtMonto.MaxLength = 15;
             this.txtMonto.Name = "txtMonto";
             this.txtMonto.Size = new System.Drawing.Size(554, 26);
             //

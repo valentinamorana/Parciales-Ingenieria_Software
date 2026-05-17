@@ -122,6 +122,7 @@ namespace GUI
             this.txtUsuario.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtUsuario.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtUsuario.Location = new System.Drawing.Point(20, 124);
+            this.txtUsuario.MaxLength = 100;
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(360, 28);
             //
@@ -139,6 +140,7 @@ namespace GUI
             this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtPassword.Location = new System.Drawing.Point(20, 182);
+            this.txtPassword.MaxLength = 100;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
             this.txtPassword.Size = new System.Drawing.Size(316, 28);
