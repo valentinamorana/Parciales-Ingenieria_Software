@@ -129,7 +129,11 @@ namespace GUI
             this.grpIniciar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.grpIniciar.Location = new System.Drawing.Point(10, 66);
             this.grpIniciar.Name = "grpIniciar";
-            this.grpIniciar.Size = new System.Drawing.Size(1150, 60);
+            this.grpIniciar.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Top  |
+                System.Windows.Forms.AnchorStyles.Left |
+                System.Windows.Forms.AnchorStyles.Right));
+            this.grpIniciar.Size = new System.Drawing.Size(1350, 60);
             this.grpIniciar.TabIndex = 4;
             this.grpIniciar.TabStop = false;
             this.grpIniciar.Text = "1. Seleccionar Unidad de Venta";
@@ -186,7 +190,11 @@ namespace GUI
             this.grpEstado.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.grpEstado.Location = new System.Drawing.Point(10, 136);
             this.grpEstado.Name = "grpEstado";
-            this.grpEstado.Size = new System.Drawing.Size(1150, 78);
+            this.grpEstado.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Top  |
+                System.Windows.Forms.AnchorStyles.Left |
+                System.Windows.Forms.AnchorStyles.Right));
+            this.grpEstado.Size = new System.Drawing.Size(1350, 78);
             this.grpEstado.TabIndex = 3;
             this.grpEstado.TabStop = false;
             this.grpEstado.Text = "Estado de la Subasta Activa";
@@ -501,7 +509,11 @@ namespace GUI
             this.grpNotificaciones.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.grpNotificaciones.Location = new System.Drawing.Point(10, 442);
             this.grpNotificaciones.Name = "grpNotificaciones";
-            this.grpNotificaciones.Size = new System.Drawing.Size(1150, 220);
+            this.grpNotificaciones.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Bottom |
+                System.Windows.Forms.AnchorStyles.Left   |
+                System.Windows.Forms.AnchorStyles.Right));
+            this.grpNotificaciones.Size = new System.Drawing.Size(1350, 220);
             this.grpNotificaciones.TabIndex = 0;
             this.grpNotificaciones.TabStop = false;
             this.grpNotificaciones.Text = "Notificaciones";
@@ -528,7 +540,11 @@ namespace GUI
             this.btnCerrarSubasta.ForeColor = System.Drawing.Color.White;
             this.btnCerrarSubasta.Location = new System.Drawing.Point(10, 670);
             this.btnCerrarSubasta.Name = "btnCerrarSubasta";
-            this.btnCerrarSubasta.Size = new System.Drawing.Size(1150, 38);
+            this.btnCerrarSubasta.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Bottom |
+                System.Windows.Forms.AnchorStyles.Left   |
+                System.Windows.Forms.AnchorStyles.Right));
+            this.btnCerrarSubasta.Size = new System.Drawing.Size(1350, 38);
             this.btnCerrarSubasta.TabIndex = 5;
             this.btnCerrarSubasta.Text = "Cerrar Subasta";
             this.btnCerrarSubasta.UseVisualStyleBackColor = false;
@@ -544,7 +560,7 @@ namespace GUI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(228)))), ((int)(((byte)(235)))));
-            this.ClientSize = new System.Drawing.Size(1180, 720);
+            this.ClientSize = new System.Drawing.Size(1380, 720);
             this.Controls.Add(this.grpNotificaciones);
             this.Controls.Add(this.grpOferta);
             this.Controls.Add(this.grpInteresados);

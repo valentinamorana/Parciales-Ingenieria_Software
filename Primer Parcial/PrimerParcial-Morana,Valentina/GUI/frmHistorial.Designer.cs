@@ -130,7 +130,11 @@ namespace GUI
             this.dgvHistorial.ReadOnly = true;
             this.dgvHistorial.RowHeadersVisible = false;
             this.dgvHistorial.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvHistorial.Size = new System.Drawing.Size(1160, 350);
+            this.dgvHistorial.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Top  |
+                System.Windows.Forms.AnchorStyles.Left |
+                System.Windows.Forms.AnchorStyles.Right));
+            this.dgvHistorial.Size = new System.Drawing.Size(1360, 350);
             this.dgvHistorial.TabIndex = 1;
             this.dgvHistorial.SelectionChanged += new System.EventHandler(this.dgvHistorial_SelectionChanged);
             // 
@@ -139,9 +143,13 @@ namespace GUI
             this.panelDetalle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
             this.panelDetalle.Controls.Add(this.dgvPujas);
             this.panelDetalle.Controls.Add(this.lblDetalleTitulo);
+            this.panelDetalle.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Bottom |
+                System.Windows.Forms.AnchorStyles.Left   |
+                System.Windows.Forms.AnchorStyles.Right));
             this.panelDetalle.Location = new System.Drawing.Point(10, 464);
             this.panelDetalle.Name = "panelDetalle";
-            this.panelDetalle.Size = new System.Drawing.Size(1160, 185);
+            this.panelDetalle.Size = new System.Drawing.Size(1360, 185);
             this.panelDetalle.TabIndex = 0;
             // 
             // dgvPujas
@@ -175,7 +183,12 @@ namespace GUI
             this.dgvPujas.ReadOnly = true;
             this.dgvPujas.RowHeadersVisible = false;
             this.dgvPujas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPujas.Size = new System.Drawing.Size(1146, 152);
+            this.dgvPujas.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Top    |
+                System.Windows.Forms.AnchorStyles.Bottom |
+                System.Windows.Forms.AnchorStyles.Left   |
+                System.Windows.Forms.AnchorStyles.Right));
+            this.dgvPujas.Size = new System.Drawing.Size(1346, 152);
             this.dgvPujas.TabIndex = 0;
             this.dgvPujas.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPujas_CellFormatting);
             // 
@@ -187,7 +200,11 @@ namespace GUI
             this.lblDetalleTitulo.Location = new System.Drawing.Point(0, 0);
             this.lblDetalleTitulo.Name = "lblDetalleTitulo";
             this.lblDetalleTitulo.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.lblDetalleTitulo.Size = new System.Drawing.Size(1160, 28);
+            this.lblDetalleTitulo.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Top  |
+                System.Windows.Forms.AnchorStyles.Left |
+                System.Windows.Forms.AnchorStyles.Right));
+            this.lblDetalleTitulo.Size = new System.Drawing.Size(1360, 28);
             this.lblDetalleTitulo.TabIndex = 1;
             this.lblDetalleTitulo.Text = "Pujas de la subasta seleccionada:";
             this.lblDetalleTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -207,7 +224,7 @@ namespace GUI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(228)))), ((int)(((byte)(235)))));
-            this.ClientSize = new System.Drawing.Size(1180, 685);
+            this.ClientSize = new System.Drawing.Size(1380, 720);
             this.Controls.Add(this.panelDetalle);
             this.Controls.Add(this.dgvHistorial);
             this.Controls.Add(this.btnActualizar);

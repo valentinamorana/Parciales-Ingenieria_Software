@@ -227,7 +227,12 @@ namespace GUI
             this.panelDerecho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelDerecho.Location = new System.Drawing.Point(310, 56);
             this.panelDerecho.Name = "panelDerecho";
-            this.panelDerecho.Size = new System.Drawing.Size(913, 616);
+            this.panelDerecho.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Top    |
+                System.Windows.Forms.AnchorStyles.Bottom |
+                System.Windows.Forms.AnchorStyles.Left   |
+                System.Windows.Forms.AnchorStyles.Right));
+            this.panelDerecho.Size = new System.Drawing.Size(1113, 616);
             this.panelDerecho.TabIndex = 1;
             // 
             // panelPrecio
@@ -472,7 +477,7 @@ namespace GUI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(228)))), ((int)(((byte)(235)))));
-            this.ClientSize = new System.Drawing.Size(1223, 700);
+            this.ClientSize = new System.Drawing.Size(1423, 700);
             this.Controls.Add(this.panelDerecho);
             this.Controls.Add(this.panelIzquierdo);
             this.Controls.Add(this.panelStatus);

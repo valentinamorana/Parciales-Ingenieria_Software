@@ -82,7 +82,7 @@ namespace GUI
             this.panelControles.Controls.Add(this.btnComparar);
             this.panelControles.Location = new System.Drawing.Point(10, 66);
             this.panelControles.Name = "panelControles";
-            this.panelControles.Size = new System.Drawing.Size(1160, 88);
+            this.panelControles.Size = new System.Drawing.Size(1360, 88);
             this.panelControles.TabIndex = 1;
             // 
             // lblJornada
@@ -194,11 +194,16 @@ namespace GUI
             this.rtbReporte.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbReporte.Font = new System.Drawing.Font("Consolas", 9.5F);
             this.rtbReporte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.rtbReporte.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Top    |
+                System.Windows.Forms.AnchorStyles.Bottom |
+                System.Windows.Forms.AnchorStyles.Left   |
+                System.Windows.Forms.AnchorStyles.Right));
             this.rtbReporte.Location = new System.Drawing.Point(10, 164);
             this.rtbReporte.Name = "rtbReporte";
             this.rtbReporte.ReadOnly = true;
             this.rtbReporte.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtbReporte.Size = new System.Drawing.Size(1160, 482);
+            this.rtbReporte.Size = new System.Drawing.Size(1360, 482);
             this.rtbReporte.TabIndex = 0;
             this.rtbReporte.Text = "";
             // 
@@ -228,7 +233,7 @@ namespace GUI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(228)))), ((int)(((byte)(235)))));
-            this.ClientSize = new System.Drawing.Size(1180, 685);
+            this.ClientSize = new System.Drawing.Size(1380, 720);
             this.Controls.Add(this.rtbReporte);
             this.Controls.Add(this.panelControles);
             this.Controls.Add(this.panelStatus);

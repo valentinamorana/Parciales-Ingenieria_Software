@@ -3,31 +3,31 @@
   "WorkspaceRootPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmcatalogo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmcatalogo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmbitacora.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmbitacora.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmreporte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmreporte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmbitacora.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmbitacora.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmcatalogo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmcatalogo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmhistorial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmhistorial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmsubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmsubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmsubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -74,7 +74,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -109,12 +109,11 @@
               "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmSubasta.cs [Design]",
               "RelativeToolTip": "GUI\\frmSubasta.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-18T03:17:24.752Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-05-18T03:17:24.752Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "frmBitacora.cs [Design]",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmBitacora.cs",
               "RelativeDocumentMoniker": "GUI\\frmBitacora.cs",
@@ -126,7 +125,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "frmReporte.cs [Design]",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmReporte.cs",
               "RelativeDocumentMoniker": "GUI\\frmReporte.cs",
@@ -138,7 +137,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "frmPrincipal.cs [Design]",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmPrincipal.cs",
               "RelativeDocumentMoniker": "GUI\\frmPrincipal.cs",
@@ -162,7 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "frmCatalogo.cs [Design]",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmCatalogo.cs",
               "RelativeDocumentMoniker": "GUI\\frmCatalogo.cs",
@@ -182,8 +181,7 @@
               "RelativeToolTip": "GUI\\frmPrincipal.cs",
               "ViewState": "AgIAAAQAAAAAAAAAAADgvxcAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-18T03:15:23.898Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-18T03:15:23.898Z"
             },
             {
               "$type": "Document",
@@ -194,8 +192,7 @@
               "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmHistorial.cs [Design]",
               "RelativeToolTip": "GUI\\frmHistorial.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-17T23:58:33.37Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-05-17T23:58:33.37Z"
             },
             {
               "$type": "Document",
@@ -207,8 +204,7 @@
               "RelativeToolTip": "GUI\\frmBitacora.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-17T20:05:07.529Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-17T20:05:07.529Z"
             },
             {
               "$type": "Document",

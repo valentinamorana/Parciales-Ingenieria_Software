@@ -119,8 +119,8 @@ namespace GUI
         {
             if (this.ActiveMdiChild != null)
                 this.ActiveMdiChild.Close();
-            form.MdiParent   = this;
-            form.WindowState = FormWindowState.Maximized;
+            form.MdiParent      = this;
+            form.StartPosition  = FormStartPosition.CenterParent;
             form.Show();
         }
     }

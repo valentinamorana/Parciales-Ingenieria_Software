@@ -91,7 +91,7 @@ namespace GUI
             this.panelFiltros.Controls.Add(this.btnExportarPdf);
             this.panelFiltros.Location = new System.Drawing.Point(10, 66);
             this.panelFiltros.Name = "panelFiltros";
-            this.panelFiltros.Size = new System.Drawing.Size(1160, 52);
+            this.panelFiltros.Size = new System.Drawing.Size(1360, 52);
             this.panelFiltros.TabIndex = 1;
             // 
             // lblDias
@@ -283,7 +283,7 @@ namespace GUI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(228)))), ((int)(((byte)(235)))));
-            this.ClientSize = new System.Drawing.Size(1180, 685);
+            this.ClientSize = new System.Drawing.Size(1380, 720);
             this.Controls.Add(this.dgvBitacora);
             this.Controls.Add(this.panelFiltros);
             this.Controls.Add(this.panelStatus);
