@@ -30,12 +30,23 @@ GO
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'UnidadesDeVenta')
 BEGIN
     CREATE TABLE UnidadesDeVenta (
-        Id          INT           PRIMARY KEY IDENTITY(1,1),
-        Nombre      VARCHAR(200)  NOT NULL,
-        Descripcion VARCHAR(500),
-        PrecioBase  DECIMAL(18,2) NOT NULL,
-        TipoUnidad  VARCHAR(20)   NOT NULL CHECK (TipoUnidad IN ('Articulo', 'Lote'))
+        Id           INT           PRIMARY KEY IDENTITY(1,1),
+        Nombre       VARCHAR(200)  NOT NULL,
+        Descripcion  VARCHAR(500),
+        PrecioBase   DECIMAL(18,2) NOT NULL,
+        TipoUnidad   VARCHAR(20)   NOT NULL CHECK (TipoUnidad IN ('Articulo', 'Lote')),
+        FechaIngreso DATETIME      NOT NULL DEFAULT GETDATE()
     );
+END
+GO
+
+-- Migración: agregar FechaIngreso si la tabla ya existía sin ella
+IF NOT EXISTS (
+    SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'UnidadesDeVenta' AND COLUMN_NAME = 'FechaIngreso'
+)
+BEGIN
+    ALTER TABLE UnidadesDeVenta ADD FechaIngreso DATETIME NOT NULL DEFAULT GETDATE();
 END
 GO
 

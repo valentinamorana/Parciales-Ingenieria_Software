@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using BE;
 using Servicios.Composite;
@@ -21,15 +22,15 @@ namespace BLL
             sb.AppendLine("═══════════════════════════════════════════════════════");
             sb.AppendLine();
 
-            // 1. Recorrido Composite del catálogo (RF-13)
-            sb.AppendLine("CATÁLOGO (Patrón Composite — recorrido recursivo):");
+            // ── SECCIÓN 1: CATÁLOGO COMPLETO (RF-13 — Composite traversal) ──────
+            sb.AppendLine("▌ CATÁLOGO DE PRODUCTOS (Patrón Composite)");
             sb.AppendLine(new string('─', 55));
             foreach (var u in catalogo)
                 RecorrerNodo(u, sb, 0);
             sb.AppendLine();
 
-            // 2. Subastas del día
-            sb.AppendLine("SUBASTAS DE LA JORNADA:");
+            // ── SECCIÓN 2: ANALYTICS DE VENTAS / SUBASTAS ───────────────────────
+            sb.AppendLine("▌ ANALYTICS — VENTAS Y SUBASTAS DE LA JORNADA");
             sb.AppendLine(new string('─', 55));
 
             IList<ResultadoSubasta> historial = _subastaBll.ObtenerHistorial();
@@ -55,12 +56,30 @@ namespace BLL
             if (cantidad == 0)
                 sb.AppendLine("  (sin subastas cerradas en esta jornada)");
 
-            sb.AppendLine(new string('═', 55));
+            sb.AppendLine(new string('─', 55));
             sb.AppendLine($"  SUBASTAS CERRADAS : {cantidad}");
             sb.AppendLine($"  TOTAL RECAUDADO   : ${total:N2}");
             sb.AppendLine($"  GANANCIA NETA     : ${ganancia:N2}" +
                           (cantidad > 0 ? $"  (avg. ${ganancia / cantidad:N2}/subasta)" : ""));
-            sb.AppendLine($"  Generado          : {DateTime.Now:dd'/'MM'/'yyyy HH:mm:ss}");
+            sb.AppendLine();
+
+            // ── SECCIÓN 3: PRODUCTOS INGRESADOS HOY ─────────────────────────────
+            var ingresados = catalogo
+                .Where(u => u.FechaIngreso.Date == fecha.Date)
+                .ToList();
+
+            sb.AppendLine("▌ PRODUCTOS INGRESADOS AL CATÁLOGO HOY");
+            sb.AppendLine(new string('─', 55));
+            if (ingresados.Count == 0)
+                sb.AppendLine("  (ningún producto ingresó en esta jornada)");
+            else
+                foreach (var u in ingresados)
+                    sb.AppendLine($"  + [{(u is LoteArticulos ? "LOTE" : "ART ")}] {u.Nombre}  — ${u.CalcularPrecioBase():N2}");
+
+            sb.AppendLine($"  INGRESADOS HOY    : {ingresados.Count}");
+            sb.AppendLine();
+
+            sb.AppendLine($"  Generado: {DateTime.Now:dd'/'MM'/'yyyy HH:mm:ss}");
             sb.AppendLine(new string('═', 55));
 
             return sb.ToString();
@@ -83,6 +102,9 @@ namespace BLL
             var (cant2, total2, gan2) = AgregarDetalleJornada(sb, historial, fecha2, "B");
             sb.AppendLine();
 
+            int ing1 = catalogo.Count(u => u.FechaIngreso.Date == fecha1.Date);
+            int ing2 = catalogo.Count(u => u.FechaIngreso.Date == fecha2.Date);
+
             string f1 = FechaStr(fecha1);
             string f2 = FechaStr(fecha2);
 
@@ -94,6 +116,7 @@ namespace BLL
             sb.AppendLine($"  {"Subastas",-20}  {cant1,14}  {cant2,14}");
             sb.AppendLine($"  {"Total recaudado",-20}  {"$" + total1.ToString("N2"),14}  {"$" + total2.ToString("N2"),14}");
             sb.AppendLine($"  {"Ganancia neta",-20}  {"$" + gan1.ToString("N2"),14}  {"$" + gan2.ToString("N2"),14}");
+            sb.AppendLine($"  {"Prod. ingresados",-20}  {ing1,14}  {ing2,14}");
             sb.AppendLine(new string('─', 57));
 
             if (gan1 > gan2)
@@ -147,8 +170,6 @@ namespace BLL
                 RecorrerNodo(hijo, sb, nivel + 1);
         }
 
-        // '/' en format strings de DateTime es el separador de fecha del locale,
-        // no un literal. Escaparlo con comillas simples garantiza "17/05/2026".
         private static string FechaStr(DateTime d) =>
             d.ToString("dd'/'MM'/'yyyy");
     }

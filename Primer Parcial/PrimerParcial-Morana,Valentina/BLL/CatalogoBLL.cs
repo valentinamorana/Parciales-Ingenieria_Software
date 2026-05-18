@@ -24,10 +24,12 @@ namespace BLL
                 decimal precio = (decimal)f["PrecioBase"];
                 string  tipo   = (string)f["TipoUnidad"];
 
+                DateTime fechaIngreso = f["FechaIngreso"] == DBNull.Value ? DateTime.MinValue : (DateTime)f["FechaIngreso"];
+
                 if (tipo == "Articulo")
-                    articulos[id] = new ArticuloSimple { Id = id, Nombre = nombre, Descripcion = desc, PrecioBase = precio };
+                    articulos[id] = new ArticuloSimple { Id = id, Nombre = nombre, Descripcion = desc, PrecioBase = precio, FechaIngreso = fechaIngreso };
                 else
-                    lotes[id]     = new LoteArticulos  { Id = id, Nombre = nombre };
+                    lotes[id]     = new LoteArticulos  { Id = id, Nombre = nombre, FechaIngreso = fechaIngreso };
             }
 
             var esHijo = new HashSet<int>();

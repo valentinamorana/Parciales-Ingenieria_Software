@@ -10,7 +10,7 @@ namespace DAL
 
         public DataTable ObtenerUnidades() =>
             _acceso.Leer(
-                "SELECT Id, Nombre, Descripcion, PrecioBase, TipoUnidad FROM UnidadesDeVenta");
+                "SELECT Id, Nombre, Descripcion, PrecioBase, TipoUnidad, FechaIngreso FROM UnidadesDeVenta");
 
         public DataTable ObtenerRelaciones() =>
             _acceso.Leer("SELECT LoteId, ContenidoId FROM LoteContenido");
