@@ -22,13 +22,33 @@ namespace GUI
 
         private void frmReporte_Load(object sender, EventArgs e)
         {
-            dtpJornada.Value = DateTime.Today;
+            dtpJornada.Value  = DateTime.Today;
+            dtpJornada2.Value = DateTime.Today.AddDays(-1);
             GenerarReporte();
         }
 
         private void btnGenerar_Click(object sender, EventArgs e)
         {
             GenerarReporte();
+        }
+
+        private void dtpJornada_ValueChanged(object sender, EventArgs e)
+        {
+            GenerarReporte();
+        }
+
+        private void btnComparar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string texto = _servicio.GenerarComparacion(_catalogo, dtpJornada.Value.Date, dtpJornada2.Value.Date);
+                rtbReporte.Text = texto;
+                lblStatus.Text = $"Comparación generada — {DateTime.Now:HH:mm:ss}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void GenerarReporte()

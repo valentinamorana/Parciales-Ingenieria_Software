@@ -25,6 +25,9 @@ namespace GUI
             this.btnGenerar = new System.Windows.Forms.Button();
             this.btnExportar = new System.Windows.Forms.Button();
             this.btnExportarPdf = new System.Windows.Forms.Button();
+            this.lblComparar   = new System.Windows.Forms.Label();
+            this.dtpJornada2   = new System.Windows.Forms.DateTimePicker();
+            this.btnComparar   = new System.Windows.Forms.Button();
             this.rtbReporte = new System.Windows.Forms.RichTextBox();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
@@ -74,9 +77,12 @@ namespace GUI
             this.panelControles.Controls.Add(this.btnGenerar);
             this.panelControles.Controls.Add(this.btnExportar);
             this.panelControles.Controls.Add(this.btnExportarPdf);
+            this.panelControles.Controls.Add(this.lblComparar);
+            this.panelControles.Controls.Add(this.dtpJornada2);
+            this.panelControles.Controls.Add(this.btnComparar);
             this.panelControles.Location = new System.Drawing.Point(10, 66);
             this.panelControles.Name = "panelControles";
-            this.panelControles.Size = new System.Drawing.Size(1160, 50);
+            this.panelControles.Size = new System.Drawing.Size(1160, 88);
             this.panelControles.TabIndex = 1;
             // 
             // lblJornada
@@ -93,11 +99,13 @@ namespace GUI
             // dtpJornada
             // 
             this.dtpJornada.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.dtpJornada.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpJornada.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpJornada.CustomFormat = "dd'/'MM'/'yyyy";
             this.dtpJornada.Location = new System.Drawing.Point(72, 12);
             this.dtpJornada.Name = "dtpJornada";
             this.dtpJornada.Size = new System.Drawing.Size(120, 23);
             this.dtpJornada.TabIndex = 1;
+            this.dtpJornada.ValueChanged += new System.EventHandler(this.dtpJornada_ValueChanged);
             // 
             // btnGenerar
             // 
@@ -143,18 +151,54 @@ namespace GUI
             this.btnExportarPdf.Text = "Exportar PDF";
             this.btnExportarPdf.UseVisualStyleBackColor = false;
             this.btnExportarPdf.Click += new System.EventHandler(this.btnExportarPdf_Click);
-            // 
+            //
+            // lblComparar
+            //
+            this.lblComparar.AutoSize = true;
+            this.lblComparar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblComparar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblComparar.Location = new System.Drawing.Point(10, 55);
+            this.lblComparar.Name = "lblComparar";
+            this.lblComparar.Size = new System.Drawing.Size(88, 15);
+            this.lblComparar.TabIndex = 5;
+            this.lblComparar.Text = "Comparar con:";
+            //
+            // dtpJornada2
+            //
+            this.dtpJornada2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dtpJornada2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpJornada2.CustomFormat = "dd'/'MM'/'yyyy";
+            this.dtpJornada2.Location = new System.Drawing.Point(108, 51);
+            this.dtpJornada2.Name = "dtpJornada2";
+            this.dtpJornada2.Size = new System.Drawing.Size(120, 23);
+            this.dtpJornada2.TabIndex = 6;
+            //
+            // btnComparar
+            //
+            this.btnComparar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(130)))), ((int)(((byte)(210)))));
+            this.btnComparar.FlatAppearance.BorderSize = 0;
+            this.btnComparar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComparar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnComparar.ForeColor = System.Drawing.Color.White;
+            this.btnComparar.Location = new System.Drawing.Point(246, 49);
+            this.btnComparar.Name = "btnComparar";
+            this.btnComparar.Size = new System.Drawing.Size(200, 28);
+            this.btnComparar.TabIndex = 7;
+            this.btnComparar.Text = "⚖  Comparar Jornadas";
+            this.btnComparar.UseVisualStyleBackColor = false;
+            this.btnComparar.Click += new System.EventHandler(this.btnComparar_Click);
+            //
             // rtbReporte
-            // 
+            //
             this.rtbReporte.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(235)))));
             this.rtbReporte.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbReporte.Font = new System.Drawing.Font("Consolas", 9.5F);
             this.rtbReporte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.rtbReporte.Location = new System.Drawing.Point(10, 126);
+            this.rtbReporte.Location = new System.Drawing.Point(10, 164);
             this.rtbReporte.Name = "rtbReporte";
             this.rtbReporte.ReadOnly = true;
             this.rtbReporte.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtbReporte.Size = new System.Drawing.Size(1160, 520);
+            this.rtbReporte.Size = new System.Drawing.Size(1160, 482);
             this.rtbReporte.TabIndex = 0;
             this.rtbReporte.Text = "";
             // 
@@ -213,6 +257,9 @@ namespace GUI
         private System.Windows.Forms.Button       btnGenerar;
         private System.Windows.Forms.Button       btnExportar;
         private System.Windows.Forms.Button       btnExportarPdf;
+        private System.Windows.Forms.Label        lblComparar;
+        private System.Windows.Forms.DateTimePicker dtpJornada2;
+        private System.Windows.Forms.Button       btnComparar;
         private System.Windows.Forms.RichTextBox  rtbReporte;
         private System.Windows.Forms.Panel        panelStatus;
         private System.Windows.Forms.Label        lblStatus;
