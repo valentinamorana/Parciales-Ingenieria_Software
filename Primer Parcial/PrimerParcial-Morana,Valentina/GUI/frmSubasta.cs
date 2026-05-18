@@ -35,6 +35,7 @@ namespace GUI
             _bll         = new SubastaBLL();
             _interesados = new List<Interesado>();
             _catalogo    = catalogo;
+            _usuarios    = new List<Usuario>();
         }
 
         private void frmSubasta_Load(object sender, EventArgs e)
@@ -50,10 +51,11 @@ namespace GUI
         {
             try
             {
-                _usuarios = new List<Usuario>(new DAL.UsuarioDAL().ObtenerTodos());
+                _usuarios = new List<Usuario>(new UsuarioBLL().ObtenerTodos());
             }
-            catch
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"[InicializarDatos] Error al cargar usuarios: {ex}");
                 _usuarios = new List<Usuario>
                 {
                     new Usuario { Id = 1, Nombre = "Carlos Méndez",   Email = "carlos@web.com"  },

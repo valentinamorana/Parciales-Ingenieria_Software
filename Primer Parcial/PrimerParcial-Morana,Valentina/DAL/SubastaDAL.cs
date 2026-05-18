@@ -9,21 +9,29 @@ namespace DAL
     {
         public override void Guardar(ResultadoSubasta resultado)
         {
-            SqlParameter[] p =
-            {
-                new SqlParameter("@nombre",  resultado.NombreUnidadVenta),
-                new SqlParameter("@base",    resultado.PrecioBase),
-                new SqlParameter("@final",   resultado.PrecioFinal),
-                new SqlParameter("@ganador", resultado.NombreGanador),
-                new SqlParameter("@email",   resultado.EmailGanador),
-                new SqlParameter("@fecha",   resultado.FechaHora)
-            };
-
-            resultado.Id = _acceso.EjecutarEscalar(
-                @"INSERT INTO Subastas (NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora)
-                  VALUES (@nombre, @base, @final, @ganador, @email, @fecha);
-                  SELECT SCOPE_IDENTITY();", p);
+            resultado.Id = _acceso.EjecutarEscalar(InsertSql, BuildParametros(resultado));
         }
+
+        public void GuardarEnTransaccion(ResultadoSubasta resultado,
+                                         SqlConnection conn, SqlTransaction tx)
+        {
+            resultado.Id = _acceso.EjecutarEscalarEnTransaccion(InsertSql, BuildParametros(resultado), conn, tx);
+        }
+
+        private static readonly string InsertSql =
+            @"INSERT INTO Subastas (NombreUnidadVenta, PrecioBase, PrecioFinal, NombreGanador, EmailGanador, FechaHora)
+              VALUES (@nombre, @base, @final, @ganador, @email, @fecha);
+              SELECT SCOPE_IDENTITY();";
+
+        private static SqlParameter[] BuildParametros(ResultadoSubasta r) => new[]
+        {
+            new SqlParameter("@nombre",  r.NombreUnidadVenta),
+            new SqlParameter("@base",    r.PrecioBase),
+            new SqlParameter("@final",   r.PrecioFinal),
+            new SqlParameter("@ganador", r.NombreGanador),
+            new SqlParameter("@email",   r.EmailGanador),
+            new SqlParameter("@fecha",   r.FechaHora)
+        };
 
         public override IList<ResultadoSubasta> ObtenerTodos()
         {

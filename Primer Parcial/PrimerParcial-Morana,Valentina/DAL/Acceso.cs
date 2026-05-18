@@ -74,7 +74,24 @@ namespace DAL
             {
                 if (parametros != null) cmd.Parameters.AddRange(parametros);
                 conn.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar());
+                var resultado = cmd.ExecuteScalar();
+                if (resultado == null || resultado == DBNull.Value)
+                    throw new InvalidOperationException("EjecutarEscalar no devolvió un Id. Verificar la query.");
+                return Convert.ToInt32(resultado);
+            }
+        }
+
+        // INSERT dentro de una transacción existente — no abre conexión propia
+        public int EjecutarEscalarEnTransaccion(string sql, SqlParameter[] parametros,
+                                                SqlConnection conn, SqlTransaction tx)
+        {
+            using (var cmd = new SqlCommand(sql, conn, tx))
+            {
+                if (parametros != null) cmd.Parameters.AddRange(parametros);
+                var resultado = cmd.ExecuteScalar();
+                if (resultado == null || resultado == DBNull.Value)
+                    throw new InvalidOperationException("EjecutarEscalarEnTransaccion no devolvió un Id.");
+                return Convert.ToInt32(resultado);
             }
         }
 

@@ -26,7 +26,11 @@ namespace BLL
                                        : "Sistema"
                 });
             }
-            catch { /* silencioso — bitácora no puede romper el flujo */ }
+            catch (Exception ex)
+            {
+                // Silencioso por diseño: la bitácora no puede romper el flujo principal.
+                System.Diagnostics.Debug.WriteLine($"[BitacoraBLL] Error al registrar evento: {ex.Message}");
+            }
         }
 
         public IList<EventoBitacora> ObtenerFiltrado(int diasAtras, string criticidad, string operacion)

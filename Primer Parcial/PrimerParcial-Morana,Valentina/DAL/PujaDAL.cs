@@ -7,24 +7,30 @@ namespace DAL
 {
     public class PujaDAL : AbstractDAL<Puja>
     {
-        // Inserta la puja y asigna su Id
         public override void Guardar(Puja puja)
         {
-            SqlParameter[] p =
-            {
-                new SqlParameter("@idSubasta",     puja.IdSubasta),
-                new SqlParameter("@nombreUsuario", puja.NombreUsuario),
-                new SqlParameter("@monto",         puja.Monto),
-                new SqlParameter("@fechaHora",     puja.FechaHora),
-                new SqlParameter("@estado",        puja.Estado.ToString()),
-                new SqlParameter("@motivo",        (object)puja.MotivoRechazo ?? DBNull.Value)
-            };
-
-            puja.Id = _acceso.EjecutarEscalar(
-                @"INSERT INTO Pujas (SubastaId, NombreUsuario, Monto, FechaHora, Estado, MotivoRechazo)
-                  VALUES (@idSubasta, @nombreUsuario, @monto, @fechaHora, @estado, @motivo);
-                  SELECT SCOPE_IDENTITY();", p);
+            puja.Id = _acceso.EjecutarEscalar(InsertSql, BuildParametros(puja));
         }
+
+        public void GuardarEnTransaccion(Puja puja, SqlConnection conn, SqlTransaction tx)
+        {
+            puja.Id = _acceso.EjecutarEscalarEnTransaccion(InsertSql, BuildParametros(puja), conn, tx);
+        }
+
+        private static readonly string InsertSql =
+            @"INSERT INTO Pujas (SubastaId, NombreUsuario, Monto, FechaHora, Estado, MotivoRechazo)
+              VALUES (@idSubasta, @nombreUsuario, @monto, @fechaHora, @estado, @motivo);
+              SELECT SCOPE_IDENTITY();";
+
+        private static SqlParameter[] BuildParametros(Puja p) => new[]
+        {
+            new SqlParameter("@idSubasta",     p.IdSubasta),
+            new SqlParameter("@nombreUsuario", p.NombreUsuario),
+            new SqlParameter("@monto",         p.Monto),
+            new SqlParameter("@fechaHora",     p.FechaHora),
+            new SqlParameter("@estado",        p.Estado.ToString()),
+            new SqlParameter("@motivo",        (object)p.MotivoRechazo ?? DBNull.Value)
+        };
 
         // Todas las pujas de una subasta (aceptadas + rechazadas)
         public IList<Puja> ObtenerPorSubasta(int idSubasta)

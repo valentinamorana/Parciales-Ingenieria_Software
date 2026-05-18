@@ -206,10 +206,11 @@ namespace GUI
 
                 return new ArticuloSimple
                 {
-                    Id          = _catalogo.Count + 1,
-                    Nombre      = txtNombre.Text.Trim(),
-                    Descripcion = txtDesc.Text.Trim(),
-                    PrecioBase  = precio
+                    Id           = _catalogo.Count + 1,
+                    Nombre       = txtNombre.Text.Trim(),
+                    Descripcion  = txtDesc.Text.Trim(),
+                    PrecioBase   = precio,
+                    FechaIngreso = DateTime.Now
                 };
             }
         }
@@ -282,7 +283,7 @@ namespace GUI
                 if (clb.CheckedItems.Count == 0)
                     throw new InvalidOperationException("Seleccioná al menos una unidad para el lote.");
 
-                var lote = new LoteArticulos { Id = _catalogo.Count + 100, Nombre = txtNombre.Text.Trim() };
+                var lote = new LoteArticulos { Id = _catalogo.Count + 100, Nombre = txtNombre.Text.Trim(), FechaIngreso = DateTime.Now };
                 foreach (string nombre in clb.CheckedItems)
                 {
                     var u = _catalogo.Find(x => x.Nombre == nombre);

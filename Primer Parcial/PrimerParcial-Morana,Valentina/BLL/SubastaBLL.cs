@@ -51,18 +51,18 @@ namespace BLL
 
             var resultado = subasta.Cerrar();
 
-            // Usamos la transacción de Acceso Singleton: primero el resultado, luego las pujas.
+            // Transacción atómica: subasta + todas sus pujas en la misma conexión/tx.
             Acceso.Instancia.EjecutarTransaccion((conn, tx) =>
             {
                 // 1. Persistir resultado final → obtener su Id
                 var subastaDAL = (SubastaDAL)_crud;
-                subastaDAL.Guardar(resultado);          // asigna resultado.Id
+                subastaDAL.GuardarEnTransaccion(resultado, conn, tx);
 
                 // 2. Persistir cada puja con el Id de subasta recién creado
                 foreach (var puja in subasta.Pujas)
                 {
                     puja.IdSubasta = resultado.Id;
-                    _pujaDAL.Guardar(puja);
+                    _pujaDAL.GuardarEnTransaccion(puja, conn, tx);
                 }
             });
 
