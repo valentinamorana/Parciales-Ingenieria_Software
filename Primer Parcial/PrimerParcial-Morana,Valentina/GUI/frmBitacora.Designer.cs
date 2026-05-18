@@ -242,6 +242,11 @@ namespace GUI
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvBitacora.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvBitacora.EnableHeadersVisualStyles = false;
+            this.dgvBitacora.Anchor = ((System.Windows.Forms.AnchorStyles)(
+                System.Windows.Forms.AnchorStyles.Top    |
+                System.Windows.Forms.AnchorStyles.Bottom |
+                System.Windows.Forms.AnchorStyles.Left   |
+                System.Windows.Forms.AnchorStyles.Right));
             this.dgvBitacora.Location = new System.Drawing.Point(10, 128);
             this.dgvBitacora.MultiSelect = false;
             this.dgvBitacora.Name = "dgvBitacora";
