@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Windows.Forms;
 using BE;
 using BLL;
@@ -23,8 +26,54 @@ namespace GUI
             var m = SessionManager.Instancia.Martillero;
             string nombre = !string.IsNullOrWhiteSpace(m.Nombre) ? m.Nombre : m.Username;
             this.Text = $"La Almoneda Nacional — {nombre} — 1er Parcial IS 2026";
+
+            foreach (Control c in Controls)
+            {
+                if (c.GetType().Name == "MdiClient")
+                {
+                    c.BackColor             = Color.FromArgb(252, 228, 235);
+                    c.BackgroundImage       = GenerarTileAN();
+                    c.BackgroundImageLayout = ImageLayout.Tile;
+                    break;
+                }
+            }
+
             CargarCatalogo();
             AbrirCatalogo();
+        }
+
+        private static Bitmap GenerarTileAN()
+        {
+            const int TW = 80, TH = 74;
+            var bmp = new Bitmap(TW * 2, TH * 2);
+
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.FromArgb(252, 228, 235));
+                g.SmoothingMode     = SmoothingMode.AntiAlias;
+                g.TextRenderingHint = TextRenderingHint.AntiAlias;
+
+                var tinta = Color.FromArgb(35, 210, 100, 135);
+
+                using (var fontA = new Font("Georgia", 22, FontStyle.Bold, GraphicsUnit.Point))
+                using (var fontN = new Font("Georgia", 18, FontStyle.Bold, GraphicsUnit.Point))
+                using (var br    = new SolidBrush(tinta))
+                {
+                    // Fila 0 — sin offset
+                    g.DrawString("A", fontA, br, 0,            0);
+                    g.DrawString("N", fontN, br, 24,           20);
+                    g.DrawString("A", fontA, br, TW,           0);
+                    g.DrawString("N", fontN, br, TW + 24,      20);
+
+                    // Fila 1 — offset medio tile (patrón ladrillo)
+                    g.DrawString("A", fontA, br, TW / 2f,           TH);
+                    g.DrawString("N", fontN, br, TW / 2f + 24,      TH + 20);
+                    g.DrawString("A", fontA, br, TW / 2f + TW,      TH);
+                    g.DrawString("N", fontN, br, TW / 2f + TW + 24, TH + 20);
+                }
+            }
+
+            return bmp;
         }
 
         private void CargarCatalogo()
