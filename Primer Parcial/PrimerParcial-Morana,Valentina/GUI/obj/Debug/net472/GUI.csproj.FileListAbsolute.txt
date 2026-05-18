@@ -24,3 +24,11 @@ C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\Pri
 C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.csproj.Up2Date
 C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.exe
 C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.pdb
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.frmBitacora.resources
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.frmCatalogo.resources
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.frmHistorial.resources
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.frmLogin.resources
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.frmPrincipal.resources
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.frmReporte.resources
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.frmSubasta.resources
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Primer Parcial\PrimerParcial-Morana,Valentina\GUI\obj\Debug\net472\GUI.csproj.GenerateResource.cache

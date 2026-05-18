@@ -3,8 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmcatalogo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmcatalogo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmcatalogo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmreporte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmreporte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmbitacora.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmbitacora.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\gui\\frmhistorial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmhistorial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmsubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmsubasta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|solutionrelative:gui\\frmprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{66666666-6666-6666-6666-666666666666}|GUI\\GUI.csproj|c:\\users\\valen\\documents\\uai\\ingenieria de software\\parciales\\primer parcial\\primerparcial-morana,valentina\\gui\\frmbitacora.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -46,7 +74,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,6 +102,66 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "frmSubasta.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmSubasta.cs",
+              "RelativeDocumentMoniker": "GUI\\frmSubasta.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmSubasta.cs [Design]",
+              "RelativeToolTip": "GUI\\frmSubasta.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T03:17:24.752Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "frmBitacora.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmBitacora.cs",
+              "RelativeDocumentMoniker": "GUI\\frmBitacora.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmBitacora.cs [Design]",
+              "RelativeToolTip": "GUI\\frmBitacora.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T03:17:15.99Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "frmReporte.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmReporte.cs",
+              "RelativeDocumentMoniker": "GUI\\frmReporte.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmReporte.cs [Design]",
+              "RelativeToolTip": "GUI\\frmReporte.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T23:58:42.203Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "frmPrincipal.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmPrincipal.cs",
+              "RelativeDocumentMoniker": "GUI\\frmPrincipal.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmPrincipal.cs [Design]",
+              "RelativeToolTip": "GUI\\frmPrincipal.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T23:58:40.993Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "frmLogin.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmLogin.cs",
+              "RelativeDocumentMoniker": "GUI\\frmLogin.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmLogin.cs [Design]",
+              "RelativeToolTip": "GUI\\frmLogin.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T23:58:39.928Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "frmCatalogo.cs [Design]",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmCatalogo.cs",
@@ -86,7 +174,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
+              "Title": "frmPrincipal.cs",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmPrincipal.cs",
+              "RelativeDocumentMoniker": "GUI\\frmPrincipal.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmPrincipal.cs",
+              "RelativeToolTip": "GUI\\frmPrincipal.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAADgvxcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T03:15:23.898Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "frmHistorial.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmHistorial.cs",
+              "RelativeDocumentMoniker": "GUI\\frmHistorial.cs",
+              "ToolTip": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmHistorial.cs [Design]",
+              "RelativeToolTip": "GUI\\frmHistorial.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T23:58:33.37Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "frmBitacora.cs",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\frmBitacora.cs",
               "RelativeDocumentMoniker": "GUI\\frmBitacora.cs",
@@ -94,11 +207,12 @@
               "RelativeToolTip": "GUI\\frmBitacora.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-17T20:05:07.529Z"
+              "WhenOpened": "2026-05-17T20:05:07.529Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "frmPrincipal.cs [Design]",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmPrincipal.cs",
               "RelativeDocumentMoniker": "AlmonedaNacional.GUI\\frmPrincipal.cs",
@@ -109,7 +223,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 10,
               "Title": "frmHistorial.cs [Design]",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.GUI\\frmHistorial.cs",
               "RelativeDocumentMoniker": "AlmonedaNacional.GUI\\frmHistorial.cs",
@@ -120,7 +234,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "ResultadoSubasta.cs",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\ResultadoSubasta.cs",
               "RelativeDocumentMoniker": "AlmonedaNacional.BE\\ResultadoSubasta.cs",
@@ -132,7 +246,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 12,
               "Title": "EstadoPuja.cs",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\EstadoPuja.cs",
               "RelativeDocumentMoniker": "AlmonedaNacional.BE\\EstadoPuja.cs",
@@ -144,7 +258,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 13,
               "Title": "Entidad.cs",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.BE\\Entidad.cs",
               "RelativeDocumentMoniker": "AlmonedaNacional.BE\\Entidad.cs",
@@ -156,7 +270,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 14,
               "Title": "IEntidad.cs",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\IEntidad.cs",
               "RelativeDocumentMoniker": "AlmonedaNacional.Interfaces\\IEntidad.cs",
@@ -168,7 +282,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 15,
               "Title": "ICrud.cs",
               "DocumentMoniker": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\AlmonedaNacional.Interfaces\\ICrud.cs",
               "RelativeDocumentMoniker": "AlmonedaNacional.Interfaces\\ICrud.cs",

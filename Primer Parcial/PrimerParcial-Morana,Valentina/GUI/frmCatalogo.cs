@@ -11,6 +11,7 @@ namespace GUI
     public partial class frmCatalogo : Form
     {
         private readonly List<IUnidadDeVenta> _catalogo;
+        private List<IUnidadDeVenta> _vista;
 
         public frmCatalogo(List<IUnidadDeVenta> catalogo)
         {
@@ -20,6 +21,8 @@ namespace GUI
 
         private void frmCatalogo_Load(object sender, EventArgs e)
         {
+            cmbFiltroTipo.Items.AddRange(new object[] { "Todos", "Artículos", "Lotes" });
+            cmbFiltroTipo.SelectedIndex = 0;
             RefrescarVistas();
         }
 
@@ -27,18 +30,67 @@ namespace GUI
 
         private void RefrescarVistas()
         {
+            _vista = AplicarFiltro();
             LlenarTreeView();
             LlenarGrilla();
-            lblStatus.Text = $"{_catalogo.Count} unidades en el catálogo.";
+
+            int nArticulos = 0, nLotes = 0;
+            decimal totalPrecio = 0;
+            foreach (var u in _catalogo)
+            {
+                if (u is ArticuloSimple) nArticulos++;
+                else if (u is LoteArticulos) nLotes++;
+                totalPrecio += u.CalcularPrecioBase();
+            }
+            lblContadorCatalogo.Text = $"{nArticulos} artículos  •  {nLotes} lotes  |  ${totalPrecio:N2}";
+
+            bool hayFiltro = _vista.Count != _catalogo.Count;
+            lblStatus.Text = hayFiltro
+                ? $"Mostrando {_vista.Count} de {_catalogo.Count} unidades."
+                : $"{_catalogo.Count} unidades en el catálogo.";
+        }
+
+        private List<IUnidadDeVenta> AplicarFiltro()
+        {
+            string busqueda = txtBuscar.Text.Trim().ToLower();
+            string tipo     = cmbFiltroTipo.SelectedItem?.ToString() ?? "Todos";
+
+            decimal precioMin = 0;
+            decimal precioMax = decimal.MaxValue;
+            if (decimal.TryParse(txtPrecioMin.Text.Trim(), out decimal pMin)) precioMin = pMin;
+            if (decimal.TryParse(txtPrecioMax.Text.Trim(), out decimal pMax)) precioMax = pMax;
+
+            var resultado = new List<IUnidadDeVenta>();
+            foreach (var u in _catalogo)
+            {
+                bool matchTipo = tipo == "Todos"
+                    || (tipo == "Artículos" && u is ArticuloSimple)
+                    || (tipo == "Lotes"     && u is LoteArticulos);
+                bool matchNombre = string.IsNullOrEmpty(busqueda)
+                    || u.Nombre.ToLower().Contains(busqueda);
+                decimal precio = u.CalcularPrecioBase();
+                bool matchPrecio = precio >= precioMin && precio <= precioMax;
+                if (matchTipo && matchNombre && matchPrecio) resultado.Add(u);
+            }
+            return resultado;
+        }
+
+        private void FiltroChanged(object sender, EventArgs e) => RefrescarVistas();
+
+        private void txtPrecio_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                e.KeyChar != ',' && e.KeyChar != '.')
+                e.Handled = true;
         }
 
         private void LlenarTreeView()
         {
             treeViewCatalogo.Nodes.Clear();
-            var nArticulos = new TreeNode("Artículos Simples  (Hojas)");
-            var nLotes     = new TreeNode("Lotes  (Compuestos)");
+            var nArticulos = new TreeNode("Artículos Simples");
+            var nLotes     = new TreeNode("Lotes");
 
-            foreach (var u in _catalogo)
+            foreach (var u in _vista)
             {
                 if (u is ArticuloSimple art)
                     nArticulos.Nodes.Add(new TreeNode($"{art.Nombre}  —  ${art.PrecioBase:N2}") { Tag = art });
@@ -72,7 +124,7 @@ namespace GUI
             tabla.Columns.Add("Nombre");
             tabla.Columns.Add("Precio Base", typeof(decimal));
 
-            foreach (var u in _catalogo)
+            foreach (var u in _vista)
                 tabla.Rows.Add(u is LoteArticulos ? "LOTE" : "Artículo", u.Nombre, u.CalcularPrecioBase());
 
             dgvCatalogo.DataSource = tabla;
@@ -91,7 +143,7 @@ namespace GUI
         {
             if (dgvCatalogo.SelectedRows.Count == 0) return;
             string nombre = dgvCatalogo.SelectedRows[0].Cells["Nombre"].Value?.ToString();
-            var u = _catalogo.Find(x => x.Nombre == nombre);
+            var u = _vista.Find(x => x.Nombre == nombre);
             if (u != null) MostrarDetalle(u);
         }
 
@@ -100,22 +152,6 @@ namespace GUI
             rtbDescripcion.Clear();
             rtbDescripcion.AppendText(unidad.ObtenerDescripcion());
             lblPrecioBase.Text = $"$ {unidad.CalcularPrecioBase():N2}";
-        }
-
-        private void btnVerDescripcion_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (treeViewCatalogo.SelectedNode?.Tag is IUnidadDeVenta u)
-                    MostrarDetalle(u);
-                else
-                    MessageBox.Show("Seleccioná una unidad en el árbol.", "Aviso",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         // ── RF-01: Agregar artículo ──────────────────────────────────────────

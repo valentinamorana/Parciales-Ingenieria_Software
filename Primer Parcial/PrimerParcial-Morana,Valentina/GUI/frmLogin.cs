@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using BE;
 using BLL;
@@ -56,9 +57,27 @@ namespace GUI
 
         private void btnVerPassword_Click(object sender, EventArgs e)
         {
-            bool visible = txtPassword.PasswordChar == '\0';
-            txtPassword.PasswordChar = visible ? '●' : '\0';
-            btnVerPassword.Text      = visible ? "👁" : "🙈";
+            bool mostrando = txtPassword.PasswordChar == '\0';
+            txtPassword.PasswordChar = mostrando ? '●' : '\0';
+            btnVerPassword.ForeColor = mostrando
+                ? Color.DimGray
+                : Color.FromArgb(210, 100, 135);
+        }
+
+        private void frmLogin_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+
+            // Líneas diagonales sutiles sobre el fondo oscuro
+            using (var pen = new Pen(Color.FromArgb(20, 255, 255, 255), 1f))
+                for (int i = -this.Height; i < this.Width + this.Height; i += 18)
+                    g.DrawLine(pen, i, 0, i + this.Height, this.Height);
+
+            // Sombra suave detrás de la card
+            var shadow = new Rectangle(panelCard.Left + 5, panelCard.Top + 6,
+                                       panelCard.Width, panelCard.Height);
+            using (var b = new SolidBrush(Color.FromArgb(55, 0, 0, 0)))
+                g.FillRectangle(b, shadow);
         }
 
         private void MostrarError(string mensaje)
