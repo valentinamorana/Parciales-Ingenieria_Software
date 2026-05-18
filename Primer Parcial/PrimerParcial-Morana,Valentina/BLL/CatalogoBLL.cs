@@ -16,15 +16,15 @@ namespace BLL
             var articulos = new Dictionary<int, ArticuloSimple>();
             var lotes     = new Dictionary<int, LoteArticulos>();
 
-            foreach (System.Data.DataRow f in unidades.Rows)
+            foreach (System.Data.DataRow fila in unidades.Rows)
             {
-                int     id     = (int)f["Id"];
-                string  nombre = (string)f["Nombre"];
-                string  desc   = f["Descripcion"] == DBNull.Value ? "" : (string)f["Descripcion"];
-                decimal precio = (decimal)f["PrecioBase"];
-                string  tipo   = (string)f["TipoUnidad"];
+                int     id     = (int)fila["Id"];
+                string  nombre = (string)fila["Nombre"];
+                string  desc   = fila["Descripcion"] == DBNull.Value ? "" : (string)fila["Descripcion"];
+                decimal precio = (decimal)fila["PrecioBase"];
+                string  tipo   = (string)fila["TipoUnidad"];
 
-                DateTime fechaIngreso = f["FechaIngreso"] == DBNull.Value ? DateTime.MinValue : (DateTime)f["FechaIngreso"];
+                DateTime fechaIngreso = fila["FechaIngreso"] == DBNull.Value ? DateTime.MinValue : (DateTime)fila["FechaIngreso"];
 
                 if (tipo == "Articulo")
                     articulos[id] = new ArticuloSimple { Id = id, Nombre = nombre, Descripcion = desc, PrecioBase = precio, FechaIngreso = fechaIngreso };
@@ -33,10 +33,10 @@ namespace BLL
             }
 
             var esHijo = new HashSet<int>();
-            foreach (System.Data.DataRow f in relacs.Rows)
+            foreach (System.Data.DataRow fila in relacs.Rows)
             {
-                int loteId      = (int)f["LoteId"];
-                int contenidoId = (int)f["ContenidoId"];
+                int loteId      = (int)fila["LoteId"];
+                int contenidoId = (int)fila["ContenidoId"];
                 if (!lotes.ContainsKey(loteId)) continue;
 
                 IUnidadDeVenta hijo = articulos.ContainsKey(contenidoId)

@@ -35,12 +35,7 @@ namespace DAL
             var tabla = _acceso.Leer("SELECT Id, Nombre, Email FROM Usuarios ORDER BY Nombre");
             var lista = new List<Usuario>();
             foreach (System.Data.DataRow fila in tabla.Rows)
-                lista.Add(new Usuario
-                {
-                    Id     = (int)fila["Id"],
-                    Nombre = (string)fila["Nombre"],
-                    Email  = (string)fila["Email"]
-                });
+                lista.Add(MapearFila(fila));
             return lista;
         }
 
@@ -49,15 +44,15 @@ namespace DAL
             var tabla = _acceso.Leer("SELECT Id, Nombre, Email FROM Usuarios WHERE Id = @id",
                 new[] { new SqlParameter("@id", id) });
 
-            if (tabla.Rows.Count == 0) return null;
-            var fila = tabla.Rows[0];
-            return new Usuario
-            {
-                Id     = (int)fila["Id"],
-                Nombre = (string)fila["Nombre"],
-                Email  = (string)fila["Email"]
-            };
+            return tabla.Rows.Count == 0 ? null : MapearFila(tabla.Rows[0]);
         }
+
+        private static Usuario MapearFila(System.Data.DataRow fila) => new Usuario
+        {
+            Id     = (int)fila["Id"],
+            Nombre = (string)fila["Nombre"],
+            Email  = (string)fila["Email"]
+        };
 
         public override void Eliminar(Usuario entidad)
         {

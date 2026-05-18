@@ -58,8 +58,8 @@ namespace DAL
             var tabla = _acceso.Leer(
                 "SELECT Id, Fecha, Operacion, Detalle, Criticidad, NombreMartillero FROM Bitacora ORDER BY Fecha DESC");
             var lista = new List<EventoBitacora>();
-            foreach (System.Data.DataRow f in tabla.Rows)
-                lista.Add(MapearFila(f));
+            foreach (System.Data.DataRow fila in tabla.Rows)
+                lista.Add(MapearFila(fila));
             return lista;
         }
 
@@ -75,14 +75,14 @@ namespace DAL
             => _acceso.Escribir("DELETE FROM Bitacora WHERE Id=@id",
                 new[] { new SqlParameter("@id", e.Id) });
 
-        private static EventoBitacora MapearFila(System.Data.DataRow f) => new EventoBitacora
+        private static EventoBitacora MapearFila(System.Data.DataRow fila) => new EventoBitacora
         {
-            Id               = (int)f["Id"],
-            Fecha            = (DateTime)f["Fecha"],
-            Operacion        = (string)f["Operacion"],
-            Detalle          = (string)f["Detalle"],
-            Criticidad       = (CriticidadEvento)Enum.Parse(typeof(CriticidadEvento), (string)f["Criticidad"]),
-            NombreMartillero = (string)f["NombreMartillero"]
+            Id               = (int)fila["Id"],
+            Fecha            = (DateTime)fila["Fecha"],
+            Operacion        = (string)fila["Operacion"],
+            Detalle          = (string)fila["Detalle"],
+            Criticidad       = (CriticidadEvento)Enum.Parse(typeof(CriticidadEvento), (string)fila["Criticidad"]),
+            NombreMartillero = (string)fila["NombreMartillero"]
         };
     }
 }

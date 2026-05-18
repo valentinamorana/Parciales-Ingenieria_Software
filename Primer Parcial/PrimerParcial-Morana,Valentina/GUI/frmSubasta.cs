@@ -56,6 +56,9 @@ namespace GUI
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[InicializarDatos] Error al cargar usuarios: {ex}");
+                MessageBox.Show(
+                    $"No se pudieron cargar los usuarios desde la base de datos.\nSe usarán usuarios de demo.\n\nDetalle: {ex.Message}",
+                    "Aviso — sin conexión a BD", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 _usuarios = new List<Usuario>
                 {
                     new Usuario { Id = 1, Nombre = "Carlos Méndez",   Email = "carlos@web.com"  },
