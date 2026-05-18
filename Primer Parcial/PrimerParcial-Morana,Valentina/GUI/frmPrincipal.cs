@@ -16,7 +16,6 @@ namespace GUI
         public frmPrincipal()
         {
             InitializeComponent();
-            this.Icon = LogoHelper.Icono;
         }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
@@ -71,7 +70,6 @@ namespace GUI
         {
             if (this.ActiveMdiChild != null)
                 this.ActiveMdiChild.Close();
-            form.Icon        = LogoHelper.Icono;
             form.MdiParent   = this;
             form.WindowState = FormWindowState.Maximized;
             form.Show();

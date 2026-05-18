@@ -15,7 +15,6 @@ namespace GUI
         public frmLogin()
         {
             InitializeComponent();
-            this.Icon = LogoHelper.Icono;
         }
 
         private void frmLogin_Load(object sender, EventArgs e)
