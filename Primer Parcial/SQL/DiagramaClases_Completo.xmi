@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1"
+  xmlns:uml="http://www.omg.org/spec/UML/20090901"
+  xmlns:xmi="http://www.omg.org/spec/XMI/20090901">
+
+  <xmi:Documentation exporter="AlmonedaNacional-DiagramaCompleto" exporterVersion="1.0"/>
+
+  <!--
+    INSTRUCCIONES EA:
+      File > Import > Import Package from XMI
+      Luego: en el Project Browser seleccionas todas las clases,
+      las arrastras a un nuevo Class Diagram y usas Layout > Auto Layout.
+  -->
+
+  <uml:Model xmi:type="uml:Model" xmi:id="MODEL_AN" name="LaAlmonedaNacional">
+    <packagedElement xmi:type="uml:Package" xmi:id="PKG_ALL" name="AlmonedaNacional">
+
+      <!-- ══════════════════════════════════════════
+           INTERFACES
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Interface" xmi:id="IFC_IEntidad" name="IEntidad">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_IEntidad_Id"
+                        name="Id" visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Interface" xmi:id="IFC_ICrud" name="ICrud&lt;T&gt;">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_ICrud_Guardar"      name="Guardar"      visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_ICrud_ObtenerTodos" name="ObtenerTodos" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_ICrud_ObtenerPorId" name="ObtenerPorId" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_ICrud_Eliminar"     name="Eliminar"     visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Interface" xmi:id="IFC_IUnidadDeVenta" name="IUnidadDeVenta">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_IUdV_IEntidad" general="IFC_IEntidad"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_IUdV_Nombre"       name="Nombre"       visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_IUdV_FechaIngreso" name="FechaIngreso" visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_IUdV_Estado"       name="Estado"       visibility="public" type="ENUM_EstadoUnidad"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IUdV_CalcPrecio"  name="CalcularPrecioBase"  visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IUdV_ObtDesc"     name="ObtenerDescripcion"  visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IUdV_Agregar"     name="Agregar"             visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IUdV_Quitar"      name="Quitar"              visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IUdV_ObtHijos"    name="ObtenerHijos"        visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Interface" xmi:id="IFC_ISujetoSubasta" name="ISujetoSubasta">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IS_Suscribir"   name="Suscribir"   visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IS_Desuscribir" name="Desuscribir" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IS_Notificar"   name="Notificar"   visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Interface" xmi:id="IFC_IObservadorSubasta" name="IObservadorSubasta">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_IO_Actualizar" name="Actualizar" visibility="public"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           ENUMERACIONES
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="ENUM_EstadoUnidad" name="EstadoUnidad">
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_EU_Disponible" name="Disponible"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_EU_EnSubasta"  name="EnSubasta"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_EU_Adjudicado" name="Adjudicado"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="ENUM_EstadoPuja" name="EstadoPuja">
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_EP_Aceptada"  name="Aceptada"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_EP_Rechazada" name="Rechazada"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="ENUM_CriticidadEvento" name="CriticidadEvento">
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_CE_Baja"            name="Baja"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_CE_Media"           name="Media"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_CE_Alta"            name="Alta"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_CE_IntentosLogin"   name="IntentosLogin"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="L_CE_BloqueosCuenta" name="BloqueosCuenta"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           BE — ENTIDADES
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_Entidad" name="Entidad" isAbstract="true">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="R_Entidad_IEntidad"
+                              supplier="IFC_IEntidad" client="CLS_Entidad"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Entidad_Id" name="Id" visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_Usuario" name="Usuario">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_Usuario_Entidad" general="CLS_Entidad"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Usr_Nombre"    name="Nombre"    visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Usr_Email"     name="Email"     visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Usr_FechaAlta" name="FechaAlta" visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_Martillero" name="Martillero">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_Martillero_Entidad" general="CLS_Entidad"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Mart_Nombre"    name="Nombre"           visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Mart_Username"  name="Username"         visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Mart_Hash"      name="PasswordHash"     visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Mart_Intentos"  name="IntentosFallidos" visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Mart_Bloqueado" name="BloqueadoHasta"   visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_ResultadoSubasta" name="ResultadoSubasta">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_RS_Entidad" general="CLS_Entidad"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_RS_NomUV"       name="NombreUnidadVenta" visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_RS_PrecioBase"  name="PrecioBase"        visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_RS_PrecioFinal" name="PrecioFinal"       visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_RS_NomGanador"  name="NombreGanador"     visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_RS_EmailGan"    name="EmailGanador"      visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_RS_FechaHora"   name="FechaHora"         visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_Puja" name="Puja">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_Puja_Entidad" general="CLS_Entidad"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Puja_IdSub"   name="IdSubasta"     visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Puja_NomUsur" name="NombreUsuario" visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Puja_Monto"   name="Monto"         visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Puja_Fecha"   name="FechaHora"     visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Puja_Estado"  name="Estado"        visibility="public" type="ENUM_EstadoPuja"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_Puja_Motivo"  name="MotivoRechazo" visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_EventoBitacora" name="EventoBitacora">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_EB_Entidad" general="CLS_Entidad"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_EB_Fecha"      name="Fecha"            visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_EB_Operacion"  name="Operacion"        visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_EB_Detalle"    name="Detalle"          visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_EB_Criticidad" name="Criticidad"       visibility="public" type="ENUM_CriticidadEvento"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_EB_NomMart"    name="NombreMartillero" visibility="public"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           SERVICIOS — COMPOSITE
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_ServiceEntity" name="ServiceEntity">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="R_SE_IEntidad"
+                              supplier="IFC_IEntidad" client="CLS_ServiceEntity"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_SE_Id" name="Id" visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_UnidadDeVentaBase" name="UnidadDeVentaBase" isAbstract="true">
+        <generalization       xmi:type="uml:Generalization"       xmi:id="G_UdVBase_SE"    general="CLS_ServiceEntity"/>
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="R_UdVBase_IUdV"
+                              supplier="IFC_IUnidadDeVenta" client="CLS_UnidadDeVentaBase"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_UdVBase_Nombre"   name="Nombre"       visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_UdVBase_Fecha"    name="FechaIngreso" visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_UdVBase_Estado"   name="Estado"       visibility="public" type="ENUM_EstadoUnidad"/>
+      </packagedElement>
+
+      <!-- Hoja -->
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_ArticuloSimple" name="ArticuloSimple">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_Art_UdVBase" general="CLS_UnidadDeVentaBase"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_Art_PrecioBase"  name="PrecioBase"  visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_Art_Descripcion" name="Descripcion" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Art_CalcPrecio"  name="CalcularPrecioBase"  visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Art_ObtDesc"     name="ObtenerDescripcion"  visibility="public"/>
+      </packagedElement>
+
+      <!-- Compuesto -->
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_LoteArticulos" name="LoteArticulos">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_Lote_UdVBase" general="CLS_UnidadDeVentaBase"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_Lote_Contenido"  name="_contenido: IList&lt;IUnidadDeVenta&gt;" visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Lote_CalcPrecio" name="CalcularPrecioBase"  visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Lote_ObtDesc"    name="ObtenerDescripcion"  visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Lote_Agregar"    name="Agregar"             visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Lote_Quitar"     name="Quitar"              visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Lote_ObtHijos"   name="ObtenerHijos"        visibility="public"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           SERVICIOS — OBSERVER
+           ══════════════════════════════════════════ -->
+
+      <!-- Sujeto concreto -->
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_SubastaActiva" name="SubastaActiva">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="R_SA_ISujeto"
+                              supplier="IFC_ISujetoSubasta" client="CLS_SubastaActiva"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SA_Unidad"       name="Unidad: IUnidadDeVenta"                 visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SA_PrecioActual" name="PrecioActual: decimal"                  visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SA_UltPujador"   name="UltimoPujador: Usuario"                 visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SA_EstaActiva"   name="EstaActiva: bool"                       visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SA_Pujas"        name="Pujas: IList&lt;Puja&gt;"               visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SA_Obs"          name="_observadores: IList&lt;IObservadorSubasta&gt;" visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SA_Suscribir"    name="Suscribir"     visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SA_Desuscribir"  name="Desuscribir"   visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SA_Notificar"    name="Notificar"     visibility="protected"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SA_Ofertar"      name="RealizarOferta" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SA_Cerrar"       name="Cerrar"        visibility="public"/>
+      </packagedElement>
+
+      <!-- Observador concreto -->
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_Interesado" name="Interesado">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="R_Int_IObs"
+                              supplier="IFC_IObservadorSubasta" client="CLS_Interesado"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_Int_Usuario" name="Usuario: Usuario" visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_Int_Canal"   name="Canal: string"    visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Int_Actual"  name="Actualizar"       visibility="public"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           SERVICIOS — SINGLETON
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_GestorPujas"
+                       name="GestorDePujasSingleton" isFinalSpecialization="true">
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_GP_Inst"      name="_instancia: volatile GestorDePujasSingleton" visibility="private" isStatic="true"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_GP_LockC"     name="_lockCreacion: object"                       visibility="private" isStatic="true"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_GP_LockP"     name="_lockPuja: object"                           visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_GP_GetInst"   name="GetInstance(): GestorDePujasSingleton"       visibility="public"  isStatic="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_GP_EjLock"    name="EjecutarBajoLock(operacion: Action)"         visibility="public"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           SEGURIDAD
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_SessionManager"
+                       name="SessionManager" isFinalSpecialization="true">
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SM_Inst"       name="_instancia: volatile SessionManager" visibility="private" isStatic="true"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SM_Lock"       name="_lock: object"                      visibility="private" isStatic="true"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SM_Martillero" name="Martillero: Martillero"             visibility="public"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SM_IsLogged"   name="IsLoggedIn: bool"                   visibility="public"  isStatic="true"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_SM_Inicio"     name="InicioSesion: DateTime"             visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SM_GetInst"    name="GetInstance(): SessionManager"      visibility="public"  isStatic="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SM_Login"      name="Login(u: string, p: string): bool"  visibility="public"  isStatic="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SM_Logout"     name="Logout()"                           visibility="public"  isStatic="true"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           DAL
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_Acceso"
+                       name="Acceso" isFinalSpecialization="true">
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_Acc_Inst"    name="_instancia: volatile Acceso" visibility="private" isStatic="true"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_Acc_Lock"    name="_lockCreacion: object"       visibility="private" isStatic="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Acc_GetInst" name="GetInstance(): Acceso"       visibility="public"  isStatic="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Acc_Leer"    name="Leer(sql, params): DataTable" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Acc_Escribir" name="Escribir(sql, params)"      visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Acc_Escalar"  name="EjecutarEscalar(sql, params): int" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_Acc_Transacc" name="EjecutarTransaccion(accion: Action)" visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_AbstractDAL" name="AbstractDAL&lt;T&gt;" isAbstract="true">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="R_AbsDAL_ICrud"
+                              supplier="IFC_ICrud" client="CLS_AbstractDAL"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_AbsDAL_Acc"      name="_acceso: Acceso"   visibility="protected"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_AbsDAL_Guardar"  name="Guardar"           visibility="public"  isAbstract="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_AbsDAL_ObtTodos" name="ObtenerTodos"      visibility="public"  isAbstract="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_AbsDAL_ObtId"    name="ObtenerPorId"      visibility="public"  isAbstract="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_AbsDAL_Eliminar" name="Eliminar"          visibility="public"  isAbstract="true"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_CatalogoDAL" name="CatalogoDAL">
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_CatDAL_Acc"    name="_acceso: Acceso"           visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_CatDAL_ObtUnd" name="ObtenerUnidades(): DataTable"   visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_CatDAL_ObtRel" name="ObtenerRelaciones(): DataTable" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_CatDAL_GrdArt" name="GuardarArticulo(...): int"      visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_CatDAL_GrdLot" name="GuardarLote(...): int"          visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_SubastaDAL" name="SubastaDAL">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_SubDAL_Abs" general="CLS_AbstractDAL"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubDAL_Grd"   name="Guardar"               visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubDAL_ObtT"  name="ObtenerTodos"          visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubDAL_ObtId" name="ObtenerPorId"          visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubDAL_GTx"   name="GuardarEnTransaccion"  visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_PujaDAL" name="PujaDAL">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_PujDAL_Abs" general="CLS_AbstractDAL"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_PujDAL_Grd"    name="Guardar"               visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_PujDAL_ObtT"   name="ObtenerTodos"          visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_PujDAL_ObtSub" name="ObtenerPorSubasta"     visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_PujDAL_GTx"    name="GuardarEnTransaccion"  visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_BitacoraDAL" name="BitacoraDAL">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_BitDAL_Abs" general="CLS_AbstractDAL"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_BitDAL_Grd"    name="Guardar"           visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_BitDAL_ObtT"   name="ObtenerTodos"      visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_BitDAL_ObtFil" name="ObtenerFiltrado"   visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_UsuarioDAL" name="UsuarioDAL">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_UsrDAL_Abs" general="CLS_AbstractDAL"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_UsrDAL_Grd"  name="Guardar"      visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_UsrDAL_ObtT" name="ObtenerTodos" visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_MartilleroDAL" name="MartilleroDAL">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_MartDAL_Abs" general="CLS_AbstractDAL"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_MartDAL_ObtU"  name="ObtenerPorUsername"          visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_MartDAL_UpdI"  name="ActualizarIntentosFallidos"  visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_MartDAL_Bloq"  name="Bloquear"                    visibility="public"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           BLL
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_AbstractBLL" name="AbstractBLL&lt;T&gt;" isAbstract="true">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="R_AbsBLL_ICrud"
+                              supplier="IFC_ICrud" client="CLS_AbstractBLL"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="A_AbsBLL_Crud" name="_crud: ICrud&lt;T&gt;" visibility="protected"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_CatalogoBLL" name="CatalogoBLL">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_CatBLL_ObtCat"  name="ObtenerCatalogo(): IList&lt;IUnidadDeVenta&gt;" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_CatBLL_GrdArt"  name="GuardarArticulo(art: ArticuloSimple)"           visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_CatBLL_GrdLote" name="GuardarLote(lote: LoteArticulos)"               visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_SubastaBLL" name="SubastaBLL">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_SubBLL_Abs" general="CLS_AbstractBLL"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubBLL_Crear"   name="CrearSubasta(u: IUnidadDeVenta): SubastaActiva" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubBLL_Suscr"   name="Suscribir(s, obs)"                             visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubBLL_Desuscr" name="Desuscribir(s, obs)"                           visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubBLL_Ofertar" name="RealizarOferta(s, u, monto)"                   visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubBLL_Cerrar"  name="CerrarSubasta(s): ResultadoSubasta"            visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubBLL_Hist"    name="ObtenerHistorial(): IList&lt;ResultadoSubasta&gt;" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_SubBLL_Pujas"   name="ObtenerPujas(id): IList&lt;Puja&gt;"           visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_BitacoraBLL" name="BitacoraBLL">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_BitBLL_Reg"    name="Registrar(op, detalle, criticidad)" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_BitBLL_ObtFil" name="ObtenerFiltrado(dias, crit, op): IList&lt;EventoBitacora&gt;" visibility="public"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_UsuarioBLL" name="UsuarioBLL">
+        <generalization xmi:type="uml:Generalization" xmi:id="G_UsrBLL_Abs" general="CLS_AbstractBLL"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_UsrBLL_ObtT" name="ObtenerTodos(): IList&lt;Usuario&gt;" visibility="public"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           GUI
+           ══════════════════════════════════════════ -->
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_frmLogin" name="frmLogin">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmL_InicSes" name="IniciarSesion_Click" visibility="private"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_frmPrincipal" name="frmPrincipal">
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_frmP_Cat"     name="_catalogo: List&lt;IUnidadDeVenta&gt;" visibility="private"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_frmP_Bit"     name="_bitacora: BitacoraBLL"               visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmP_CargCat" name="CargarCatalogo"  visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmP_Abrir"   name="AbrirForm"       visibility="private"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_frmCatalogo" name="frmCatalogo">
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_frmC_Cat"    name="_catalogo: List&lt;IUnidadDeVenta&gt;" visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmC_Refres" name="RefrescarVistas" visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmC_Filtro" name="AplicarFiltro"   visibility="private"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_frmSubasta" name="frmSubasta">
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_frmS_SA"      name="_subastaActiva: SubastaActiva"        visibility="private"/>
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_frmS_Cat"     name="_catalogo: List&lt;IUnidadDeVenta&gt;" visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmS_Iniciar" name="IniciarSubasta_Click" visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmS_Cerrar"  name="CerrarSubasta_Click"  visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmS_Ofertar" name="Ofertar_Click"         visibility="private"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_frmHistorial" name="frmHistorial">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmH_Carg" name="CargarHistorial" visibility="private"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_frmReporte" name="frmReporte">
+        <ownedAttribute xmi:type="uml:Property"  xmi:id="A_frmR_Cat"    name="_catalogo: List&lt;IUnidadDeVenta&gt;" visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmR_Gen"    name="GenerarReporte"  visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmR_ExpTXT" name="ExportarTXT"     visibility="private"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmR_ExpPDF" name="ExportarPDF"     visibility="private"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="CLS_frmBitacora" name="frmBitacora">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="O_frmB_Carg" name="CargarEventos" visibility="private"/>
+      </packagedElement>
+
+      <!-- ══════════════════════════════════════════
+           DEPENDENCIAS (uses)
+           ══════════════════════════════════════════ -->
+
+      <!-- DAL → Acceso -->
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_AbsDAL_Acc"   client="CLS_AbstractDAL"  supplier="CLS_Acceso"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_CatDAL_Acc"   client="CLS_CatalogoDAL"  supplier="CLS_Acceso"/>
+
+      <!-- BLL → DAL -->
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_CatBLL_CatDAL" client="CLS_CatalogoBLL" supplier="CLS_CatalogoDAL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_SubBLL_SubDAL" client="CLS_SubastaBLL"  supplier="CLS_SubastaDAL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_SubBLL_PujDAL" client="CLS_SubastaBLL"  supplier="CLS_PujaDAL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_SubBLL_Acc"    client="CLS_SubastaBLL"  supplier="CLS_Acceso"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_BitBLL_BitDAL" client="CLS_BitacoraBLL" supplier="CLS_BitacoraDAL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_UsrBLL_UsrDAL" client="CLS_UsuarioBLL"  supplier="CLS_UsuarioDAL"/>
+
+      <!-- BLL → Servicios -->
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_SubBLL_SA"     client="CLS_SubastaBLL"   supplier="CLS_SubastaActiva"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_BitBLL_SM"     client="CLS_BitacoraBLL"  supplier="CLS_SessionManager"/>
+
+      <!-- Servicios → Singleton -->
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_SA_Gestor"     client="CLS_SubastaActiva" supplier="CLS_GestorPujas"/>
+
+      <!-- Seguridad → DAL -->
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_SM_MartDAL"    client="CLS_SessionManager" supplier="CLS_MartilleroDAL"/>
+
+      <!-- GUI → BLL / Seguridad -->
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmL_SM"       client="CLS_frmLogin"     supplier="CLS_SessionManager"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmP_CatBLL"   client="CLS_frmPrincipal" supplier="CLS_CatalogoBLL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmP_BitBLL"   client="CLS_frmPrincipal" supplier="CLS_BitacoraBLL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmP_SM"       client="CLS_frmPrincipal" supplier="CLS_SessionManager"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmC_CatBLL"   client="CLS_frmCatalogo"  supplier="CLS_CatalogoBLL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmS_SubBLL"   client="CLS_frmSubasta"   supplier="CLS_SubastaBLL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmS_BitBLL"   client="CLS_frmSubasta"   supplier="CLS_BitacoraBLL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmH_SubBLL"   client="CLS_frmHistorial" supplier="CLS_SubastaBLL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmR_SubBLL"   client="CLS_frmReporte"   supplier="CLS_SubastaBLL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmR_CatBLL"   client="CLS_frmReporte"   supplier="CLS_CatalogoBLL"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="D_frmB_BitBLL"   client="CLS_frmBitacora"  supplier="CLS_BitacoraBLL"/>
+
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>
