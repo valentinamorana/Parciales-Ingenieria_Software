@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using BE;
 using BLL;
 using Servicios.Composite;
 
@@ -24,6 +25,9 @@ namespace GUI
         {
             cmbFiltroTipo.Items.AddRange(new object[] { "Todos", "Artículos", "Lotes" });
             cmbFiltroTipo.SelectedIndex = 0;
+            cmbFiltroEstado.Items.AddRange(new object[] { "Todos", "Disponible", "En Subasta", "Adjudicado" });
+            cmbFiltroEstado.SelectedIndex = 0;
+            dgvCatalogo.CellFormatting += dgvCatalogo_CellFormatting;
             RefrescarVistas();
         }
 
@@ -53,8 +57,9 @@ namespace GUI
 
         private List<IUnidadDeVenta> AplicarFiltro()
         {
-            string busqueda = txtBuscar.Text.Trim().ToLower();
-            string tipo     = cmbFiltroTipo.SelectedItem?.ToString() ?? "Todos";
+            string busqueda    = txtBuscar.Text.Trim().ToLower();
+            string tipo        = cmbFiltroTipo.SelectedItem?.ToString()    ?? "Todos";
+            string estadoFiltro = cmbFiltroEstado.SelectedItem?.ToString() ?? "Todos";
 
             decimal precioMin = 0;
             decimal precioMax = decimal.MaxValue;
@@ -70,10 +75,22 @@ namespace GUI
                 bool matchNombre = string.IsNullOrEmpty(busqueda)
                     || u.Nombre.ToLower().Contains(busqueda);
                 decimal precio = u.CalcularPrecioBase();
-                bool matchPrecio = precio >= precioMin && precio <= precioMax;
-                if (matchTipo && matchNombre && matchPrecio) resultado.Add(u);
+                bool matchPrecio  = precio >= precioMin && precio <= precioMax;
+                bool matchEstado  = estadoFiltro == "Todos"
+                    || EstadoToString(u.Estado) == estadoFiltro;
+                if (matchTipo && matchNombre && matchPrecio && matchEstado) resultado.Add(u);
             }
             return resultado;
+        }
+
+        private static string EstadoToString(EstadoUnidad estado)
+        {
+            switch (estado)
+            {
+                case EstadoUnidad.EnSubasta:  return "En Subasta";
+                case EstadoUnidad.Adjudicado: return "Adjudicado";
+                default:                      return "Disponible";
+            }
         }
 
         private void FiltroChanged(object sender, EventArgs e) => RefrescarVistas();
@@ -124,13 +141,37 @@ namespace GUI
             tabla.Columns.Add("Tipo");
             tabla.Columns.Add("Nombre");
             tabla.Columns.Add("Precio Base", typeof(decimal));
+            tabla.Columns.Add("Estado");
 
             foreach (var u in _vista)
-                tabla.Rows.Add(u is LoteArticulos ? "LOTE" : "Artículo", u.Nombre, u.CalcularPrecioBase());
+                tabla.Rows.Add(u is LoteArticulos ? "LOTE" : "Artículo", u.Nombre,
+                               u.CalcularPrecioBase(), EstadoToString(u.Estado));
 
             dgvCatalogo.DataSource = tabla;
             if (dgvCatalogo.Columns.Contains("Precio Base"))
                 dgvCatalogo.Columns["Precio Base"].DefaultCellStyle.Format = "C2";
+        }
+
+        private void dgvCatalogo_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (!dgvCatalogo.Columns.Contains("Estado")) return;
+            if (e.ColumnIndex != dgvCatalogo.Columns["Estado"].Index) return;
+
+            switch (e.Value?.ToString())
+            {
+                case "En Subasta":
+                    e.CellStyle.ForeColor  = Color.FromArgb(180, 100, 0);
+                    e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Bold);
+                    break;
+                case "Adjudicado":
+                    e.CellStyle.ForeColor  = Color.FromArgb(180, 0, 0);
+                    e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Bold);
+                    break;
+                default:
+                    e.CellStyle.ForeColor  = Color.FromArgb(30, 140, 80);
+                    e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Bold);
+                    break;
+            }
         }
 
         // ── Eventos de selección ─────────────────────────────────────────────

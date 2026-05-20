@@ -98,6 +98,7 @@ namespace GUI
                     throw new InvalidOperationException("Seleccione una unidad de venta.");
 
                 _subastaActiva = _bll.CrearSubasta(unidad);
+                unidad.Estado  = EstadoUnidad.EnSubasta;
                 _interesados.Clear();
                 lstInteresados.Items.Clear();
                 rtbNotificaciones.Clear();
@@ -255,6 +256,7 @@ namespace GUI
 
                 // Cierra subasta → notifica a todos (RF-07) → persiste en BD
                 var resultado = _bll.CerrarSubasta(_subastaActiva);
+                _subastaActiva.Unidad.Estado = EstadoUnidad.Adjudicado;
 
                 _bitacora.Registrar("CERRAR_SUBASTA",
                     $"Cierre manual — {_subastaActiva.Unidad.Nombre} — Ganador: {resultado.NombreGanador} — ${resultado.PrecioFinal:N2}",
@@ -314,6 +316,7 @@ namespace GUI
             if (_subastaActiva.UltimoPujador == null)
             {
                 // Sin ofertas: no se puede adjudicar, se cancela sin persistir
+                _subastaActiva.Unidad.Estado = EstadoUnidad.Disponible;
                 _subastaActiva = null;
                 rtbNotificaciones.AppendText(
                     $"\r\n[{DateTime.Now:HH:mm:ss}] ══ TIEMPO AGOTADO — sin ofertas, subasta cancelada sin adjudicación ══\r\n");
@@ -324,6 +327,7 @@ namespace GUI
             try
             {
                 var resultado = _bll.CerrarSubasta(_subastaActiva);
+                _subastaActiva.Unidad.Estado = EstadoUnidad.Adjudicado;
 
                 _bitacora.Registrar("CIERRE_AUTOMATICO",
                     $"Tiempo agotado — {_subastaActiva?.Unidad?.Nombre} — Ganador: {resultado.NombreGanador} — ${resultado.PrecioFinal:N2}",

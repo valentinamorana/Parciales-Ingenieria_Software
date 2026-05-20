@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BE;
 
 namespace Servicios.Composite
 {
@@ -8,8 +9,9 @@ namespace Servicios.Composite
     // igual a como PermisoCompuesto : ServiceEntity, IPermiso en el ejemplo de cátedra.
     public abstract class UnidadDeVentaBase : ServiceEntity, IUnidadDeVenta
     {
-        public string   Nombre       { get; set; }
-        public DateTime FechaIngreso { get; set; }
+        public string       Nombre       { get; set; }
+        public DateTime     FechaIngreso { get; set; }
+        public EstadoUnidad Estado       { get; set; } = EstadoUnidad.Disponible;
 
         public abstract decimal CalcularPrecioBase();
         public abstract string ObtenerDescripcion();

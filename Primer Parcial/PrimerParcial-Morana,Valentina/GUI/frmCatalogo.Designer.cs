@@ -48,6 +48,8 @@ namespace GUI
             this.txtPrecioMin = new System.Windows.Forms.TextBox();
             this.lblGuion = new System.Windows.Forms.Label();
             this.txtPrecioMax = new System.Windows.Forms.TextBox();
+            this.lblEstadoFiltro = new System.Windows.Forms.Label();
+            this.cmbFiltroEstado = new System.Windows.Forms.ComboBox();
             this.pnlHeaderGrilla = new System.Windows.Forms.Panel();
             this.lblTituloGrilla = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
@@ -335,7 +337,7 @@ namespace GUI
             this.dgvCatalogo.ReadOnly = true;
             this.dgvCatalogo.RowHeadersVisible = false;
             this.dgvCatalogo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCatalogo.Size = new System.Drawing.Size(900, 222);
+            this.dgvCatalogo.Size = new System.Drawing.Size(1060, 222);
             this.dgvCatalogo.TabIndex = 2;
             this.dgvCatalogo.SelectionChanged += new System.EventHandler(this.dgvCatalogo_SelectionChanged);
             // 
@@ -350,9 +352,11 @@ namespace GUI
             this.panelFiltros.Controls.Add(this.txtPrecioMin);
             this.panelFiltros.Controls.Add(this.lblGuion);
             this.panelFiltros.Controls.Add(this.txtPrecioMax);
+            this.panelFiltros.Controls.Add(this.lblEstadoFiltro);
+            this.panelFiltros.Controls.Add(this.cmbFiltroEstado);
             this.panelFiltros.Location = new System.Drawing.Point(8, 28);
             this.panelFiltros.Name = "panelFiltros";
-            this.panelFiltros.Size = new System.Drawing.Size(900, 36);
+            this.panelFiltros.Size = new System.Drawing.Size(1060, 36);
             this.panelFiltros.TabIndex = 3;
             // 
             // lblBuscar
@@ -447,7 +451,29 @@ namespace GUI
             this.txtPrecioMax.TabIndex = 7;
             this.txtPrecioMax.TextChanged += new System.EventHandler(this.FiltroChanged);
             this.txtPrecioMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPrecio_KeyPress);
-            // 
+            //
+            // lblEstadoFiltro
+            //
+            this.lblEstadoFiltro.AutoSize = true;
+            this.lblEstadoFiltro.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblEstadoFiltro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblEstadoFiltro.Location = new System.Drawing.Point(858, 10);
+            this.lblEstadoFiltro.Name = "lblEstadoFiltro";
+            this.lblEstadoFiltro.Size = new System.Drawing.Size(47, 15);
+            this.lblEstadoFiltro.TabIndex = 8;
+            this.lblEstadoFiltro.Text = "Estado:";
+            //
+            // cmbFiltroEstado
+            //
+            this.cmbFiltroEstado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(248)))));
+            this.cmbFiltroEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFiltroEstado.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbFiltroEstado.Location = new System.Drawing.Point(910, 7);
+            this.cmbFiltroEstado.Name = "cmbFiltroEstado";
+            this.cmbFiltroEstado.Size = new System.Drawing.Size(140, 23);
+            this.cmbFiltroEstado.TabIndex = 9;
+            this.cmbFiltroEstado.SelectedIndexChanged += new System.EventHandler(this.FiltroChanged);
+            //
             // pnlHeaderGrilla
             // 
             this.pnlHeaderGrilla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(185)))), ((int)(((byte)(200)))));
@@ -537,5 +563,7 @@ namespace GUI
         private System.Windows.Forms.TextBox    txtPrecioMin;
         private System.Windows.Forms.Label      lblGuion;
         private System.Windows.Forms.TextBox    txtPrecioMax;
+        private System.Windows.Forms.Label      lblEstadoFiltro;
+        private System.Windows.Forms.ComboBox   cmbFiltroEstado;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BE;
 using Interfaces;
 
 namespace Servicios.Composite
@@ -8,8 +9,9 @@ namespace Servicios.Composite
     // Extiende IEntidad — igual a como IPermiso : IEntity en el ejemplo de cátedra.
     public interface IUnidadDeVenta : IEntidad
     {
-        string   Nombre       { get; set; }
-        DateTime FechaIngreso { get; set; }
+        string       Nombre       { get; set; }
+        DateTime     FechaIngreso { get; set; }
+        EstadoUnidad Estado       { get; set; }
 
         decimal CalcularPrecioBase();
         string ObtenerDescripcion();
