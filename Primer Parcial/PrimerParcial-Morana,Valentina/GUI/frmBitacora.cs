@@ -152,6 +152,14 @@ namespace GUI
                     dgvBitacora.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 215, 215);
                     dgvBitacora.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.FromArgb(140, 20, 20);
                     break;
+                case "IntentosLogin":
+                    dgvBitacora.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 235, 200);
+                    dgvBitacora.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.FromArgb(150, 80, 0);
+                    break;
+                case "BloqueosCuenta":
+                    dgvBitacora.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(230, 200, 255);
+                    dgvBitacora.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.FromArgb(80, 0, 140);
+                    break;
             }
         }
     }
