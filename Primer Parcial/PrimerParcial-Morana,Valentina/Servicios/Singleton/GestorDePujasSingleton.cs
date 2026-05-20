@@ -6,9 +6,9 @@ namespace Servicios.Singleton
 {
     // Patrón Singleton con doble lock (thread-safe)
     // Garantiza un único punto de control para procesar pujas (RF-09)
-    public class GestorDePujasSingleton
+    public sealed class GestorDePujasSingleton
     {
-        private static GestorDePujasSingleton _instancia;
+        private static volatile GestorDePujasSingleton _instancia;
         private static readonly object _lockCreacion = new object();
 
         // Lock exclusivo para procesar una puja a la vez — evita adjudicaciones simultáneas
@@ -19,17 +19,17 @@ namespace Servicios.Singleton
 
         private GestorDePujasSingleton() { }
 
-        public static GestorDePujasSingleton Instancia
+        public static GestorDePujasSingleton GetInstance()
         {
-            get
+            if (_instancia == null)
             {
                 lock (_lockCreacion)
                 {
                     if (_instancia == null)
                         _instancia = new GestorDePujasSingleton();
                 }
-                return _instancia;
             }
+            return _instancia;
         }
 
         // Ejecuta la operación de puja bajo exclusión mutua.

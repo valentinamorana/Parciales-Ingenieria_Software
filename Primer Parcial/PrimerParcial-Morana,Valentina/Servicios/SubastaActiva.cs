@@ -81,7 +81,7 @@ namespace Servicios
             if (usuario == null)
                 throw new ArgumentNullException(nameof(usuario));
 
-            GestorDePujasSingleton.Instancia.EjecutarBajoLock(() =>
+            GestorDePujasSingleton.GetInstance().EjecutarBajoLock(() =>
             {
                 if (_ultimoPujador != null && usuario.Id == _ultimoPujador.Id)
                 {
