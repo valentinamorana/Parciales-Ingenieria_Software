@@ -52,7 +52,7 @@ namespace BLL
             var resultado = subasta.Cerrar();
 
             // Transacción atómica: subasta + todas sus pujas en la misma conexión/tx.
-            Acceso.Instancia.EjecutarTransaccion((conn, tx) =>
+            Acceso.GetInstance().EjecutarTransaccion((conn, tx) =>
             {
                 // 1. Persistir resultado final → obtener su Id
                 var subastaDAL = (SubastaDAL)_crud;

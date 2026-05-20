@@ -6,7 +6,7 @@ namespace Seguridad
     // SINGLETON — sesión única del martillero activo durante toda la ejecución.
     public sealed class SessionManager
     {
-        private static SessionManager    _instancia;
+        private static volatile SessionManager _instancia;
         private static readonly object   _lock = new object();
 
         private Martillero _martillero;
@@ -14,16 +14,13 @@ namespace Seguridad
 
         private SessionManager() { }
 
-        public static SessionManager Instancia
+        public static SessionManager GetInstance()
         {
-            get
-            {
-                if (_instancia == null)
-                    lock (_lock)
-                        if (_instancia == null)
-                            _instancia = new SessionManager();
-                return _instancia;
-            }
+            if (_instancia == null)
+                lock (_lock)
+                    if (_instancia == null)
+                        _instancia = new SessionManager();
+            return _instancia;
         }
 
         public static bool IsLoggedIn => _instancia?._martillero != null;
@@ -45,8 +42,8 @@ namespace Seguridad
             if (martillero == null) throw new ArgumentNullException(nameof(martillero));
             lock (_lock)
             {
-                Instancia._martillero   = martillero;
-                Instancia._inicioSesion = DateTime.Now;
+                GetInstance()._martillero   = martillero;
+                GetInstance()._inicioSesion = DateTime.Now;
             }
         }
 

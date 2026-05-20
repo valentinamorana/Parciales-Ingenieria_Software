@@ -10,7 +10,7 @@ namespace DAL
     // DAL no conoce Servicios.Composite: recibe únicamente tipos primitivos.
     public class CatalogoDAL
     {
-        private readonly Acceso _acceso = Acceso.Instancia;
+        private readonly Acceso _acceso = Acceso.GetInstance();
 
         public DataTable ObtenerUnidades() =>
             _acceso.Leer(

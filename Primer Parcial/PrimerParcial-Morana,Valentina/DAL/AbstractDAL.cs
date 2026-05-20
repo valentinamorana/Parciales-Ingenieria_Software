@@ -8,7 +8,7 @@ namespace DAL
     // Todos los DAL concretos acceden a la BD a través del Singleton Acceso.
     public abstract class AbstractDAL<T> : ICrud<T> where T : Entidad
     {
-        protected readonly Acceso _acceso = Acceso.Instancia;
+        protected readonly Acceso _acceso = Acceso.GetInstance();
 
         public abstract void Guardar(T entidad);
         public abstract IList<T> ObtenerTodos();

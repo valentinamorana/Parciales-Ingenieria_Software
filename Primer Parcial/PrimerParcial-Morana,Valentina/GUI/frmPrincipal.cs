@@ -23,7 +23,7 @@ namespace GUI
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
-            var m = SessionManager.Instancia.Martillero;
+            var m = SessionManager.GetInstance().Martillero;
             string nombre = !string.IsNullOrWhiteSpace(m.Nombre) ? m.Nombre : m.Username;
             this.Text = $"La Almoneda Nacional — {nombre} — 1er Parcial IS 2026";
 
@@ -106,7 +106,7 @@ namespace GUI
             if (resp != DialogResult.Yes) return;
 
             _bitacora.Registrar("LOGOUT",
-                $"Cierre de sesión — usuario: {SessionManager.Instancia.Martillero.Username}",
+                $"Cierre de sesión — usuario: {SessionManager.GetInstance().Martillero.Username}",
                 CriticidadEvento.Baja);
 
             SessionManager.Logout();

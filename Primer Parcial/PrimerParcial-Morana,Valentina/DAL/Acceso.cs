@@ -23,20 +23,17 @@ namespace DAL
                 .ConnectionString;
         }
 
-        public static Acceso Instancia
+        public static Acceso GetInstance()
         {
-            get
+            if (_instancia == null)
             {
-                if (_instancia == null)
+                lock (_lockCreacion)
                 {
-                    lock (_lockCreacion)
-                    {
-                        if (_instancia == null)
-                            _instancia = new Acceso();
-                    }
+                    if (_instancia == null)
+                        _instancia = new Acceso();
                 }
-                return _instancia;
             }
+            return _instancia;
         }
 
         // SELECT — devuelve DataTable

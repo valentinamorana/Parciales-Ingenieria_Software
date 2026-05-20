@@ -22,7 +22,7 @@ namespace BLL
                     Detalle          = detalle,
                     Criticidad       = criticidad,
                     NombreMartillero = SessionManager.IsLoggedIn
-                                       ? SessionManager.Instancia.Martillero.Username
+                                       ? SessionManager.GetInstance().Martillero.Username
                                        : "Sistema"
                 });
             }
