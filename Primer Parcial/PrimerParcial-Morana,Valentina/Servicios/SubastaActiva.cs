@@ -61,7 +61,14 @@ namespace Servicios
         {
             var copia = new List<IObservadorSubasta>(_observadores);
             foreach (var obs in copia)
-                obs.Actualizar(this);
+            {
+                try { obs.Actualizar(this); }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[SubastaActiva.Notificar] Error en observer: {ex.Message}");
+                }
+            }
         }
 
         // RF-10: valida y procesa oferta bajo lock del Singleton (RF-09).
