@@ -51,5 +51,26 @@ namespace BLL
             foreach (var kv in lotes)     if (!esHijo.Contains(kv.Key)) catalogo.Add(kv.Value);
             return catalogo;
         }
+
+        // Persiste un artículo simple nuevo en la BD y actualiza su Id.
+        public void GuardarArticulo(ArticuloSimple art)
+        {
+            if (art == null) throw new ArgumentNullException(nameof(art));
+            var dal = new CatalogoDAL();
+            art.Id = dal.GuardarArticulo(art.Nombre, art.Descripcion, art.PrecioBase, art.FechaIngreso);
+        }
+
+        // Persiste un lote nuevo (cabecera + relaciones) en la BD y actualiza su Id.
+        // Los hijos deben estar previamente guardados en la BD (tener Id válido).
+        public void GuardarLote(LoteArticulos lote)
+        {
+            if (lote == null) throw new ArgumentNullException(nameof(lote));
+            var idsHijos = new System.Collections.Generic.List<int>();
+            foreach (var hijo in lote.ObtenerHijos())
+                idsHijos.Add(hijo.Id);
+
+            var dal = new CatalogoDAL();
+            lote.Id = dal.GuardarLote(lote.Nombre, lote.CalcularPrecioBase(), lote.FechaIngreso, idsHijos);
+        }
     }
 }

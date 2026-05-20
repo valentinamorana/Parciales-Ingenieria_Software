@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using BLL;
 using Servicios.Composite;
 
 namespace GUI
@@ -162,6 +163,7 @@ namespace GUI
             {
                 var art = DialogoAgregarArticulo();
                 if (art == null) return;
+                new CatalogoBLL().GuardarArticulo(art);   // persiste en BD y actualiza art.Id
                 _catalogo.Add(art);
                 RefrescarVistas();
             }
@@ -229,6 +231,7 @@ namespace GUI
                 }
                 var lote = DialogoAgregarLote();
                 if (lote == null) return;
+                new CatalogoBLL().GuardarLote(lote);   // persiste en BD y actualiza lote.Id
                 _catalogo.Add(lote);
                 RefrescarVistas();
             }
