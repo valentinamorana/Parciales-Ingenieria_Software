@@ -48,7 +48,6 @@ namespace GUI
             pnlHeaderGrilla.Controls.Add(btnRefrescar);
             pnlHeaderGrilla.Controls.Add(btnIrSubasta);
 
-            this.Activated += (s, ev) => CargarGrilla();
             CargarGrilla();
         }
 
