@@ -3,14 +3,30 @@ using BE;
 
 namespace Servicios
 {
-    // Observer concreto. Recibe el sujeto completo y dispara un evento
-    // para que la capa de presentación decida cómo mostrarlo (SRP / DIP).
+    // ═══════════════════════════════════════════════════════════
+    //  PATRÓN OBSERVER — Rol: ConcreteObserver (Observador concreto) (RF-05 a RF-08)
+    // ═══════════════════════════════════════════════════════════
+    // Interesado representa a un usuario que se suscribe a una SubastaActiva
+    // para recibir notificaciones de cambios (nuevas pujas o cierre).
+    //
+    // Implementa IObservadorSubasta.Actualizar(): recibe el sujeto completo
+    // (variante "push" del GoF), arma el mensaje y dispara NotificacionRecibida.
+    //
+    // El evento NotificacionRecibida desacopla la capa de Servicios de WinForms:
+    //   - Interesado no sabe nada de MessageBox ni de controles visuales (SRP).
+    //   - frmSubasta suscribe al evento y decide cómo mostrar la notificación (DIP).
+    //
+    // Distinción en Actualizar:
+    //   EstaActiva = true  → nueva puja aceptada (RF-06)
+    //   EstaActiva = false → subasta cerrada, mensaje de precio final (RF-07)
     public class Interesado : IObservadorSubasta
     {
         private readonly Usuario _usuario;
 
-        // La UI suscribe a este evento; Interesado no conoce nada de WinForms.
-        public event Action<string, string> NotificacionRecibida; // (destinatario, mensaje)
+        // La GUI suscribe a este evento para mostrar notificaciones sin que
+        // Interesado tenga que conocer los controles de WinForms.
+        // Firma: (nombreDestinatario, mensajeTexto)
+        public event Action<string, string> NotificacionRecibida;
 
         public Interesado(Usuario usuario)
         {
@@ -19,6 +35,9 @@ namespace Servicios
 
         public Usuario Usuario => _usuario;
 
+        // Llamado por SubastaActiva.Notificar() cada vez que cambia el estado.
+        // Construye el mensaje según si la subasta sigue activa o ya cerró,
+        // luego dispara el evento para que la GUI lo procese.
         public void Actualizar(SubastaActiva subasta)
         {
             string mensaje = subasta.EstaActiva

@@ -5,11 +5,24 @@ using Servicios.Composite;
 
 namespace Servicios
 {
-    // Sujeto del patrón Observer.
-    // Usa IUnidadDeVenta (Composite) como elemento subastado.
-    // Delega el control de concurrencia al GestorDePujasSingleton (RF-09).
-    // Acumula en memoria todas las pujas (aceptadas y rechazadas)
-    // para que el BLL las persista en bloque al cerrar la subasta.
+    // ═══════════════════════════════════════════════════════════
+    //  PATRÓN OBSERVER — Rol: ConcreteSubject (Sujeto concreto)
+    //  PATRÓN SINGLETON — usa GestorDePujasSingleton (RF-09)
+    //  PATRÓN COMPOSITE — opera sobre IUnidadDeVenta como elemento subastado
+    // ═══════════════════════════════════════════════════════════
+    // SubastaActiva implementa ISujetoSubasta y mantiene la lista
+    // de observadores (_observadores). Cada vez que se acepta una puja
+    // o se cierra la subasta, llama a Notificar() para avisar a todos.
+    //
+    // Integración con los otros patrones:
+    //   - Composite: acepta cualquier IUnidadDeVenta (artículo simple o lote),
+    //     sin conocer la estructura interna del árbol.
+    //   - Singleton: todas las pujas pasan por GestorDePujasSingleton.EjecutarBajoLock()
+    //     para garantizar que nunca se procesen dos pujas al mismo tiempo (RF-09).
+    //
+    // Las pujas se acumulan en _pujas (en memoria) durante la subasta.
+    // SubastaBLL las persiste en bloque en una sola transacción SQL al cerrar,
+    // lo que garantiza atomicidad: o se guardan todas o no se guarda ninguna.
     public class SubastaActiva : ISujetoSubasta
     {
         private readonly IUnidadDeVenta              _unidad;
@@ -33,10 +46,12 @@ namespace Servicios
         public Usuario           UltimoPujador => _ultimoPujador;
         public bool              EstaActiva    => _estaActiva;
 
-        // Copia de sólo lectura — el BLL persiste estas pujas al cerrar
+        // Exposición de sólo lectura para que SubastaBLL persista las pujas al cerrar.
+        // AsReadOnly() evita que el BLL pueda mutar la lista interna.
         public IReadOnlyList<Puja> Pujas => _pujas.AsReadOnly();
 
-        // RF-05
+        // RF-05: registra un Interesado como observador de esta subasta.
+        // Impide duplicados para que un usuario no reciba doble notificación.
         public void Suscribir(IObservadorSubasta observador)
         {
             if (observador == null) throw new ArgumentNullException(nameof(observador));
@@ -45,7 +60,7 @@ namespace Servicios
             _observadores.Add(observador);
         }
 
-        // RF-08
+        // RF-08: elimina al observador de la lista. Lanza si no estaba suscripto.
         public void Desuscribir(IObservadorSubasta observador)
         {
             if (observador == null) throw new ArgumentNullException(nameof(observador));
@@ -54,7 +69,10 @@ namespace Servicios
             _observadores.Remove(observador);
         }
 
-        // RF-06 / RF-07
+        // RF-06 / RF-07: avisa a todos los observadores del estado actual.
+        // Itera sobre una copia de _observadores para que Desuscribir durante
+        // una notificación no cause InvalidOperationException en el foreach.
+        // Los errores de un observador individual no interrumpen a los demás.
         public void Notificar()
         {
             var copia = new List<IObservadorSubasta>(_observadores);
@@ -69,9 +87,11 @@ namespace Servicios
             }
         }
 
-        // RF-10: valida y procesa oferta bajo lock del Singleton (RF-09).
-        // Registra la puja (Aceptada o Rechazada) en la lista interna.
-        // Lanza excepción tipada si es rechazada para que el formulario informe al usuario.
+        // RF-10: valida y registra una oferta con exclusión mutua.
+        // Toda la lógica de validación corre dentro del lock del Singleton (RF-09)
+        // para que dos pujas simultáneas no puedan ganar al mismo tiempo.
+        // Si la puja es rechazada, igual se registra en _pujas para el historial,
+        // y se lanza OfertaInvalidaException para que la GUI informe al usuario.
         public void RealizarOferta(Usuario usuario, decimal monto)
         {
             if (!_estaActiva)
@@ -124,6 +144,10 @@ namespace Servicios
             });
         }
 
+        // Cierra la subasta: pone _estaActiva=false, notifica a los observadores
+        // (que así saben que es cierre por EstaActiva=false) y construye el ResultadoSubasta
+        // que SubastaBLL usará para persistir en la BD.
+        // No persiste directamente — eso es responsabilidad del BLL (SRP).
         public ResultadoSubasta Cerrar()
         {
             if (!_estaActiva)

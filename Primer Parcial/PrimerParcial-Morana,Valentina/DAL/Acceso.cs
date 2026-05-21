@@ -5,10 +5,26 @@ using System.Data.SqlClient;
 
 namespace DAL
 {
-    // PATRON SINGLETON — Punto de acceso único a la base de datos.
-    // Thread-safe con double-checked locking.
-    // Centraliza Leer / Escribir / EjecutarEscalar / EjecutarTransaccion
-    // para que ningún DAL gestione conexiones directamente.
+    // ═══════════════════════════════════════════════════════════
+    //  PATRÓN SINGLETON — Acceso (capa de base de datos)
+    // ═══════════════════════════════════════════════════════════
+    // Punto de acceso único a SQL Server. Al ser Singleton:
+    //   - La cadena de conexión se lee de App.config una sola vez.
+    //   - Todos los DAL concretos obtienen la misma instancia vía GetInstance()
+    //     (ver AbstractDAL<T>._acceso) sin crear conexiones propias.
+    //
+    // No mantiene una conexión abierta de forma permanente: cada método
+    // abre y cierra su SqlConnection dentro de un using, lo que sigue el
+    // patrón "open late / close early" y evita conexiones colgadas.
+    //
+    // Métodos disponibles:
+    //   Leer                       → SELECT, devuelve DataTable
+    //   Escribir                   → INSERT / UPDATE / DELETE, devuelve filas afectadas
+    //   EjecutarEscalar            → INSERT + SCOPE_IDENTITY(), devuelve nuevo Id
+    //   EjecutarEscalarEnTransaccion → INSERT dentro de una tx existente
+    //   EjecutarTransaccion        → bloque atómico con commit/rollback automático
+    //
+    // Thread-safe con double-checked locking (mismo mecanismo que SessionManager).
     public sealed class Acceso
     {
         private static volatile Acceso _instancia;
