@@ -34,6 +34,7 @@ namespace BLL
                     case "EnSubasta":  estado = EstadoUnidad.EnSubasta;  break;
                     case "Adjudicado": estado = EstadoUnidad.Adjudicado; break;
                     case "Desierta":   estado = EstadoUnidad.Desierta;   break;
+                    case "Retirado":   estado = EstadoUnidad.Retirado;   break;
                     default:           estado = EstadoUnidad.Disponible; break;
                 }
 
@@ -79,10 +80,20 @@ namespace BLL
                 case EstadoUnidad.EnSubasta:  estadoStr = "EnSubasta";  break;
                 case EstadoUnidad.Adjudicado: estadoStr = "Adjudicado"; break;
                 case EstadoUnidad.Desierta:   estadoStr = "Desierta";   break;
+                case EstadoUnidad.Retirado:   estadoStr = "Retirado";   break;
                 default:                      estadoStr = "Disponible"; break;
             }
             new CatalogoDAL().ActualizarEstado(id, estadoStr);
         }
+
+        public void ModificarArticulo(int id, string nombre, string descripcion, decimal precioBase)
+        {
+            if (string.IsNullOrWhiteSpace(nombre)) throw new InvalidOperationException("El nombre es obligatorio.");
+            if (precioBase <= 0) throw new InvalidOperationException("El precio debe ser mayor a cero.");
+            new CatalogoDAL().ModificarArticulo(id, nombre.Trim(), descripcion?.Trim(), precioBase);
+        }
+
+        public void RetirarUnidad(int id) => ActualizarEstado(id, EstadoUnidad.Retirado);
 
         // Persiste un lote nuevo (cabecera + relaciones) en la BD y actualiza su Id.
         // Los hijos deben estar previamente guardados en la BD (tener Id válido).

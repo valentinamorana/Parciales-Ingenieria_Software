@@ -30,6 +30,19 @@ namespace DAL
                 });
         }
 
+        public void ModificarArticulo(int id, string nombre, string descripcion, decimal precioBase)
+        {
+            _acceso.Escribir(
+                "UPDATE UnidadesDeVenta SET Nombre = @nombre, Descripcion = @desc, PrecioBase = @precio WHERE Id = @id",
+                new[]
+                {
+                    new SqlParameter("@nombre", nombre),
+                    new SqlParameter("@desc",   (object)descripcion ?? DBNull.Value),
+                    new SqlParameter("@precio", precioBase),
+                    new SqlParameter("@id",     id)
+                });
+        }
+
         // Persiste un artículo simple y devuelve el Id asignado por la BD.
         public int GuardarArticulo(string nombre, string descripcion, decimal precioBase, DateTime fechaIngreso)
         {

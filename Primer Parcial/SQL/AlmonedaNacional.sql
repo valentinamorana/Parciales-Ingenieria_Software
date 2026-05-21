@@ -59,7 +59,20 @@ IF NOT EXISTS (
 BEGIN
     EXEC sp_executesql N'ALTER TABLE UnidadesDeVenta ADD Estado VARCHAR(20) NOT NULL DEFAULT ''Disponible''';
     EXEC sp_executesql N'ALTER TABLE UnidadesDeVenta ADD CONSTRAINT CK_UnidadesDeVenta_Estado
-        CHECK (Estado IN (''Disponible'', ''EnSubasta'', ''Adjudicado'', ''Desierta''))';
+        CHECK (Estado IN (''Disponible'', ''EnSubasta'', ''Adjudicado'', ''Desierta'', ''Retirado''))';
+END
+GO
+
+-- Migración: ampliar CHECK de Estado para incluir Retirado
+IF EXISTS (
+    SELECT 1 FROM sys.check_constraints
+    WHERE name = 'CK_UnidadesDeVenta_Estado'
+      AND definition NOT LIKE '%Retirado%'
+)
+BEGIN
+    ALTER TABLE UnidadesDeVenta DROP CONSTRAINT CK_UnidadesDeVenta_Estado;
+    ALTER TABLE UnidadesDeVenta ADD CONSTRAINT CK_UnidadesDeVenta_Estado
+        CHECK (Estado IN ('Disponible', 'EnSubasta', 'Adjudicado', 'Desierta', 'Retirado'));
 END
 GO
 

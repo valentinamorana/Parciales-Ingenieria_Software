@@ -5,6 +5,7 @@ namespace BE
         Disponible,
         EnSubasta,
         Adjudicado,
-        Desierta
+        Desierta,
+        Retirado
     }
 }

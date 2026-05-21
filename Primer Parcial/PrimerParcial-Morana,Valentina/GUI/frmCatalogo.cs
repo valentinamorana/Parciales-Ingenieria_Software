@@ -15,6 +15,11 @@ namespace GUI
         private List<IUnidadDeVenta> _catalogo = new List<IUnidadDeVenta>();
         private List<IUnidadDeVenta> _vista;
 
+        private Button btnRefrescar;
+        private Button btnLimpiarFiltros;
+        private Button btnModificar;
+        private Button btnRetirar;
+
         public frmCatalogo()
         {
             InitializeComponent();
@@ -24,11 +29,44 @@ namespace GUI
         {
             cmbFiltroTipo.Items.AddRange(new object[] { "Todos", "Artículos", "Lotes" });
             cmbFiltroTipo.SelectedIndex = 0;
-            cmbFiltroEstado.Items.AddRange(new object[] { "Todos", "Disponible", "En Subasta", "Adjudicado", "Desierta" });
+            cmbFiltroEstado.Items.AddRange(new object[] { "Todos", "Disponible", "En Subasta", "Adjudicado", "Desierta", "Retirado" });
             cmbFiltroEstado.SelectedIndex = 0;
             dgvCatalogo.CellFormatting += dgvCatalogo_CellFormatting;
+
+            // Acción buttons en pnlHeaderGrilla (derecha a izquierda)
+            lblTituloGrilla.Dock       = DockStyle.None;
+            lblTituloGrilla.AutoSize   = true;
+            lblTituloGrilla.Location   = new Point(8, 7);
+            btnRetirar          = CrearBotonCabecera("Retirar",         1015, Color.FromArgb(180, 70, 70),  btnRetirar_Click,         false);
+            btnModificar        = CrearBotonCabecera("Modificar",        921, Color.FromArgb(210, 100, 135), btnModificar_Click,        false);
+            btnLimpiarFiltros   = CrearBotonCabecera("Limpiar filtros",  799, Color.FromArgb(140, 120, 170), btnLimpiarFiltros_Click,   true);
+            btnRefrescar        = CrearBotonCabecera("Refrescar",        705, Color.FromArgb(80,  140, 190), btnRefrescar_Click,        true);
+            pnlHeaderGrilla.Controls.Add(btnRetirar);
+            pnlHeaderGrilla.Controls.Add(btnModificar);
+            pnlHeaderGrilla.Controls.Add(btnLimpiarFiltros);
+            pnlHeaderGrilla.Controls.Add(btnRefrescar);
+
             this.Activated += (s, ev) => CargarGrilla();
             CargarGrilla();
+        }
+
+        private Button CrearBotonCabecera(string texto, int x, Color bg, EventHandler handler, bool habilitado)
+        {
+            var btn = new Button
+            {
+                Text      = texto,
+                Location  = new Point(x, 3),
+                Size      = new Size(texto.Length > 10 ? 110 : 90, 22),
+                BackColor = bg,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font      = new Font("Segoe UI", 8F, FontStyle.Bold),
+                Enabled   = habilitado,
+                Anchor    = AnchorStyles.Top | AnchorStyles.Right
+            };
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Click += handler;
+            return btn;
         }
 
         public void CargarGrilla()
@@ -104,6 +142,7 @@ namespace GUI
                 case EstadoUnidad.EnSubasta:  return "En Subasta";
                 case EstadoUnidad.Adjudicado: return "Adjudicado";
                 case EstadoUnidad.Desierta:   return "Desierta";
+                case EstadoUnidad.Retirado:   return "Retirado";
                 default:                      return "Disponible";
             }
         }
@@ -186,6 +225,10 @@ namespace GUI
                     e.CellStyle.ForeColor  = Color.FromArgb(100, 100, 180);
                     e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Bold);
                     break;
+                case "Retirado":
+                    e.CellStyle.ForeColor  = Color.FromArgb(140, 140, 140);
+                    e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Italic);
+                    break;
                 default:
                     e.CellStyle.ForeColor  = Color.FromArgb(30, 140, 80);
                     e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Bold);
@@ -202,10 +245,28 @@ namespace GUI
 
         private void dgvCatalogo_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvCatalogo.SelectedRows.Count == 0) return;
+            if (dgvCatalogo.SelectedRows.Count == 0) { ActualizarBotones(); return; }
             string nombre = dgvCatalogo.SelectedRows[0].Cells["Nombre"].Value?.ToString();
-            var u = _vista.Find(x => x.Nombre == nombre);
+            var u = _vista?.Find(x => x.Nombre == nombre);
             if (u != null) MostrarDetalle(u);
+            ActualizarBotones();
+        }
+
+        private IUnidadDeVenta UnidadSeleccionada()
+        {
+            if (dgvCatalogo.SelectedRows.Count == 0) return null;
+            string nombre = dgvCatalogo.SelectedRows[0].Cells["Nombre"].Value?.ToString();
+            return _vista?.Find(x => x.Nombre == nombre);
+        }
+
+        private void ActualizarBotones()
+        {
+            if (btnModificar == null || btnRetirar == null) return;
+            var u = UnidadSeleccionada();
+            bool operable = u != null &&
+                (u.Estado == EstadoUnidad.Disponible || u.Estado == EstadoUnidad.Desierta);
+            btnModificar.Enabled = operable && u is ArticuloSimple;
+            btnRetirar.Enabled   = operable;
         }
 
         private void MostrarDetalle(IUnidadDeVenta unidad)
@@ -350,6 +411,94 @@ namespace GUI
                     if (u != null) lote.Agregar(u);
                 }
                 return lote;
+            }
+        }
+
+        // ── RF-Refresh / Limpiar filtros / Modificar / Retirar ──────────────
+
+        private void btnRefrescar_Click(object sender, EventArgs e) => CargarGrilla();
+
+        private void btnLimpiarFiltros_Click(object sender, EventArgs e)
+        {
+            txtBuscar.Clear();
+            txtPrecioMin.Clear();
+            txtPrecioMax.Clear();
+            cmbFiltroTipo.SelectedIndex    = 0;
+            cmbFiltroEstado.SelectedIndex  = 0;
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            var u = UnidadSeleccionada();
+            if (!(u is ArticuloSimple art)) return;
+            try
+            {
+                if (!DialogoModificarArticulo(art, out string nombre, out string desc, out decimal precio)) return;
+                _bll.ModificarArticulo(art.Id, nombre, desc, precio);
+                CargarGrilla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool DialogoModificarArticulo(ArticuloSimple art, out string nombre, out string desc, out decimal precio)
+        {
+            nombre = null; desc = null; precio = 0;
+            using (var dlg = new Form())
+            {
+                dlg.Text            = "Modificar Artículo";
+                dlg.ClientSize      = new Size(360, 230);
+                dlg.StartPosition   = FormStartPosition.CenterParent;
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.MaximizeBox     = false;
+                dlg.MinimizeBox     = false;
+                dlg.BackColor       = Color.FromArgb(252, 228, 235);
+
+                var header = new Panel { Location = Point.Empty, Size = new Size(360, 38), BackColor = Color.FromArgb(210, 100, 135) };
+                var lblH   = new Label  { Text = "Editar Artículo Simple", Dock = DockStyle.Fill, ForeColor = Color.White, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter };
+                header.Controls.Add(lblH);
+                dlg.Controls.Add(header);
+
+                TextBox txtNombre = Campo(dlg, "Nombre:",          50);  txtNombre.Text = art.Nombre;
+                TextBox txtDesc   = Campo(dlg, "Descripción:",     90);  txtDesc.Text   = art.Descripcion;
+                TextBox txtPrecio = Campo(dlg, "Precio Base ($):", 130); txtPrecio.Text = art.PrecioBase.ToString("F2");
+
+                var btnOk  = Boton(dlg, "Guardar",   DialogResult.OK,     80, 178, Color.FromArgb(210, 100, 135), Color.White);
+                var btnCan = Boton(dlg, "Cancelar",  DialogResult.Cancel, 190, 178, Color.FromArgb(200, 200, 210), Color.FromArgb(64, 64, 64));
+                dlg.AcceptButton = btnOk;
+                dlg.CancelButton = btnCan;
+
+                if (dlg.ShowDialog(this) != DialogResult.OK) return false;
+
+                if (string.IsNullOrWhiteSpace(txtNombre.Text))
+                    throw new InvalidOperationException("El nombre es obligatorio.");
+                if (!decimal.TryParse(txtPrecio.Text.Replace('.', ','), out precio) || precio <= 0)
+                    throw new InvalidOperationException("Ingresá un precio mayor a cero.");
+
+                nombre = txtNombre.Text.Trim();
+                desc   = txtDesc.Text.Trim();
+                return true;
+            }
+        }
+
+        private void btnRetirar_Click(object sender, EventArgs e)
+        {
+            var u = UnidadSeleccionada();
+            if (u == null) return;
+            var resp = MessageBox.Show(
+                $"¿Retirás \"{u.Nombre}\" del catálogo?\nSu estado pasará a Retirado.",
+                "Confirmar retiro", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if (resp != DialogResult.Yes) return;
+            try
+            {
+                _bll.RetirarUnidad(u.Id);
+                CargarGrilla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
