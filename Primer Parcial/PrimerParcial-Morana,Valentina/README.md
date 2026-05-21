@@ -49,8 +49,8 @@ GUI → BLL → DAL
 ## Funcionalidades
 
 - **Login** con bloqueo automático (3 intentos → 10 minutos bloqueado)
-- **Catálogo** Composite: artículos simples y lotes anidados sin límite de profundidad
-- **Subasta** con temporizador, suscripción de interesados (Observer) y exclusión mutua (Singleton)
+- **Catálogo** Composite: artículos simples y lotes anidados sin límite de profundidad; retirar un lote retira recursivamente todos sus artículos hijos
+- **Subasta** con temporizador configurable (días / horas / minutos), suscripción de interesados (Observer) y exclusión mutua (Singleton)
 - **Anti-Sniping**: extensión automática del tiempo si se puja en los últimos 30 segundos
 - **Historial** de subastas cerradas con detalle de cada puja (aceptadas y rechazadas)
 - **Bitácora** de auditoría con filtros por criticidad, operación y rango de fechas
@@ -84,4 +84,4 @@ PrimerParcial-Morana,Valentina/
 
 Tablas: `Usuarios`, `UnidadesDeVenta`, `LoteContenido`, `Subastas`, `Pujas`, `Martilleros`, `Bitacora`.
 
-El script SQL es idempotente: usa `IF NOT EXISTS` y `ALTER TABLE` guardados para migraciones.
+El script SQL es idempotente: usa `IF NOT EXISTS` y `ALTER TABLE` para migraciones, y restaura el estado de los ítems de demo a `Disponible` si quedaron `Retirado` entre pruebas.
