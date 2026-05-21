@@ -60,29 +60,5 @@ namespace DAL
                 new[] { new SqlParameter("@id", entidad.Id) });
         }
 
-        public System.Data.DataTable ObtenerConStats()
-        {
-            return _acceso.Leer(@"
-                SELECT
-                    u.Id, u.Nombre, u.Email, u.FechaAlta,
-                    ISNULL((SELECT COUNT(*) FROM Pujas   p  WHERE p.NombreUsuario  = u.Nombre), 0) AS CantPujas,
-                    ISNULL((SELECT COUNT(*) FROM Subastas s  WHERE s.EmailGanador   = u.Email),  0) AS CantGanadas,
-                    ISNULL((SELECT SUM(s2.PrecioFinal) FROM Subastas s2 WHERE s2.EmailGanador = u.Email), 0) AS MontoGanado,
-                    (SELECT MAX(p2.FechaHora) FROM Pujas p2 WHERE p2.NombreUsuario = u.Nombre) AS UltimaActividad
-                FROM Usuarios u
-                ORDER BY u.Nombre");
-        }
-
-        public System.Data.DataRow ObtenerResumenKPI()
-        {
-            return _acceso.Leer(@"
-                SELECT
-                    (SELECT COUNT(*) FROM Usuarios) AS Total,
-                    ISNULL((SELECT COUNT(DISTINCT p.NombreUsuario) FROM Pujas p), 0) AS Participaron,
-                    ISNULL((SELECT COUNT(DISTINCT s.EmailGanador) FROM Subastas s
-                            WHERE s.EmailGanador IN (SELECT Email FROM Usuarios)), 0) AS Ganadores,
-                    ISNULL((SELECT SUM(PrecioFinal) FROM Subastas), 0) AS MontoTotal")
-                .Rows[0];
-        }
     }
 }

@@ -67,8 +67,8 @@ PrimerParcial-Morana,Valentina/
 ├── Seguridad/           Encriptador (SHA-256), SessionManager (Singleton)
 ├── Servicios/
 │   ├── Composite/       IUnidadDeVenta, ArticuloSimple, LoteArticulos
-│   ├── Observer/        ISujetoSubasta, IObservadorSubasta
-│   ├── Singleton/       GestorDePujasSingleton
+│   ├── IObservadorSubasta.cs, ISujetoSubasta.cs  (Observer)
+│   ├── GestorDePujasSingleton.cs                 (Singleton)
 │   ├── SubastaActiva.cs (Sujeto Observer + usa Singleton)
 │   └── Interesado.cs    (Observador concreto)
 ├── DAL/                 Acceso (Singleton BD), AbstractDAL<T>, DALs concretos
