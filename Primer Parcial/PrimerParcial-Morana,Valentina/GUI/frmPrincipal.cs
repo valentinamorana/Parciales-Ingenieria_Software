@@ -113,6 +113,8 @@ namespace GUI
             Application.Restart();
         }
 
+        public void AbrirSubasta() => AbrirForm(new frmSubasta());
+
         private void AbrirCatalogo() => AbrirForm(new frmCatalogo());
 
         private void AbrirForm(Form form)

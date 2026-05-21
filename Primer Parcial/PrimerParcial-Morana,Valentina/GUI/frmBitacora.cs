@@ -24,6 +24,10 @@ namespace GUI
         {
             CargarFiltros();
             Buscar();
+            // Conectar después del Buscar() inicial para no disparar queries extra al cargar
+            cmbCriticidad.SelectedIndexChanged += (s, ev) => Buscar();
+            cmbOperacion.SelectedIndexChanged  += (s, ev) => Buscar();
+            nudDias.ValueChanged               += (s, ev) => Buscar();
         }
 
         private void CargarFiltros()

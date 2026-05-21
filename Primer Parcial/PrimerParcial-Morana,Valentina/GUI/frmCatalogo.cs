@@ -41,10 +41,12 @@ namespace GUI
             btnModificar        = CrearBotonCabecera("Modificar",        921, Color.FromArgb(210, 100, 135), btnModificar_Click,        false);
             btnLimpiarFiltros   = CrearBotonCabecera("Limpiar filtros",  799, Color.FromArgb(140, 120, 170), btnLimpiarFiltros_Click,   true);
             btnRefrescar        = CrearBotonCabecera("Refrescar",        705, Color.FromArgb(80,  140, 190), btnRefrescar_Click,        true);
+            var btnIrSubasta    = CrearBotonCabecera("Ir a Subasta",     590, Color.FromArgb(60,  140, 100), btnIrSubasta_Click,        true);
             pnlHeaderGrilla.Controls.Add(btnRetirar);
             pnlHeaderGrilla.Controls.Add(btnModificar);
             pnlHeaderGrilla.Controls.Add(btnLimpiarFiltros);
             pnlHeaderGrilla.Controls.Add(btnRefrescar);
+            pnlHeaderGrilla.Controls.Add(btnIrSubasta);
 
             this.Activated += (s, ev) => CargarGrilla();
             CargarGrilla();
@@ -415,6 +417,11 @@ namespace GUI
         }
 
         // ── RF-Refresh / Limpiar filtros / Modificar / Retirar ──────────────
+
+        private void btnIrSubasta_Click(object sender, EventArgs e)
+        {
+            (this.MdiParent as frmPrincipal)?.AbrirSubasta();
+        }
 
         private void btnRefrescar_Click(object sender, EventArgs e) => CargarGrilla();
 
