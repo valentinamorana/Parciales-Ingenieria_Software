@@ -98,6 +98,15 @@ namespace BLL
 
         public void RetirarUnidad(int id) => ActualizarEstado(id, EstadoUnidad.Retirado);
 
+        // RF: al retirar un lote se retiran recursivamente todos sus hijos
+        public void RetirarUnidad(IUnidadDeVenta unidad)
+        {
+            if (unidad is LoteArticulos lote)
+                foreach (var hijo in lote.ObtenerHijos())
+                    RetirarUnidad(hijo);
+            ActualizarEstado(unidad.Id, EstadoUnidad.Retirado);
+        }
+
         // Persiste un lote nuevo (cabecera + relaciones) en la BD y actualiza su Id.
         // Los hijos deben estar previamente guardados en la BD (tener Id válido).
         public void GuardarLote(LoteArticulos lote)

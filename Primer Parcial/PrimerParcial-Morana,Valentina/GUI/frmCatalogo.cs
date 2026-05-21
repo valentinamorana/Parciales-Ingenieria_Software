@@ -500,7 +500,7 @@ namespace GUI
             if (resp != DialogResult.Yes) return;
             try
             {
-                _bll.RetirarUnidad(u.Id);
+                _bll.RetirarUnidad(u);
                 CargarGrilla();
             }
             catch (Exception ex)
