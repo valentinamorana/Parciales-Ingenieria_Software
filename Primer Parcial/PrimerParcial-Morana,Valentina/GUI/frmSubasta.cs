@@ -79,8 +79,6 @@ namespace GUI
             cmbUsuarioSuscribir.DataSource    = new List<Usuario>(_usuarios);
             cmbUsuarioSuscribir.DisplayMember = "Nombre";
 
-            string[] canales = { "WEB", "MÓVIL", "PANTALLA SALA", "INTERFAZ GRÁFICA" };
-            cmbCanal.DataSource = canales;
         }
 
         // ─────────────────────────────────────────────
@@ -130,18 +128,20 @@ namespace GUI
             {
                 ValidarSubastaActiva();
                 var usuario = cmbUsuarioSuscribir.SelectedItem as Usuario;
-                string canal = cmbCanal.SelectedItem?.ToString();
 
-                var interesado = new Interesado(usuario, canal);
+                if (_interesados.Exists(i => i.Usuario.Id == usuario.Id))
+                    throw new InvalidOperationException($"{usuario.Nombre} ya está suscripto a esta subasta.");
+
+                var interesado = new Interesado(usuario, "Sistema");
                 interesado.NotificacionRecibida += (destinatario, mensaje) =>
-                    rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] [{canal}] {destinatario}: {mensaje}\r\n");
+                    rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] Para {destinatario} — Notificación: {mensaje}\r\n");
 
                 // OBSERVER: Sujeto registra al observador (RF-05)
                 _bll.Suscribir(_subastaActiva, interesado);
                 _interesados.Add(interesado);
 
-                lstInteresados.Items.Add($"{usuario.Nombre}  [{canal}]");
-                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] {usuario.Nombre} suscripto vía {canal}\r\n");
+                lstInteresados.Items.Add(usuario.Nombre);
+                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] {usuario.Nombre} suscripto.\r\n");
             }
             catch (Exception ex)
             {
@@ -157,20 +157,18 @@ namespace GUI
             try
             {
                 ValidarSubastaActiva();
-                var usuario = cmbUsuarioSuscribir.SelectedItem as Usuario;
-                var interesado = _interesados.Find(i => i.Usuario.Id == usuario.Id);
-                if (interesado == null)
-                    throw new InvalidOperationException($"{usuario.Nombre} no está suscripto a esta subasta.");
+                int idx = lstInteresados.SelectedIndex;
+                if (idx < 0)
+                    throw new InvalidOperationException("Seleccioná un interesado de la lista para desuscribir.");
+
+                var interesado = _interesados[idx];
 
                 // OBSERVER: Sujeto elimina al observador (RF-08)
                 _bll.Desuscribir(_subastaActiva, interesado);
-                _interesados.Remove(interesado);
+                _interesados.RemoveAt(idx);
+                lstInteresados.Items.RemoveAt(idx);
 
-                for (int i = lstInteresados.Items.Count - 1; i >= 0; i--)
-                    if (lstInteresados.Items[i].ToString().Contains(usuario.Nombre))
-                    { lstInteresados.Items.RemoveAt(i); break; }
-
-                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] {usuario.Nombre} desuscripto.\r\n");
+                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] {interesado.Usuario.Nombre} desuscripto.\r\n");
             }
             catch (Exception ex)
             {

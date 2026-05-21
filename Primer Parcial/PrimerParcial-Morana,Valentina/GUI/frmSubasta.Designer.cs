@@ -41,8 +41,6 @@ namespace GUI
             this.lstInteresados = new System.Windows.Forms.ListBox();
             this.lblUsuarioSusc = new System.Windows.Forms.Label();
             this.cmbUsuarioSuscribir = new System.Windows.Forms.ComboBox();
-            this.lblCanal = new System.Windows.Forms.Label();
-            this.cmbCanal = new System.Windows.Forms.ComboBox();
             this.btnSuscribir = new System.Windows.Forms.Button();
             this.btnDesuscribir = new System.Windows.Forms.Button();
             this.grpOferta = new System.Windows.Forms.GroupBox();
@@ -305,8 +303,6 @@ namespace GUI
             this.grpInteresados.Controls.Add(this.lstInteresados);
             this.grpInteresados.Controls.Add(this.lblUsuarioSusc);
             this.grpInteresados.Controls.Add(this.cmbUsuarioSuscribir);
-            this.grpInteresados.Controls.Add(this.lblCanal);
-            this.grpInteresados.Controls.Add(this.cmbCanal);
             this.grpInteresados.Controls.Add(this.btnSuscribir);
             this.grpInteresados.Controls.Add(this.btnDesuscribir);
             this.grpInteresados.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -362,54 +358,33 @@ namespace GUI
             this.cmbUsuarioSuscribir.Size = new System.Drawing.Size(294, 25);
             this.cmbUsuarioSuscribir.TabIndex = 3;
             // 
-            // lblCanal
-            // 
-            this.lblCanal.AutoSize = true;
-            this.lblCanal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblCanal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblCanal.Location = new System.Drawing.Point(254, 90);
-            this.lblCanal.Name = "lblCanal";
-            this.lblCanal.Size = new System.Drawing.Size(124, 15);
-            this.lblCanal.TabIndex = 4;
-            this.lblCanal.Text = "Canal de notificación:";
-            // 
-            // cmbCanal
-            // 
-            this.cmbCanal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(248)))));
-            this.cmbCanal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCanal.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.cmbCanal.Location = new System.Drawing.Point(254, 108);
-            this.cmbCanal.Name = "cmbCanal";
-            this.cmbCanal.Size = new System.Drawing.Size(294, 25);
-            this.cmbCanal.TabIndex = 5;
-            // 
             // btnSuscribir
-            // 
+            //
             this.btnSuscribir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(100)))), ((int)(((byte)(135)))));
             this.btnSuscribir.FlatAppearance.BorderSize = 0;
             this.btnSuscribir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSuscribir.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnSuscribir.ForeColor = System.Drawing.Color.White;
-            this.btnSuscribir.Location = new System.Drawing.Point(254, 140);
+            this.btnSuscribir.Location = new System.Drawing.Point(254, 90);
             this.btnSuscribir.Name = "btnSuscribir";
-            this.btnSuscribir.Size = new System.Drawing.Size(140, 28);
-            this.btnSuscribir.TabIndex = 6;
+            this.btnSuscribir.Size = new System.Drawing.Size(294, 28);
+            this.btnSuscribir.TabIndex = 4;
             this.btnSuscribir.Text = "Suscribir";
             this.btnSuscribir.UseVisualStyleBackColor = false;
             this.btnSuscribir.Click += new System.EventHandler(this.btnSuscribir_Click);
-            // 
+            //
             // btnDesuscribir
-            // 
+            //
             this.btnDesuscribir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.btnDesuscribir.FlatAppearance.BorderSize = 0;
             this.btnDesuscribir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDesuscribir.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnDesuscribir.ForeColor = System.Drawing.Color.White;
-            this.btnDesuscribir.Location = new System.Drawing.Point(404, 140);
+            this.btnDesuscribir.Location = new System.Drawing.Point(254, 128);
             this.btnDesuscribir.Name = "btnDesuscribir";
-            this.btnDesuscribir.Size = new System.Drawing.Size(144, 28);
-            this.btnDesuscribir.TabIndex = 7;
-            this.btnDesuscribir.Text = "Desuscribir";
+            this.btnDesuscribir.Size = new System.Drawing.Size(294, 28);
+            this.btnDesuscribir.TabIndex = 5;
+            this.btnDesuscribir.Text = "Desuscribir seleccionado";
             this.btnDesuscribir.UseVisualStyleBackColor = false;
             this.btnDesuscribir.Click += new System.EventHandler(this.btnDesuscribir_Click);
             // 
@@ -614,8 +589,6 @@ namespace GUI
         private System.Windows.Forms.ListBox lstInteresados;
         private System.Windows.Forms.Label lblUsuarioSusc;
         private System.Windows.Forms.ComboBox cmbUsuarioSuscribir;
-        private System.Windows.Forms.Label lblCanal;
-        private System.Windows.Forms.ComboBox cmbCanal;
         private System.Windows.Forms.Button btnSuscribir;
         private System.Windows.Forms.Button btnDesuscribir;
         private System.Windows.Forms.GroupBox grpOferta;
