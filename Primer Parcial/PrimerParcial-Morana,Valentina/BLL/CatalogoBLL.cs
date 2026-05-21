@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BE;
 using DAL;
 using Servicios.Composite;
 
@@ -26,10 +27,20 @@ namespace BLL
 
                 DateTime fechaIngreso = fila["FechaIngreso"] == DBNull.Value ? DateTime.MinValue : (DateTime)fila["FechaIngreso"];
 
+                string estadoStr = fila["Estado"] == DBNull.Value ? "Disponible" : (string)fila["Estado"];
+                EstadoUnidad estado;
+                switch (estadoStr)
+                {
+                    case "EnSubasta":  estado = EstadoUnidad.EnSubasta;  break;
+                    case "Adjudicado": estado = EstadoUnidad.Adjudicado; break;
+                    case "Desierta":   estado = EstadoUnidad.Desierta;   break;
+                    default:           estado = EstadoUnidad.Disponible; break;
+                }
+
                 if (tipo == "Articulo")
-                    articulos[id] = new ArticuloSimple { Id = id, Nombre = nombre, Descripcion = desc, PrecioBase = precio, FechaIngreso = fechaIngreso };
+                    articulos[id] = new ArticuloSimple { Id = id, Nombre = nombre, Descripcion = desc, PrecioBase = precio, FechaIngreso = fechaIngreso, Estado = estado };
                 else
-                    lotes[id]     = new LoteArticulos  { Id = id, Nombre = nombre, FechaIngreso = fechaIngreso };
+                    lotes[id]     = new LoteArticulos  { Id = id, Nombre = nombre, FechaIngreso = fechaIngreso, Estado = estado };
             }
 
             var esHijo = new HashSet<int>();
@@ -58,6 +69,19 @@ namespace BLL
             if (art == null) throw new ArgumentNullException(nameof(art));
             var dal = new CatalogoDAL();
             art.Id = dal.GuardarArticulo(art.Nombre, art.Descripcion, art.PrecioBase, art.FechaIngreso);
+        }
+
+        public void ActualizarEstado(int id, EstadoUnidad estado)
+        {
+            string estadoStr;
+            switch (estado)
+            {
+                case EstadoUnidad.EnSubasta:  estadoStr = "EnSubasta";  break;
+                case EstadoUnidad.Adjudicado: estadoStr = "Adjudicado"; break;
+                case EstadoUnidad.Desierta:   estadoStr = "Desierta";   break;
+                default:                      estadoStr = "Disponible"; break;
+            }
+            new CatalogoDAL().ActualizarEstado(id, estadoStr);
         }
 
         // Persiste un lote nuevo (cabecera + relaciones) en la BD y actualiza su Id.

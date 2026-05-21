@@ -9,25 +9,39 @@ using Servicios.Composite;
 namespace GUI
 {
     // Patrón COMPOSITE — demuestra RF-01/02/03/04.
-    // El catálogo es compartido con frmSubasta vía frmPrincipal (misma referencia).
     public partial class frmCatalogo : Form
     {
-        private readonly List<IUnidadDeVenta> _catalogo;
+        private readonly CatalogoBLL _bll = new CatalogoBLL();
+        private List<IUnidadDeVenta> _catalogo = new List<IUnidadDeVenta>();
         private List<IUnidadDeVenta> _vista;
 
-        public frmCatalogo(List<IUnidadDeVenta> catalogo)
+        public frmCatalogo()
         {
             InitializeComponent();
-            _catalogo = catalogo;
         }
 
         private void frmCatalogo_Load(object sender, EventArgs e)
         {
             cmbFiltroTipo.Items.AddRange(new object[] { "Todos", "Artículos", "Lotes" });
             cmbFiltroTipo.SelectedIndex = 0;
-            cmbFiltroEstado.Items.AddRange(new object[] { "Todos", "Disponible", "En Subasta", "Adjudicado" });
+            cmbFiltroEstado.Items.AddRange(new object[] { "Todos", "Disponible", "En Subasta", "Adjudicado", "Desierta" });
             cmbFiltroEstado.SelectedIndex = 0;
             dgvCatalogo.CellFormatting += dgvCatalogo_CellFormatting;
+            this.Activated += (s, ev) => CargarGrilla();
+            CargarGrilla();
+        }
+
+        public void CargarGrilla()
+        {
+            try
+            {
+                _catalogo = _bll.ObtenerCatalogo();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar el catálogo:\n{ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             RefrescarVistas();
         }
 
@@ -89,6 +103,7 @@ namespace GUI
             {
                 case EstadoUnidad.EnSubasta:  return "En Subasta";
                 case EstadoUnidad.Adjudicado: return "Adjudicado";
+                case EstadoUnidad.Desierta:   return "Desierta";
                 default:                      return "Disponible";
             }
         }
@@ -167,6 +182,10 @@ namespace GUI
                     e.CellStyle.ForeColor  = Color.FromArgb(180, 0, 0);
                     e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Bold);
                     break;
+                case "Desierta":
+                    e.CellStyle.ForeColor  = Color.FromArgb(100, 100, 180);
+                    e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Bold);
+                    break;
                 default:
                     e.CellStyle.ForeColor  = Color.FromArgb(30, 140, 80);
                     e.CellStyle.Font       = new Font(dgvCatalogo.DefaultCellStyle.Font ?? Font, FontStyle.Bold);
@@ -204,9 +223,8 @@ namespace GUI
             {
                 var art = DialogoAgregarArticulo();
                 if (art == null) return;
-                new CatalogoBLL().GuardarArticulo(art);   // persiste en BD y actualiza art.Id
-                _catalogo.Add(art);
-                RefrescarVistas();
+                _bll.GuardarArticulo(art);
+                CargarGrilla();
             }
             catch (Exception ex)
             {
@@ -249,7 +267,6 @@ namespace GUI
 
                 return new ArticuloSimple
                 {
-                    Id           = _catalogo.Count + 1,
                     Nombre       = txtNombre.Text.Trim(),
                     Descripcion  = txtDesc.Text.Trim(),
                     PrecioBase   = precio,
@@ -272,9 +289,8 @@ namespace GUI
                 }
                 var lote = DialogoAgregarLote();
                 if (lote == null) return;
-                new CatalogoBLL().GuardarLote(lote);   // persiste en BD y actualiza lote.Id
-                _catalogo.Add(lote);
-                RefrescarVistas();
+                _bll.GuardarLote(lote);
+                CargarGrilla();
             }
             catch (Exception ex)
             {
@@ -327,7 +343,7 @@ namespace GUI
                 if (clb.CheckedItems.Count == 0)
                     throw new InvalidOperationException("Seleccioná al menos una unidad para el lote.");
 
-                var lote = new LoteArticulos { Id = _catalogo.Count + 100, Nombre = txtNombre.Text.Trim(), FechaIngreso = DateTime.Now };
+                var lote = new LoteArticulos { Nombre = txtNombre.Text.Trim(), FechaIngreso = DateTime.Now };
                 foreach (string nombre in clb.CheckedItems)
                 {
                     var u = _catalogo.Find(x => x.Nombre == nombre);

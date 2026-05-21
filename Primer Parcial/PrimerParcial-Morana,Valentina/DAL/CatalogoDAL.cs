@@ -14,10 +14,21 @@ namespace DAL
 
         public DataTable ObtenerUnidades() =>
             _acceso.Leer(
-                "SELECT Id, Nombre, Descripcion, PrecioBase, TipoUnidad, FechaIngreso FROM UnidadesDeVenta");
+                "SELECT Id, Nombre, Descripcion, PrecioBase, TipoUnidad, FechaIngreso, Estado FROM UnidadesDeVenta");
 
         public DataTable ObtenerRelaciones() =>
             _acceso.Leer("SELECT LoteId, ContenidoId FROM LoteContenido");
+
+        public void ActualizarEstado(int id, string estado)
+        {
+            _acceso.Escribir(
+                "UPDATE UnidadesDeVenta SET Estado = @estado WHERE Id = @id",
+                new[]
+                {
+                    new SqlParameter("@estado", estado),
+                    new SqlParameter("@id",     id)
+                });
+        }
 
         // Persiste un artículo simple y devuelve el Id asignado por la BD.
         public int GuardarArticulo(string nombre, string descripcion, decimal precioBase, DateTime fechaIngreso)

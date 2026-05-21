@@ -4,6 +4,7 @@ namespace BE
     {
         Disponible,
         EnSubasta,
-        Adjudicado
+        Adjudicado,
+        Desierta
     }
 }

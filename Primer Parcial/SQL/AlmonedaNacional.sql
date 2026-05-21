@@ -50,6 +50,19 @@ BEGIN
 END
 GO
 
+-- Migración: agregar Estado a UnidadesDeVenta
+-- sp_executesql difiere el parsing al momento de ejecución, evitando el Msg 207
+IF NOT EXISTS (
+    SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'UnidadesDeVenta' AND COLUMN_NAME = 'Estado'
+)
+BEGIN
+    EXEC sp_executesql N'ALTER TABLE UnidadesDeVenta ADD Estado VARCHAR(20) NOT NULL DEFAULT ''Disponible''';
+    EXEC sp_executesql N'ALTER TABLE UnidadesDeVenta ADD CONSTRAINT CK_UnidadesDeVenta_Estado
+        CHECK (Estado IN (''Disponible'', ''EnSubasta'', ''Adjudicado'', ''Desierta''))';
+END
+GO
+
 -- ─────────────────────────────────────────────
 --  TABLA: LoteContenido  (jerarquía del Composite sin límite de profundidad)
 -- ─────────────────────────────────────────────
@@ -199,29 +212,19 @@ GO
 IF NOT EXISTS (SELECT 1 FROM UnidadesDeVenta WHERE Nombre = 'Taladro Industrial')
 BEGIN
     INSERT INTO UnidadesDeVenta (Nombre, Descripcion, PrecioBase, TipoUnidad) VALUES
-        ('Taladro Industrial',         'Bosch 1500W',                  15000.00, 'Articulo'),
-        ('Amoladora',                  'Makita 9 pulgadas',             8000.00, 'Articulo'),
-        ('Set de Repuestos',           '200 unidades',                  5000.00, 'Articulo'),
-        ('Máquina CNC',                'Control numérico 3 ejes',     250000.00, 'Articulo'),
-        ('Lote Herramientas',          'Taladro + Amoladora',          23000.00, 'Lote'),
-        ('Sección Producción Completa','Herramientas + Repuestos + CNC',278000.00,'Lote');
+        ('Taladro Industrial', 'Bosch 1500W',              15000.00, 'Articulo'),
+        ('Amoladora',          'Makita 9 pulgadas',          8000.00, 'Articulo'),
+        ('Set de Repuestos',   '200 unidades',               5000.00, 'Articulo'),
+        ('Máquina CNC',        'Control numérico 3 ejes',  250000.00, 'Articulo'),
+        ('Lote Herramientas',  'Taladro + Amoladora',       23000.00, 'Lote');
 
-    -- Relaciones Composite: lote → contenido
-    -- Lote Herramientas (Id=5) → Taladro (1) + Amoladora (2)
-    -- Sección Producción (Id=6) → Lote Herramientas (5) + Repuestos (3) + CNC (4)
-    DECLARE @idTaladro  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Taladro Industrial');
-    DECLARE @idAmolad   INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Amoladora');
-    DECLARE @idRepuest  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Set de Repuestos');
-    DECLARE @idCNC      INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Máquina CNC');
-    DECLARE @idLoteH    INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Lote Herramientas');
-    DECLARE @idSeccion  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Sección Producción Completa');
+    DECLARE @idTaladro INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Taladro Industrial');
+    DECLARE @idAmolad  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Amoladora');
+    DECLARE @idLoteH   INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Lote Herramientas');
 
     INSERT INTO LoteContenido (LoteId, ContenidoId) VALUES
-        (@idLoteH,   @idTaladro),
-        (@idLoteH,   @idAmolad),
-        (@idSeccion, @idLoteH),
-        (@idSeccion, @idRepuest),
-        (@idSeccion, @idCNC);
+        (@idLoteH, @idTaladro),
+        (@idLoteH, @idAmolad);
 END
 GO
 

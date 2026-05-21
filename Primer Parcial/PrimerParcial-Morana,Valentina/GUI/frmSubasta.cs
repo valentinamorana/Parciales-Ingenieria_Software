@@ -18,23 +18,24 @@ namespace GUI
     public partial class frmSubasta : Form
     {
         private SubastaBLL _bll;
+        private CatalogoBLL _catalogoBLL;
         private SubastaActiva _subastaActiva;
         private List<Interesado> _interesados;
-        private List<IUnidadDeVenta> _catalogo;
         private List<Usuario> _usuarios;
         private readonly BitacoraBLL _bitacora = new BitacoraBLL();
 
-        private const int DURACION_INICIAL     = 120;  // 2 minutos por subasta
-        private const int UMBRAL_ANTISNIPING   = 30;   // últimos N segundos disparan extensión
+        public bool TieneSubastaActiva => _subastaActiva != null && _subastaActiva.EstaActiva;
+
+        private const int UMBRAL_ANTISNIPING    = 30;   // últimos N segundos disparan extensión
         private const int EXTENSION_ANTISNIPING = 120; // se agregan N segundos al tiempo restante
         private int _segundosRestantes;
 
-        public frmSubasta(List<IUnidadDeVenta> catalogo)
+        public frmSubasta()
         {
             InitializeComponent();
             _bll         = new SubastaBLL();
+            _catalogoBLL = new CatalogoBLL();
             _interesados = new List<Interesado>();
-            _catalogo    = catalogo;
             _usuarios    = new List<Usuario>();
         }
 
@@ -67,9 +68,7 @@ namespace GUI
                 };
             }
 
-            cmbUnidad.DataSource    = null;
-            cmbUnidad.DataSource    = _catalogo;
-            cmbUnidad.DisplayMember = "Nombre";
+            RecargarComboUnidad();
 
             cmbOfertante.DataSource    = null;
             cmbOfertante.DataSource    = new List<Usuario>(_usuarios);
@@ -78,7 +77,24 @@ namespace GUI
             cmbUsuarioSuscribir.DataSource    = null;
             cmbUsuarioSuscribir.DataSource    = new List<Usuario>(_usuarios);
             cmbUsuarioSuscribir.DisplayMember = "Nombre";
+        }
 
+        // Recarga el combo con unidades subastables (Disponible o Desierta) desde BD.
+        private void RecargarComboUnidad()
+        {
+            try
+            {
+                var todas = _catalogoBLL.ObtenerCatalogo();
+                var subastables = todas.FindAll(u =>
+                    u.Estado == EstadoUnidad.Disponible || u.Estado == EstadoUnidad.Desierta);
+                cmbUnidad.DataSource    = null;
+                cmbUnidad.DataSource    = subastables;
+                cmbUnidad.DisplayMember = "Nombre";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[RecargarComboUnidad] {ex.Message}");
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -95,13 +111,17 @@ namespace GUI
                 if (unidad == null)
                     throw new InvalidOperationException("Seleccione una unidad de venta.");
 
+                int duracion = DialogoDuracion();
+                if (duracion < 0) return;
+
                 _subastaActiva = _bll.CrearSubasta(unidad);
                 unidad.Estado  = EstadoUnidad.EnSubasta;
+                _catalogoBLL.ActualizarEstado(unidad.Id, EstadoUnidad.EnSubasta);
                 _interesados.Clear();
                 lstInteresados.Items.Clear();
                 rtbNotificaciones.Clear();
 
-                _segundosRestantes = DURACION_INICIAL;
+                _segundosRestantes = duracion;
                 ActualizarLblTimer();
                 _timer.Start();
 
@@ -109,7 +129,7 @@ namespace GUI
                     $"Subasta iniciada: {unidad.Nombre} — Base: ${_subastaActiva.PrecioActual:N2}",
                     CriticidadEvento.Media);
 
-                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] Subasta iniciada: {unidad.Nombre}  |  Precio base: ${_subastaActiva.PrecioActual:N2}  |  Tiempo: {DURACION_INICIAL / 60} min\r\n");
+                rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] Subasta iniciada: {unidad.Nombre}  |  Precio base: ${_subastaActiva.PrecioActual:N2}  |  Duración: {FormatearDuracion(duracion)}\r\n");
                 ActualizarPanelSubasta();
                 ActualizarEstadoControles();
             }
@@ -132,7 +152,7 @@ namespace GUI
                 if (_interesados.Exists(i => i.Usuario.Id == usuario.Id))
                     throw new InvalidOperationException($"{usuario.Nombre} ya está suscripto a esta subasta.");
 
-                var interesado = new Interesado(usuario, "Sistema");
+                var interesado = new Interesado(usuario);
                 interesado.NotificacionRecibida += (destinatario, mensaje) =>
                     rtbNotificaciones.AppendText($"[{DateTime.Now:HH:mm:ss}] Para {destinatario} — Notificación: {mensaje}\r\n");
 
@@ -255,6 +275,8 @@ namespace GUI
                 // Cierra subasta → notifica a todos (RF-07) → persiste en BD
                 var resultado = _bll.CerrarSubasta(_subastaActiva);
                 _subastaActiva.Unidad.Estado = EstadoUnidad.Adjudicado;
+                _catalogoBLL.ActualizarEstado(_subastaActiva.Unidad.Id, EstadoUnidad.Adjudicado);
+                RecargarComboUnidad();
 
                 _bitacora.Registrar("CERRAR_SUBASTA",
                     $"Cierre manual — {_subastaActiva.Unidad.Nombre} — Ganador: {resultado.NombreGanador} — ${resultado.PrecioFinal:N2}",
@@ -296,28 +318,47 @@ namespace GUI
 
         private void ActualizarLblTimer()
         {
-            int m = _segundosRestantes / 60;
-            int s = _segundosRestantes % 60;
-            lblTimer.Text = $"⏱  {m:00}:{s:00}";
+            lblTimer.Text      = "⏱  " + FormatearSegundos(_segundosRestantes);
             lblTimer.ForeColor = _segundosRestantes <= UMBRAL_ANTISNIPING
-                ? Color.FromArgb(200, 60, 60)   // rojo urgente
-                : Color.FromArgb(30, 140, 80);  // verde normal
+                ? Color.FromArgb(200, 60, 60)
+                : Color.FromArgb(30, 140, 80);
+        }
+
+        private static string FormatearSegundos(int seg)
+        {
+            int d = seg / 86400;
+            int h = (seg % 86400) / 3600;
+            int m = (seg % 3600) / 60;
+            int s = seg % 60;
+            return d > 0
+                ? $"{d}d {h:00}:{m:00}:{s:00}"
+                : h > 0
+                    ? $"{h:00}:{m:00}:{s:00}"
+                    : $"{m:00}:{s:00}";
+        }
+
+        private static string FormatearDuracion(int seg)
+        {
+            return DuracionEnPalabras(seg / 86400, (seg % 86400) / 3600);
         }
 
         private void AutoCerrarSubasta()
         {
             if (_subastaActiva == null || !_subastaActiva.EstaActiva) return;
 
-            lblTimer.Text      = "⏱  00:00";
+            lblTimer.Text      = "⏱  00:00:00";
             lblTimer.ForeColor = Color.FromArgb(200, 60, 60);
 
             if (_subastaActiva.UltimoPujador == null)
             {
-                // Sin ofertas: no se puede adjudicar, se cancela sin persistir
-                _subastaActiva.Unidad.Estado = EstadoUnidad.Disponible;
+                // Sin ofertas: queda Desierta — puede volver a subastarse
+                var unidadDesierta = _subastaActiva.Unidad;
+                unidadDesierta.Estado = EstadoUnidad.Desierta;
+                _catalogoBLL.ActualizarEstado(unidadDesierta.Id, EstadoUnidad.Desierta);
                 _subastaActiva = null;
+                RecargarComboUnidad();
                 rtbNotificaciones.AppendText(
-                    $"\r\n[{DateTime.Now:HH:mm:ss}] ══ TIEMPO AGOTADO — sin ofertas, subasta cancelada sin adjudicación ══\r\n");
+                    $"\r\n[{DateTime.Now:HH:mm:ss}] ══ TIEMPO AGOTADO — sin ofertas, subasta marcada como Desierta ══\r\n");
                 ActualizarEstadoControles();
                 return;
             }
@@ -326,6 +367,8 @@ namespace GUI
             {
                 var resultado = _bll.CerrarSubasta(_subastaActiva);
                 _subastaActiva.Unidad.Estado = EstadoUnidad.Adjudicado;
+                _catalogoBLL.ActualizarEstado(_subastaActiva.Unidad.Id, EstadoUnidad.Adjudicado);
+                RecargarComboUnidad();
 
                 _bitacora.Registrar("CIERRE_AUTOMATICO",
                     $"Tiempo agotado — {_subastaActiva?.Unidad?.Nombre} — Ganador: {resultado.NombreGanador} — ${resultado.PrecioFinal:N2}",
@@ -344,6 +387,107 @@ namespace GUI
             {
                 MessageBox.Show(ex.Message, "Error al cerrar automáticamente", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // ─────────────────────────────────────────────
+        //  DIÁLOGO DE DURACIÓN
+        // ─────────────────────────────────────────────
+        // Devuelve los segundos elegidos, o -1 si el usuario canceló.
+        private int DialogoDuracion()
+        {
+            using (var dlg = new Form())
+            {
+                dlg.Text            = "Duración de la subasta";
+                dlg.ClientSize      = new Size(290, 215);
+                dlg.StartPosition   = FormStartPosition.CenterParent;
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.MaximizeBox     = false;
+                dlg.MinimizeBox     = false;
+                dlg.BackColor       = Color.FromArgb(252, 228, 235);
+
+                var header = new Panel { Dock = DockStyle.Top, Height = 38, BackColor = Color.FromArgb(210, 100, 135) };
+                header.Controls.Add(new Label
+                {
+                    Text = "Configurar duración", Dock = DockStyle.Fill,
+                    ForeColor = Color.White, Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                    TextAlign = ContentAlignment.MiddleCenter
+                });
+                dlg.Controls.Add(header);
+
+                Func<string, int, int, long, NumericUpDown> fila = (etiq, y, max, def) =>
+                {
+                    dlg.Controls.Add(new Label
+                    {
+                        Text = etiq, Location = new Point(20, y + 3), AutoSize = true,
+                        Font = new Font("Segoe UI", 9F), ForeColor = Color.FromArgb(64, 64, 64)
+                    });
+                    var nud = new NumericUpDown
+                    {
+                        Location = new Point(150, y), Size = new Size(80, 24),
+                        Minimum = 0, Maximum = max, Value = def,
+                        BackColor = Color.FromArgb(245, 245, 248), Font = new Font("Segoe UI", 9F)
+                    };
+                    dlg.Controls.Add(nud);
+                    return nud;
+                };
+
+                var nudDias  = fila("Días:",  52, 9999, 0);
+                var nudHoras = fila("Horas:", 90, 23,   1);
+
+                var lblTotal = new Label
+                {
+                    Location = new Point(20, 128), Size = new Size(250, 36),
+                    Font = new Font("Segoe UI", 9.5F, FontStyle.Italic),
+                    ForeColor = Color.FromArgb(100, 100, 135)
+                };
+                dlg.Controls.Add(lblTotal);
+
+                Action actualizar = () => { lblTotal.Text = DuracionEnPalabras((int)nudDias.Value, (int)nudHoras.Value); };
+                nudDias.ValueChanged  += (s2, e2) => actualizar();
+                nudHoras.ValueChanged += (s2, e2) => actualizar();
+                actualizar();
+
+                var btnOk = new Button
+                {
+                    Text = "Confirmar", DialogResult = DialogResult.OK,
+                    Location = new Point(30, 174), Size = new Size(100, 28),
+                    BackColor = Color.FromArgb(210, 100, 135), ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+                };
+                btnOk.FlatAppearance.BorderSize = 0;
+
+                var btnCan = new Button
+                {
+                    Text = "Cancelar", DialogResult = DialogResult.Cancel,
+                    Location = new Point(158, 174), Size = new Size(100, 28),
+                    BackColor = Color.FromArgb(200, 200, 210), ForeColor = Color.FromArgb(64, 64, 64),
+                    FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+                };
+                btnCan.FlatAppearance.BorderSize = 0;
+
+                dlg.Controls.Add(btnOk);
+                dlg.Controls.Add(btnCan);
+                dlg.AcceptButton = btnOk;
+                dlg.CancelButton = btnCan;
+
+                if (dlg.ShowDialog(this) != DialogResult.OK) return -1;
+
+                long total = (long)nudDias.Value * 86400 + (long)nudHoras.Value * 3600;
+                if (total <= 0)
+                    throw new InvalidOperationException("La duración debe ser mayor a cero.");
+                return (int)total;
+            }
+        }
+
+        private static string DuracionEnPalabras(int dias, int horas)
+        {
+            if (dias == 0 && horas == 0) return "Seleccioná al menos 1 hora.";
+
+            string parteDias  = dias  == 1 ? "1 día"         : dias  > 1 ? $"{dias} días"  : null;
+            string parteHoras = horas == 1 ? "1 hora"        : horas > 1 ? $"{horas} horas" : null;
+
+            if (parteDias != null && parteHoras != null) return $"{parteDias} y {parteHoras}";
+            return parteDias ?? parteHoras;
         }
 
         // ─────────────────────────────────────────────

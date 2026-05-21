@@ -110,13 +110,7 @@ BEGIN
             205000.00, 'Lote'),
         ('Tesoro Decorativo',
             'Para el hogar más chic: escultura Limoges + espejo veneciano + lámpara Tiffany original.',
-            268000.00, 'Lote'),
-        ('Gran Lote Lujo',
-            'El lote más codiciado de la temporada: Colección Joyería Alta + Birkin negro + Chanel Nº5.',
-            650000.00, 'Lote'),
-        ('Colección Arte y Deco Completa',
-            'Para el coleccionista exigente: cuadro Flores en Azul + Tesoro Decorativo completo.',
-            383000.00, 'Lote');
+            268000.00, 'Lote');
 
     -- ── RELACIONES COMPOSITE ──────────────────────────────────────────
 
@@ -133,11 +127,9 @@ BEGIN
     DECLARE @idEspejo    INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Espejo Veneciano Talla Dorada');
     DECLARE @idLampara   INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Lámpara Tiffany Original c.1910');
 
-    DECLARE @idLoteJoya  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Colección Joyería Alta');
-    DECLARE @idLoteModa  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Lote Moda Vintage Couture');
-    DECLARE @idLoteDeco  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Tesoro Decorativo');
-    DECLARE @idLoteLujo  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Gran Lote Lujo');
-    DECLARE @idLoteArte  INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Colección Arte y Deco Completa');
+    DECLARE @idLoteJoya INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Colección Joyería Alta');
+    DECLARE @idLoteModa INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Lote Moda Vintage Couture');
+    DECLARE @idLoteDeco INT = (SELECT Id FROM UnidadesDeVenta WHERE Nombre = 'Tesoro Decorativo');
 
     INSERT INTO LoteContenido (LoteId, ContenidoId) VALUES
         -- Colección Joyería Alta ─ 3 artículos
@@ -151,14 +143,7 @@ BEGIN
         -- Tesoro Decorativo ─ 3 artículos
         (@idLoteDeco, @idEscultura),
         (@idLoteDeco, @idEspejo),
-        (@idLoteDeco, @idLampara),
-        -- Gran Lote Lujo ─ anida Colección Joyería Alta + Birkin + Perfume
-        (@idLoteLujo, @idLoteJoya),
-        (@idLoteLujo, @idBirkin),
-        (@idLoteLujo, @idPerfume),
-        -- Colección Arte y Deco ─ anida Cuadro + Tesoro Decorativo
-        (@idLoteArte, @idCuadro),
-        (@idLoteArte, @idLoteDeco);
+        (@idLoteDeco, @idLampara);
 
 END
 GO

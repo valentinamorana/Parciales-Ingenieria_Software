@@ -93,7 +93,7 @@ namespace GUI
         }
 
         private void mnuCatalogo_Click(object sender, EventArgs e)  => AbrirCatalogo();
-        private void mnuSubasta_Click(object sender, EventArgs e)   => AbrirForm(new frmSubasta(_catalogo));
+        private void mnuSubasta_Click(object sender, EventArgs e)   => AbrirForm(new frmSubasta());
         private void mnuHistorial_Click(object sender, EventArgs e) => AbrirForm(new frmHistorial());
         private void mnuBitacora_Click(object sender, EventArgs e)  => AbrirForm(new frmBitacora());
         private void mnuReporte_Click(object sender, EventArgs e)   => AbrirForm(new frmReporte(_catalogo));
@@ -113,14 +113,28 @@ namespace GUI
             Application.Restart();
         }
 
-        private void AbrirCatalogo() => AbrirForm(new frmCatalogo(_catalogo));
+        private void AbrirCatalogo() => AbrirForm(new frmCatalogo());
 
         private void AbrirForm(Form form)
         {
-            if (this.ActiveMdiChild != null)
-                this.ActiveMdiChild.Close();
-            form.MdiParent      = this;
-            form.StartPosition  = FormStartPosition.CenterParent;
+            // Si ya hay un hijo del mismo tipo abierto, traerlo al frente
+            foreach (Form hijo in this.MdiChildren)
+            {
+                if (hijo.GetType() == form.GetType())
+                {
+                    form.Dispose();
+                    hijo.Activate();
+                    return;
+                }
+            }
+
+            // No cerrar frmSubasta si tiene una subasta en curso
+            var activo = this.ActiveMdiChild;
+            if (activo != null && !(activo is frmSubasta sub && sub.TieneSubastaActiva))
+                activo.Close();
+
+            form.MdiParent     = this;
+            form.StartPosition = FormStartPosition.CenterParent;
             form.Show();
         }
     }
