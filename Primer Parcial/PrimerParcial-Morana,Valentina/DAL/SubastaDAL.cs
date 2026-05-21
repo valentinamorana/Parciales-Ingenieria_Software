@@ -41,18 +41,7 @@ namespace DAL
 
             var lista = new List<ResultadoSubasta>();
             foreach (System.Data.DataRow fila in tabla.Rows)
-            {
-                lista.Add(new ResultadoSubasta
-                {
-                    Id                = (int)fila["Id"],
-                    NombreUnidadVenta = (string)fila["NombreUnidadVenta"],
-                    PrecioBase        = (decimal)fila["PrecioBase"],
-                    PrecioFinal       = (decimal)fila["PrecioFinal"],
-                    NombreGanador     = (string)fila["NombreGanador"],
-                    EmailGanador      = (string)fila["EmailGanador"],
-                    FechaHora         = (DateTime)fila["FechaHora"]
-                });
-            }
+                lista.Add(MapearFila(fila));
             return lista;
         }
 
@@ -63,19 +52,19 @@ namespace DAL
                 "FROM Subastas WHERE Id = @id",
                 new[] { new SqlParameter("@id", id) });
 
-            if (tabla.Rows.Count == 0) return null;
-            var fila = tabla.Rows[0];
-            return new ResultadoSubasta
-            {
-                Id                = (int)fila["Id"],
-                NombreUnidadVenta = (string)fila["NombreUnidadVenta"],
-                PrecioBase        = (decimal)fila["PrecioBase"],
-                PrecioFinal       = (decimal)fila["PrecioFinal"],
-                NombreGanador     = (string)fila["NombreGanador"],
-                EmailGanador      = (string)fila["EmailGanador"],
-                FechaHora         = (DateTime)fila["FechaHora"]
-            };
+            return tabla.Rows.Count == 0 ? null : MapearFila(tabla.Rows[0]);
         }
+
+        private static ResultadoSubasta MapearFila(System.Data.DataRow fila) => new ResultadoSubasta
+        {
+            Id                = (int)fila["Id"],
+            NombreUnidadVenta = (string)fila["NombreUnidadVenta"],
+            PrecioBase        = (decimal)fila["PrecioBase"],
+            PrecioFinal       = (decimal)fila["PrecioFinal"],
+            NombreGanador     = (string)fila["NombreGanador"],
+            EmailGanador      = (string)fila["EmailGanador"],
+            FechaHora         = (DateTime)fila["FechaHora"]
+        };
 
         public override void Eliminar(ResultadoSubasta entidad)
         {

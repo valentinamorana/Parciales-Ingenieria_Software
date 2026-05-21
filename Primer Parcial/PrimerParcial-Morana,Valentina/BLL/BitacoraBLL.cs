@@ -35,7 +35,10 @@ namespace BLL
 
         public IList<EventoBitacora> ObtenerFiltrado(int diasAtras, string criticidad, string operacion)
         {
-            DateTime? desde = diasAtras > 0 ? DateTime.Now.AddDays(-diasAtras) : (DateTime?)null;
+            // 1 día = solo hoy (desde 00:00 de hoy), 2 días = hoy + ayer, etc.
+            DateTime? desde = diasAtras > 0
+                ? DateTime.Today.AddDays(1 - diasAtras)
+                : (DateTime?)null;
             return _dal.ObtenerFiltrado(desde, criticidad, operacion);
         }
     }

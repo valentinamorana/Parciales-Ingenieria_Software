@@ -1,6 +1,5 @@
-namespace Servicios.Observer
+namespace Servicios
 {
-    // Sujeto del patrón Observer
     public interface ISujetoSubasta
     {
         void Suscribir(IObservadorSubasta observador);    // RF-05

@@ -1,6 +1,5 @@
 using System;
 using BE;
-using Servicios.Observer;
 
 namespace Servicios
 {
@@ -9,19 +8,16 @@ namespace Servicios
     public class Interesado : IObservadorSubasta
     {
         private readonly Usuario _usuario;
-        private readonly string  _canal;
 
         // La UI suscribe a este evento; Interesado no conoce nada de WinForms.
         public event Action<string, string> NotificacionRecibida; // (destinatario, mensaje)
 
-        public Interesado(Usuario usuario, string canal)
+        public Interesado(Usuario usuario)
         {
             _usuario = usuario ?? throw new ArgumentNullException(nameof(usuario));
-            _canal   = canal   ?? "—";
         }
 
         public Usuario Usuario => _usuario;
-        public string  Canal   => _canal;
 
         public void Actualizar(SubastaActiva subasta)
         {

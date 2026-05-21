@@ -1,6 +1,5 @@
-namespace Servicios.Observer
+namespace Servicios
 {
-    // Observer del patrón Observer
     public interface IObservadorSubasta
     {
         void Actualizar(SubastaActiva subasta);

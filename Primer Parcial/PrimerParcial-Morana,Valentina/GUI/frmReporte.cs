@@ -13,12 +13,16 @@ namespace GUI
     // RF-13: Reporte de Jornada — recorre el Composite y muestra historial del día
     public partial class frmReporte : Form
     {
-        private readonly ReporteJornada         _servicio;
-        private readonly List<IUnidadDeVenta>   _catalogo;
-        private readonly SubastaBLL             _subastaBll = new SubastaBLL();
+        private readonly ReporteJornada       _servicio;
+        private readonly List<IUnidadDeVenta> _catalogo;
+        private readonly SubastaBLL           _subastaBll = new SubastaBLL();
 
-        // KPI cards
+        // KPI banner value labels
         private Label _kpiTotalVal, _kpiCerradasVal, _kpiDesiertoVal, _kpiMontoVal, _kpiIngresadosVal;
+
+        // Export context menus
+        private ContextMenuStrip _menuExportar;
+        private ContextMenuStrip _menuExportarComp;
 
         public frmReporte(List<IUnidadDeVenta> catalogo)
         {
@@ -32,74 +36,92 @@ namespace GUI
             dtpJornada.Value  = DateTime.Today;
             dtpJornada2.Value = DateTime.Today.AddDays(-1);
 
-            // ── Panel de KPIs ────────────────────────────────────────────────
-            const int gap = 10, n = 5, panelH = 74;
-            int cardW = (1360 - (n + 1) * gap) / n;  // ~258px
-
-            var panelKPI = new Panel
-            {
-                Location  = new Point(10, 158),
-                Size      = new Size(1360, panelH),
-                BackColor = Color.Transparent
-            };
-
-            panelKPI.Controls.Add(CrearTarjetaKPI("Ítems en Catálogo", Color.FromArgb(225, 225, 235), Color.FromArgb(60, 60, 90),   0, cardW, gap, out _kpiTotalVal));
-            panelKPI.Controls.Add(CrearTarjetaKPI("Subastas Cerradas", Color.FromArgb(210, 240, 215), Color.FromArgb(30, 100, 50),  1, cardW, gap, out _kpiCerradasVal));
-            panelKPI.Controls.Add(CrearTarjetaKPI("Desiertos",         Color.FromArgb(255, 235, 200), Color.FromArgb(140, 80, 0),   2, cardW, gap, out _kpiDesiertoVal));
-            panelKPI.Controls.Add(CrearTarjetaKPI("Monto Recaudado",   Color.FromArgb(255, 215, 230), Color.FromArgb(160, 40, 80),  3, cardW, gap, out _kpiMontoVal));
-            panelKPI.Controls.Add(CrearTarjetaKPI("Ingresados Hoy",    Color.FromArgb(210, 235, 255), Color.FromArgb(30, 80, 160),  4, cardW, gap, out _kpiIngresadosVal));
-
-            this.Controls.Add(panelKPI);
-            // Mover rtbReporte para hacer lugar a los KPIs
-            rtbReporte.Top    += panelH + 4;
-            rtbReporte.Height -= panelH + 4;
-
+            CrearBannerKPIs();
+            ConfigurarMenusExportar();
             GenerarReporte();
         }
 
-        private static Panel CrearTarjetaKPI(string titulo, Color bg, Color fg,
-                                              int indice, int cardW, int gap,
-                                              out Label lblValor)
+        // ── Banner de KPIs ──────────────────────────────────────────────────────
+        private void CrearBannerKPIs()
         {
-            var card = new Panel
+            const int panelH = 66, n = 5;
+            int cellW = 1360 / n;
+
+            // Strip con la paleta del sistema: fondo casi-blanco rosado, borde inferior en brand pink
+            var banner = new Panel
             {
-                Location  = new Point(gap + indice * (cardW + gap), 0),
-                Size      = new Size(cardW, 70),
-                BackColor = bg
+                Location  = new Point(10, 158),
+                Size      = new Size(1360, panelH),
+                BackColor = Color.FromArgb(250, 242, 246)
             };
 
-            card.Controls.Add(new Label
+            banner.Paint += (s, pe) =>
             {
-                Text      = titulo,
-                Location  = new Point(0, 7),
-                Size      = new Size(cardW, 18),
-                Font      = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                ForeColor = fg,
-                TextAlign = ContentAlignment.MiddleCenter
-            });
-
-            lblValor = new Label
-            {
-                Text      = "—",
-                Location  = new Point(0, 27),
-                Size      = new Size(cardW, 38),
-                Font      = new Font("Segoe UI", 16F, FontStyle.Bold),
-                ForeColor = fg,
-                TextAlign = ContentAlignment.MiddleCenter
+                var g = pe.Graphics;
+                // Franja inferior en brand pink
+                using (var br = new SolidBrush(Color.FromArgb(210, 100, 135)))
+                    g.FillRectangle(br, 0, panelH - 3, banner.Width, 3);
+                // Separadores verticales muy suaves
+                using (var pen = new Pen(Color.FromArgb(230, 210, 220), 1))
+                    for (int i = 1; i < n; i++)
+                        g.DrawLine(pen, i * cellW, 8, i * cellW, panelH - 10);
             };
-            card.Controls.Add(lblValor);
-            return card;
+
+            var titulos = new[] { "Ítems en catálogo", "Subastas cerradas", "Desiertos", "Monto recaudado", "Ingresados hoy" };
+            var valLabels = new Label[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                int x = i * cellW;
+
+                var lblVal = new Label
+                {
+                    Text      = "—",
+                    Location  = new Point(x, 6),
+                    Size      = new Size(cellW, 33),
+                    Font      = new Font("Segoe UI", 15F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(52, 28, 40),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    BackColor = Color.Transparent
+                };
+                var lblTit = new Label
+                {
+                    Text      = titulos[i],
+                    Location  = new Point(x, 39),
+                    Size      = new Size(cellW, 19),
+                    Font      = new Font("Segoe UI", 7.5F, FontStyle.Regular),
+                    ForeColor = Color.FromArgb(175, 80, 115),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    BackColor = Color.Transparent
+                };
+
+                banner.Controls.Add(lblVal);
+                banner.Controls.Add(lblTit);
+                valLabels[i] = lblVal;
+            }
+
+            _kpiTotalVal      = valLabels[0];
+            _kpiCerradasVal   = valLabels[1];
+            _kpiDesiertoVal   = valLabels[2];
+            _kpiMontoVal      = valLabels[3];
+            _kpiIngresadosVal = valLabels[4];
+
+            this.Controls.Add(banner);
+            banner.BringToFront();
+
+            rtbReporte.Top    += panelH + 4;
+            rtbReporte.Height -= panelH + 4;
         }
 
         private void ActualizarKPIs(DateTime fecha)
         {
             try
             {
-                var historial = _subastaBll.ObtenerHistorial();
-                var deHoy     = historial.Where(r => r.FechaHora.Date == fecha.Date).ToList();
-                int cerradas  = deHoy.Count;
-                decimal monto = deHoy.Sum(r => r.PrecioFinal);
-                int desiertos = _catalogo.Count(u => u.Estado == EstadoUnidad.Desierta);
+                var historial  = _subastaBll.ObtenerHistorial();
+                var deHoy      = historial.Where(r => r.FechaHora.Date == fecha.Date).ToList();
+                int cerradas   = deHoy.Count;
+                decimal monto  = deHoy.Sum(r => r.PrecioFinal);
+                int desiertos  = _catalogo.Count(u => u.Estado == EstadoUnidad.Desierta);
                 int ingresados = _catalogo.Count(u => u.FechaIngreso.Date == fecha.Date);
 
                 _kpiTotalVal.Text      = _catalogo.Count.ToString();
@@ -108,18 +130,79 @@ namespace GUI
                 _kpiMontoVal.Text      = $"${monto:N0}";
                 _kpiIngresadosVal.Text = ingresados.ToString();
             }
-            catch { /* silencioso — no interrumpe el reporte de texto */ }
+            catch { /* silencioso */ }
         }
 
-        private void btnGenerar_Click(object sender, EventArgs e)
+        // ── Menús de exportación ────────────────────────────────────────────────
+        private void ConfigurarMenusExportar()
         {
-            GenerarReporte();
+            _menuExportar = new ContextMenuStrip();
+            _menuExportar.Items.Add("Guardar como .TXT", null, (s, e) => ExportarContenido(esPdf: false, esComparacion: false));
+            _menuExportar.Items.Add("Guardar como PDF",  null, (s, e) => ExportarContenido(esPdf: true,  esComparacion: false));
+
+            _menuExportarComp = new ContextMenuStrip();
+            _menuExportarComp.Items.Add("Guardar comparación como .TXT", null, (s, e) => ExportarContenido(esPdf: false, esComparacion: true));
+            _menuExportarComp.Items.Add("Guardar comparación como PDF",  null, (s, e) => ExportarContenido(esPdf: true,  esComparacion: true));
         }
 
-        private void dtpJornada_ValueChanged(object sender, EventArgs e)
+        private void ExportarContenido(bool esPdf, bool esComparacion)
         {
-            GenerarReporte();
+            try
+            {
+                string extension = esPdf ? "pdf" : "txt";
+                string filtro    = esPdf
+                    ? "PDF (*.pdf)|*.pdf"
+                    : "Archivo de texto (*.txt)|*.txt";
+
+                string nombreBase = esComparacion
+                    ? $"Comparacion_{dtpJornada.Value:yyyyMMdd}_vs_{dtpJornada2.Value:yyyyMMdd}"
+                    : $"ReporteJornada_{dtpJornada.Value:yyyyMMdd}";
+
+                string titulo = esComparacion
+                    ? $"Comparación de Jornadas — {dtpJornada.Value:dd/MM/yyyy} vs {dtpJornada2.Value:dd/MM/yyyy}"
+                    : $"Reporte de Jornada — {dtpJornada.Value:dd/MM/yyyy}";
+
+                using (var dlg = new SaveFileDialog())
+                {
+                    dlg.Title            = esPdf ? "Exportar como PDF" : "Exportar como TXT";
+                    dlg.Filter           = filtro;
+                    dlg.FileName         = $"{nombreBase}.{extension}";
+                    dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                    if (dlg.ShowDialog() != DialogResult.OK) return;
+
+                    if (esPdf)
+                        PdfExporter.ExportarReporte(dlg.FileName, titulo, rtbReporte.Text);
+                    else
+                        File.WriteAllText(dlg.FileName, rtbReporte.Text, System.Text.Encoding.UTF8);
+
+                    lblStatus.Text = $"Exportado: {Path.GetFileName(dlg.FileName)}";
+                    MessageBox.Show($"Archivo exportado:\n{dlg.FileName}", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al exportar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        // ── Handlers de botones ─────────────────────────────────────────────────
+        private void btnGenerar_Click(object sender, EventArgs e) => GenerarReporte();
+
+        private void dtpJornada_ValueChanged(object sender, EventArgs e) => GenerarReporte();
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            _menuExportar.Show(btnExportar, new Point(0, btnExportar.Height));
+        }
+
+        private void btnExportarComp_Click(object sender, EventArgs e)
+        {
+            _menuExportarComp.Show(btnExportarComp, new Point(0, btnExportarComp.Height));
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e) => GenerarReporte();
 
         private void btnComparar_Click(object sender, EventArgs e)
         {
@@ -127,7 +210,7 @@ namespace GUI
             {
                 string texto = _servicio.GenerarComparacion(_catalogo, dtpJornada.Value.Date, dtpJornada2.Value.Date);
                 rtbReporte.Text = texto;
-                lblStatus.Text = $"Comparación generada — {DateTime.Now:HH:mm:ss}";
+                lblStatus.Text  = $"Comparación generada — {DateTime.Now:HH:mm:ss}";
             }
             catch (Exception ex)
             {
@@ -148,61 +231,6 @@ namespace GUI
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void btnExportar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                using (var dlg = new SaveFileDialog())
-                {
-                    dlg.Title            = "Exportar reporte";
-                    dlg.Filter           = "Archivo de texto (*.txt)|*.txt";
-                    dlg.FileName         = $"ReporteJornada_{dtpJornada.Value:yyyyMMdd}.txt";
-                    dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-                    if (dlg.ShowDialog() == DialogResult.OK)
-                    {
-                        File.WriteAllText(dlg.FileName, rtbReporte.Text, System.Text.Encoding.UTF8);
-                        lblStatus.Text = $"Exportado: {Path.GetFileName(dlg.FileName)}";
-                        MessageBox.Show($"Reporte exportado:\n{dlg.FileName}", "Éxito",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error al exportar", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void btnExportarPdf_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                using (var dlg = new SaveFileDialog())
-                {
-                    dlg.Title            = "Exportar reporte como PDF";
-                    dlg.Filter           = "PDF (*.pdf)|*.pdf";
-                    dlg.FileName         = $"ReporteJornada_{dtpJornada.Value:yyyyMMdd}.pdf";
-                    dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-                    if (dlg.ShowDialog() == DialogResult.OK)
-                    {
-                        PdfExporter.ExportarReporte(
-                            dlg.FileName,
-                            $"Reporte de Jornada — {dtpJornada.Value:dd/MM/yyyy}",
-                            rtbReporte.Text);
-                        lblStatus.Text = $"PDF exportado: {Path.GetFileName(dlg.FileName)}";
-                        MessageBox.Show($"PDF exportado:\n{dlg.FileName}", "Éxito",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error al exportar PDF", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

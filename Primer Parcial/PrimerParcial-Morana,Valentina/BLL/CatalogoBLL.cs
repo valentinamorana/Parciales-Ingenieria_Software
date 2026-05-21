@@ -8,9 +8,13 @@ namespace BLL
 {
     public class CatalogoBLL
     {
+        // CatalogoBLL no extiende AbstractBLL porque ObtenerCatalogo reconstruye un árbol
+        // Composite desde dos tablas — esa lógica no cabe en el patrón ICrud<T>.
+        private readonly CatalogoDAL _dal = new CatalogoDAL();
+
         public List<IUnidadDeVenta> ObtenerCatalogo()
         {
-            var dal      = new CatalogoDAL();
+            var dal      = _dal;
             var unidades = dal.ObtenerUnidades();
             var relacs   = dal.ObtenerRelaciones();
 
@@ -68,8 +72,7 @@ namespace BLL
         public void GuardarArticulo(ArticuloSimple art)
         {
             if (art == null) throw new ArgumentNullException(nameof(art));
-            var dal = new CatalogoDAL();
-            art.Id = dal.GuardarArticulo(art.Nombre, art.Descripcion, art.PrecioBase, art.FechaIngreso);
+            art.Id = _dal.GuardarArticulo(art.Nombre, art.Descripcion, art.PrecioBase, art.FechaIngreso);
         }
 
         public void ActualizarEstado(int id, EstadoUnidad estado)
@@ -83,14 +86,14 @@ namespace BLL
                 case EstadoUnidad.Retirado:   estadoStr = "Retirado";   break;
                 default:                      estadoStr = "Disponible"; break;
             }
-            new CatalogoDAL().ActualizarEstado(id, estadoStr);
+            _dal.ActualizarEstado(id, estadoStr);
         }
 
         public void ModificarArticulo(int id, string nombre, string descripcion, decimal precioBase)
         {
             if (string.IsNullOrWhiteSpace(nombre)) throw new InvalidOperationException("El nombre es obligatorio.");
             if (precioBase <= 0) throw new InvalidOperationException("El precio debe ser mayor a cero.");
-            new CatalogoDAL().ModificarArticulo(id, nombre.Trim(), descripcion?.Trim(), precioBase);
+            _dal.ModificarArticulo(id, nombre.Trim(), descripcion?.Trim(), precioBase);
         }
 
         public void RetirarUnidad(int id) => ActualizarEstado(id, EstadoUnidad.Retirado);
@@ -104,8 +107,7 @@ namespace BLL
             foreach (var hijo in lote.ObtenerHijos())
                 idsHijos.Add(hijo.Id);
 
-            var dal = new CatalogoDAL();
-            lote.Id = dal.GuardarLote(lote.Nombre, lote.CalcularPrecioBase(), lote.FechaIngreso, idsHijos);
+            lote.Id = _dal.GuardarLote(lote.Nombre, lote.CalcularPrecioBase(), lote.FechaIngreso, idsHijos);
         }
     }
 }

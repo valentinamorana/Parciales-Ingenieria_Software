@@ -4,18 +4,21 @@ using BE;
 using DAL;
 using Servicios;
 using Servicios.Composite;
-using Servicios.Observer;
 
 namespace BLL
 {
     public class SubastaBLL : AbstractBLL<ResultadoSubasta>
     {
-        private readonly PujaDAL _pujaDAL;
+        // Referencia tipada para poder llamar GuardarEnTransaccion sin cast.
+        // _crud = _subastaDAL para que AbstractBLL delegue CRUD normalmente.
+        private readonly SubastaDAL _subastaDAL;
+        private readonly PujaDAL    _pujaDAL;
 
         public SubastaBLL()
         {
-            _crud    = new SubastaDAL();
-            _pujaDAL = new PujaDAL();
+            _subastaDAL = new SubastaDAL();
+            _crud       = _subastaDAL;
+            _pujaDAL    = new PujaDAL();
         }
 
         public SubastaActiva CrearSubasta(IUnidadDeVenta unidad)
@@ -55,8 +58,7 @@ namespace BLL
             Acceso.GetInstance().EjecutarTransaccion((conn, tx) =>
             {
                 // 1. Persistir resultado final → obtener su Id
-                var subastaDAL = (SubastaDAL)_crud;
-                subastaDAL.GuardarEnTransaccion(resultado, conn, tx);
+                _subastaDAL.GuardarEnTransaccion(resultado, conn, tx);
 
                 // 2. Persistir cada puja con el Id de subasta recién creado
                 foreach (var puja in subasta.Pujas)

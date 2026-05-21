@@ -72,7 +72,7 @@ namespace GUI
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1223, 56);
+            this.panelTop.Size = new System.Drawing.Size(1423, 56);
             this.panelTop.TabIndex = 3;
             // 
             // lblTitulo
@@ -104,7 +104,7 @@ namespace GUI
             this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelStatus.Location = new System.Drawing.Point(0, 672);
             this.panelStatus.Name = "panelStatus";
-            this.panelStatus.Size = new System.Drawing.Size(1223, 28);
+            this.panelStatus.Size = new System.Drawing.Size(1423, 28);
             this.panelStatus.TabIndex = 2;
             // 
             // lblStatus
@@ -139,7 +139,7 @@ namespace GUI
             this.lblContadorCatalogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(185)))), ((int)(((byte)(200)))));
             this.lblContadorCatalogo.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblContadorCatalogo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblContadorCatalogo.Location = new System.Drawing.Point(0, 1090);
+            this.lblContadorCatalogo.Location = new System.Drawing.Point(0, 584);
             this.lblContadorCatalogo.Name = "lblContadorCatalogo";
             this.lblContadorCatalogo.Size = new System.Drawing.Size(310, 32);
             this.lblContadorCatalogo.TabIndex = 1;
@@ -156,7 +156,7 @@ namespace GUI
             this.treeViewCatalogo.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.treeViewCatalogo.Location = new System.Drawing.Point(0, 90);
             this.treeViewCatalogo.Name = "treeViewCatalogo";
-            this.treeViewCatalogo.Size = new System.Drawing.Size(310, 996);
+            this.treeViewCatalogo.Size = new System.Drawing.Size(310, 494);
             this.treeViewCatalogo.TabIndex = 0;
             this.treeViewCatalogo.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewCatalogo_AfterSelect);
             // 
@@ -220,20 +220,17 @@ namespace GUI
             // 
             // panelDerecho
             // 
+            this.panelDerecho.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelDerecho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(228)))), ((int)(((byte)(235)))));
             this.panelDerecho.Controls.Add(this.panelPrecio);
             this.panelDerecho.Controls.Add(this.panelDescripcion);
             this.panelDerecho.Controls.Add(this.dgvCatalogo);
             this.panelDerecho.Controls.Add(this.panelFiltros);
             this.panelDerecho.Controls.Add(this.pnlHeaderGrilla);
-            this.panelDerecho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelDerecho.Location = new System.Drawing.Point(310, 56);
             this.panelDerecho.Name = "panelDerecho";
-            this.panelDerecho.Anchor = ((System.Windows.Forms.AnchorStyles)(
-                System.Windows.Forms.AnchorStyles.Top    |
-                System.Windows.Forms.AnchorStyles.Bottom |
-                System.Windows.Forms.AnchorStyles.Left   |
-                System.Windows.Forms.AnchorStyles.Right));
             this.panelDerecho.Size = new System.Drawing.Size(1113, 616);
             this.panelDerecho.TabIndex = 1;
             // 
@@ -244,7 +241,7 @@ namespace GUI
             this.panelPrecio.Controls.Add(this.lblPrecioBase);
             this.panelPrecio.Location = new System.Drawing.Point(8, 570);
             this.panelPrecio.Name = "panelPrecio";
-            this.panelPrecio.Size = new System.Drawing.Size(900, 36);
+            this.panelPrecio.Size = new System.Drawing.Size(1060, 36);
             this.panelPrecio.TabIndex = 0;
             // 
             // lblPrecioLabel
@@ -275,9 +272,9 @@ namespace GUI
             this.panelDescripcion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelDescripcion.Controls.Add(this.rtbDescripcion);
             this.panelDescripcion.Controls.Add(this.lblDescTitulo);
-            this.panelDescripcion.Location = new System.Drawing.Point(8, 294);
+            this.panelDescripcion.Location = new System.Drawing.Point(8, 468);
             this.panelDescripcion.Name = "panelDescripcion";
-            this.panelDescripcion.Size = new System.Drawing.Size(900, 270);
+            this.panelDescripcion.Size = new System.Drawing.Size(1060, 96);
             this.panelDescripcion.TabIndex = 1;
             // 
             // rtbDescripcion
@@ -286,10 +283,10 @@ namespace GUI
             this.rtbDescripcion.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbDescripcion.Font = new System.Drawing.Font("Consolas", 9F);
             this.rtbDescripcion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.rtbDescripcion.Location = new System.Drawing.Point(6, 26);
+            this.rtbDescripcion.Location = new System.Drawing.Point(7, 28);
             this.rtbDescripcion.Name = "rtbDescripcion";
             this.rtbDescripcion.ReadOnly = true;
-            this.rtbDescripcion.Size = new System.Drawing.Size(886, 236);
+            this.rtbDescripcion.Size = new System.Drawing.Size(1043, 60);
             this.rtbDescripcion.TabIndex = 3;
             this.rtbDescripcion.Text = "";
             // 
@@ -337,7 +334,7 @@ namespace GUI
             this.dgvCatalogo.ReadOnly = true;
             this.dgvCatalogo.RowHeadersVisible = false;
             this.dgvCatalogo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCatalogo.Size = new System.Drawing.Size(1060, 222);
+            this.dgvCatalogo.Size = new System.Drawing.Size(1060, 396);
             this.dgvCatalogo.TabIndex = 2;
             this.dgvCatalogo.SelectionChanged += new System.EventHandler(this.dgvCatalogo_SelectionChanged);
             // 
@@ -451,20 +448,20 @@ namespace GUI
             this.txtPrecioMax.TabIndex = 7;
             this.txtPrecioMax.TextChanged += new System.EventHandler(this.FiltroChanged);
             this.txtPrecioMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPrecio_KeyPress);
-            //
+            // 
             // lblEstadoFiltro
-            //
+            // 
             this.lblEstadoFiltro.AutoSize = true;
             this.lblEstadoFiltro.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblEstadoFiltro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lblEstadoFiltro.Location = new System.Drawing.Point(858, 10);
             this.lblEstadoFiltro.Name = "lblEstadoFiltro";
-            this.lblEstadoFiltro.Size = new System.Drawing.Size(47, 15);
+            this.lblEstadoFiltro.Size = new System.Drawing.Size(46, 15);
             this.lblEstadoFiltro.TabIndex = 8;
             this.lblEstadoFiltro.Text = "Estado:";
-            //
+            // 
             // cmbFiltroEstado
-            //
+            // 
             this.cmbFiltroEstado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(248)))));
             this.cmbFiltroEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFiltroEstado.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -473,7 +470,7 @@ namespace GUI
             this.cmbFiltroEstado.Size = new System.Drawing.Size(140, 23);
             this.cmbFiltroEstado.TabIndex = 9;
             this.cmbFiltroEstado.SelectedIndexChanged += new System.EventHandler(this.FiltroChanged);
-            //
+            // 
             // pnlHeaderGrilla
             // 
             this.pnlHeaderGrilla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(185)))), ((int)(((byte)(200)))));
@@ -481,7 +478,7 @@ namespace GUI
             this.pnlHeaderGrilla.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeaderGrilla.Location = new System.Drawing.Point(0, 0);
             this.pnlHeaderGrilla.Name = "pnlHeaderGrilla";
-            this.pnlHeaderGrilla.Size = new System.Drawing.Size(913, 28);
+            this.pnlHeaderGrilla.Size = new System.Drawing.Size(1113, 28);
             this.pnlHeaderGrilla.TabIndex = 4;
             // 
             // lblTituloGrilla
@@ -493,7 +490,7 @@ namespace GUI
             this.lblTituloGrilla.Location = new System.Drawing.Point(0, 0);
             this.lblTituloGrilla.Name = "lblTituloGrilla";
             this.lblTituloGrilla.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.lblTituloGrilla.Size = new System.Drawing.Size(913, 28);
+            this.lblTituloGrilla.Size = new System.Drawing.Size(1113, 28);
             this.lblTituloGrilla.TabIndex = 0;
             this.lblTituloGrilla.Text = "Todas las Unidades de Venta";
             this.lblTituloGrilla.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

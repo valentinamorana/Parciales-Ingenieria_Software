@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using BE;
 
-namespace Servicios.Singleton
+namespace Servicios
 {
     // Patrón Singleton con doble lock (thread-safe)
     // Garantiza un único punto de control para procesar pujas (RF-09)

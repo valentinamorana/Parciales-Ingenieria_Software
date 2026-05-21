@@ -16,29 +16,30 @@ namespace GUI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmReporte));
-            this.panelTop = new System.Windows.Forms.Panel();
-            this.lblTitulo = new System.Windows.Forms.Label();
-            this.lblPatron = new System.Windows.Forms.Label();
-            this.panelControles = new System.Windows.Forms.Panel();
-            this.lblJornada = new System.Windows.Forms.Label();
-            this.dtpJornada = new System.Windows.Forms.DateTimePicker();
-            this.btnGenerar = new System.Windows.Forms.Button();
-            this.btnExportar = new System.Windows.Forms.Button();
-            this.btnExportarPdf = new System.Windows.Forms.Button();
-            this.lblComparar   = new System.Windows.Forms.Label();
-            this.dtpJornada2   = new System.Windows.Forms.DateTimePicker();
-            this.btnComparar   = new System.Windows.Forms.Button();
-            this.rtbReporte = new System.Windows.Forms.RichTextBox();
-            this.panelStatus = new System.Windows.Forms.Panel();
-            this.lblStatus = new System.Windows.Forms.Label();
+            this.panelTop        = new System.Windows.Forms.Panel();
+            this.lblTitulo       = new System.Windows.Forms.Label();
+            this.lblPatron       = new System.Windows.Forms.Label();
+            this.panelControles  = new System.Windows.Forms.Panel();
+            this.lblJornada      = new System.Windows.Forms.Label();
+            this.dtpJornada      = new System.Windows.Forms.DateTimePicker();
+            this.btnGenerar      = new System.Windows.Forms.Button();
+            this.btnExportar     = new System.Windows.Forms.Button();
+            this.lblComparar     = new System.Windows.Forms.Label();
+            this.dtpJornada2     = new System.Windows.Forms.DateTimePicker();
+            this.btnComparar     = new System.Windows.Forms.Button();
+            this.btnExportarComp = new System.Windows.Forms.Button();
+            this.btnLimpiar      = new System.Windows.Forms.Button();
+            this.rtbReporte      = new System.Windows.Forms.RichTextBox();
+            this.panelStatus     = new System.Windows.Forms.Panel();
+            this.lblStatus       = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.panelControles.SuspendLayout();
             this.panelStatus.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // panelTop
-            // 
-            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(100)))), ((int)(((byte)(135)))));
+            //
+            this.panelTop.BackColor = System.Drawing.Color.FromArgb(210, 100, 135);
             this.panelTop.Controls.Add(this.lblTitulo);
             this.panelTop.Controls.Add(this.lblPatron);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -46,9 +47,9 @@ namespace GUI
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(1180, 56);
             this.panelTop.TabIndex = 3;
-            // 
+            //
             // lblTitulo
-            // 
+            //
             this.lblTitulo.BackColor = System.Drawing.Color.Transparent;
             this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
@@ -57,47 +58,48 @@ namespace GUI
             this.lblTitulo.Size = new System.Drawing.Size(700, 26);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "Reporte de Jornada";
-            // 
+            //
             // lblPatron
-            // 
+            //
             this.lblPatron.BackColor = System.Drawing.Color.Transparent;
             this.lblPatron.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
-            this.lblPatron.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(220)))));
+            this.lblPatron.ForeColor = System.Drawing.Color.FromArgb(255, 210, 220);
             this.lblPatron.Location = new System.Drawing.Point(12, 34);
             this.lblPatron.Name = "lblPatron";
             this.lblPatron.Size = new System.Drawing.Size(900, 16);
             this.lblPatron.TabIndex = 1;
             this.lblPatron.Text = "Subastas cerradas de la jornada con exportación a TXT y PDF";
-            // 
+            //
             // panelControles
-            // 
-            this.panelControles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(232)))), ((int)(((byte)(238)))));
+            //
+            this.panelControles.BackColor = System.Drawing.Color.FromArgb(240, 232, 238);
             this.panelControles.Controls.Add(this.lblJornada);
             this.panelControles.Controls.Add(this.dtpJornada);
             this.panelControles.Controls.Add(this.btnGenerar);
             this.panelControles.Controls.Add(this.btnExportar);
-            this.panelControles.Controls.Add(this.btnExportarPdf);
             this.panelControles.Controls.Add(this.lblComparar);
             this.panelControles.Controls.Add(this.dtpJornada2);
             this.panelControles.Controls.Add(this.btnComparar);
+            this.panelControles.Controls.Add(this.btnExportarComp);
+            this.panelControles.Controls.Add(this.btnLimpiar);
             this.panelControles.Location = new System.Drawing.Point(10, 66);
             this.panelControles.Name = "panelControles";
             this.panelControles.Size = new System.Drawing.Size(1360, 88);
             this.panelControles.TabIndex = 1;
-            // 
+            //
             // lblJornada
-            // 
+            //
             this.lblJornada.AutoSize = true;
             this.lblJornada.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblJornada.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblJornada.ForeColor = System.Drawing.Color.FromArgb(64, 64, 64);
             this.lblJornada.Location = new System.Drawing.Point(10, 15);
             this.lblJornada.Name = "lblJornada";
             this.lblJornada.Size = new System.Drawing.Size(53, 15);
             this.lblJornada.TabIndex = 0;
             this.lblJornada.Text = "Jornada:";
-            // 
+            //
             // dtpJornada
-            // 
+            //
             this.dtpJornada.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dtpJornada.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpJornada.CustomFormat = "dd'/'MM'/'yyyy";
@@ -106,10 +108,10 @@ namespace GUI
             this.dtpJornada.Size = new System.Drawing.Size(120, 23);
             this.dtpJornada.TabIndex = 1;
             this.dtpJornada.ValueChanged += new System.EventHandler(this.dtpJornada_ValueChanged);
-            // 
+            //
             // btnGenerar
-            // 
-            this.btnGenerar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(100)))), ((int)(((byte)(135)))));
+            //
+            this.btnGenerar.BackColor = System.Drawing.Color.FromArgb(210, 100, 135);
             this.btnGenerar.FlatAppearance.BorderSize = 0;
             this.btnGenerar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGenerar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -121,42 +123,27 @@ namespace GUI
             this.btnGenerar.Text = "↻  Generar Reporte";
             this.btnGenerar.UseVisualStyleBackColor = false;
             this.btnGenerar.Click += new System.EventHandler(this.btnGenerar_Click);
-            // 
+            //
             // btnExportar
-            // 
-            this.btnExportar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(210)))));
+            //
+            this.btnExportar.BackColor = System.Drawing.Color.FromArgb(148, 72, 102);
             this.btnExportar.FlatAppearance.BorderSize = 0;
             this.btnExportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnExportar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnExportar.ForeColor = System.Drawing.Color.White;
             this.btnExportar.Location = new System.Drawing.Point(382, 11);
             this.btnExportar.Name = "btnExportar";
-            this.btnExportar.Size = new System.Drawing.Size(140, 28);
+            this.btnExportar.Size = new System.Drawing.Size(170, 28);
             this.btnExportar.TabIndex = 3;
-            this.btnExportar.Text = "Exportar .txt";
+            this.btnExportar.Text = "⬇  Exportar reporte...";
             this.btnExportar.UseVisualStyleBackColor = false;
             this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
-            // 
-            // btnExportarPdf
-            // 
-            this.btnExportarPdf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(60)))), ((int)(((byte)(100)))));
-            this.btnExportarPdf.FlatAppearance.BorderSize = 0;
-            this.btnExportarPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExportarPdf.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnExportarPdf.ForeColor = System.Drawing.Color.White;
-            this.btnExportarPdf.Location = new System.Drawing.Point(534, 11);
-            this.btnExportarPdf.Name = "btnExportarPdf";
-            this.btnExportarPdf.Size = new System.Drawing.Size(140, 28);
-            this.btnExportarPdf.TabIndex = 4;
-            this.btnExportarPdf.Text = "Exportar PDF";
-            this.btnExportarPdf.UseVisualStyleBackColor = false;
-            this.btnExportarPdf.Click += new System.EventHandler(this.btnExportarPdf_Click);
             //
             // lblComparar
             //
             this.lblComparar.AutoSize = true;
             this.lblComparar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblComparar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblComparar.ForeColor = System.Drawing.Color.FromArgb(64, 64, 64);
             this.lblComparar.Location = new System.Drawing.Point(10, 55);
             this.lblComparar.Name = "lblComparar";
             this.lblComparar.Size = new System.Drawing.Size(88, 15);
@@ -175,7 +162,7 @@ namespace GUI
             //
             // btnComparar
             //
-            this.btnComparar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(130)))), ((int)(((byte)(210)))));
+            this.btnComparar.BackColor = System.Drawing.Color.FromArgb(175, 90, 125);
             this.btnComparar.FlatAppearance.BorderSize = 0;
             this.btnComparar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnComparar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -188,12 +175,42 @@ namespace GUI
             this.btnComparar.UseVisualStyleBackColor = false;
             this.btnComparar.Click += new System.EventHandler(this.btnComparar_Click);
             //
+            // btnExportarComp
+            //
+            this.btnExportarComp.BackColor = System.Drawing.Color.FromArgb(148, 72, 102);
+            this.btnExportarComp.FlatAppearance.BorderSize = 0;
+            this.btnExportarComp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportarComp.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnExportarComp.ForeColor = System.Drawing.Color.White;
+            this.btnExportarComp.Location = new System.Drawing.Point(458, 49);
+            this.btnExportarComp.Name = "btnExportarComp";
+            this.btnExportarComp.Size = new System.Drawing.Size(185, 28);
+            this.btnExportarComp.TabIndex = 8;
+            this.btnExportarComp.Text = "⬇  Exportar comparación...";
+            this.btnExportarComp.UseVisualStyleBackColor = false;
+            this.btnExportarComp.Click += new System.EventHandler(this.btnExportarComp_Click);
+            //
+            // btnLimpiar
+            //
+            this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(215, 190, 200);
+            this.btnLimpiar.FlatAppearance.BorderSize = 0;
+            this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLimpiar.ForeColor = System.Drawing.Color.FromArgb(72, 38, 52);
+            this.btnLimpiar.Location = new System.Drawing.Point(655, 49);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(175, 28);
+            this.btnLimpiar.TabIndex = 9;
+            this.btnLimpiar.Text = "↩  Volver al reporte";
+            this.btnLimpiar.UseVisualStyleBackColor = false;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
+            //
             // rtbReporte
             //
-            this.rtbReporte.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(235)))));
+            this.rtbReporte.BackColor = System.Drawing.Color.FromArgb(255, 252, 235);
             this.rtbReporte.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbReporte.Font = new System.Drawing.Font("Consolas", 9.5F);
-            this.rtbReporte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.rtbReporte.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40);
             this.rtbReporte.Anchor = ((System.Windows.Forms.AnchorStyles)(
                 System.Windows.Forms.AnchorStyles.Top    |
                 System.Windows.Forms.AnchorStyles.Bottom |
@@ -206,19 +223,19 @@ namespace GUI
             this.rtbReporte.Size = new System.Drawing.Size(1360, 482);
             this.rtbReporte.TabIndex = 0;
             this.rtbReporte.Text = "";
-            // 
+            //
             // panelStatus
-            // 
-            this.panelStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
+            //
+            this.panelStatus.BackColor = System.Drawing.Color.FromArgb(230, 230, 240);
             this.panelStatus.Controls.Add(this.lblStatus);
             this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelStatus.Location = new System.Drawing.Point(0, 657);
             this.panelStatus.Name = "panelStatus";
             this.panelStatus.Size = new System.Drawing.Size(1180, 28);
             this.panelStatus.TabIndex = 2;
-            // 
+            //
             // lblStatus
-            // 
+            //
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.lblStatus.ForeColor = System.Drawing.Color.DimGray;
@@ -227,12 +244,12 @@ namespace GUI
             this.lblStatus.Size = new System.Drawing.Size(35, 15);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "Listo.";
-            // 
+            //
             // frmReporte
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(228)))), ((int)(((byte)(235)))));
+            this.BackColor = System.Drawing.Color.FromArgb(252, 228, 235);
             this.ClientSize = new System.Drawing.Size(1380, 720);
             this.Controls.Add(this.rtbReporte);
             this.Controls.Add(this.panelControles);
@@ -248,25 +265,25 @@ namespace GUI
             this.panelStatus.ResumeLayout(false);
             this.panelStatus.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel        panelTop;
-        private System.Windows.Forms.Label        lblTitulo;
-        private System.Windows.Forms.Label        lblPatron;
-        private System.Windows.Forms.Panel        panelControles;
-        private System.Windows.Forms.Label        lblJornada;
-        private System.Windows.Forms.DateTimePicker dtpJornada;
-        private System.Windows.Forms.Button       btnGenerar;
-        private System.Windows.Forms.Button       btnExportar;
-        private System.Windows.Forms.Button       btnExportarPdf;
-        private System.Windows.Forms.Label        lblComparar;
-        private System.Windows.Forms.DateTimePicker dtpJornada2;
-        private System.Windows.Forms.Button       btnComparar;
-        private System.Windows.Forms.RichTextBox  rtbReporte;
-        private System.Windows.Forms.Panel        panelStatus;
-        private System.Windows.Forms.Label        lblStatus;
+        private System.Windows.Forms.Panel           panelTop;
+        private System.Windows.Forms.Label           lblTitulo;
+        private System.Windows.Forms.Label           lblPatron;
+        private System.Windows.Forms.Panel           panelControles;
+        private System.Windows.Forms.Label           lblJornada;
+        private System.Windows.Forms.DateTimePicker  dtpJornada;
+        private System.Windows.Forms.Button          btnGenerar;
+        private System.Windows.Forms.Button          btnExportar;
+        private System.Windows.Forms.Label           lblComparar;
+        private System.Windows.Forms.DateTimePicker  dtpJornada2;
+        private System.Windows.Forms.Button          btnComparar;
+        private System.Windows.Forms.Button          btnExportarComp;
+        private System.Windows.Forms.Button          btnLimpiar;
+        private System.Windows.Forms.RichTextBox     rtbReporte;
+        private System.Windows.Forms.Panel           panelStatus;
+        private System.Windows.Forms.Label           lblStatus;
     }
 }

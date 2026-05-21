@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using BE;
 using Servicios.Composite;
-using Servicios.Observer;
-using Servicios.Singleton;
 
 namespace Servicios
 {

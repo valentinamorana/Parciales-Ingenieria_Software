@@ -6,7 +6,7 @@ namespace DAL
 {
     // Igual al AbstractDAL del ejemplo: implementa ICrud<T>.
     // Todos los DAL concretos acceden a la BD a través del Singleton Acceso.
-    public abstract class AbstractDAL<T> : ICrud<T> where T : Entidad
+    public abstract class AbstractDAL<T> : ICrud<T> where T : IEntidad
     {
         protected readonly Acceso _acceso = Acceso.GetInstance();
 
