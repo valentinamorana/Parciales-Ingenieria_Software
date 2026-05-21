@@ -14,6 +14,7 @@ namespace GUI
         private readonly CatalogoBLL _bll = new CatalogoBLL();
         private List<IUnidadDeVenta> _catalogo = new List<IUnidadDeVenta>();
         private List<IUnidadDeVenta> _vista;
+        private IUnidadDeVenta _seleccionada;
 
         private Button btnRefrescar;
         private Button btnLimpiarFiltros;
@@ -72,6 +73,7 @@ namespace GUI
 
         public void CargarGrilla()
         {
+            _seleccionada = null;
             try
             {
                 _catalogo = _bll.ObtenerCatalogo();
@@ -241,24 +243,23 @@ namespace GUI
 
         private void treeViewCatalogo_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (e.Node?.Tag is IUnidadDeVenta u) MostrarDetalle(u);
+            if (!(e.Node?.Tag is IUnidadDeVenta u)) return;
+            _seleccionada = u;
+            MostrarDetalle(u);
+            ActualizarBotones();
         }
 
         private void dgvCatalogo_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvCatalogo.SelectedRows.Count == 0) { ActualizarBotones(); return; }
+            if (dgvCatalogo.SelectedRows.Count == 0) { _seleccionada = null; ActualizarBotones(); return; }
             string nombre = dgvCatalogo.SelectedRows[0].Cells["Nombre"].Value?.ToString();
             var u = _vista?.Find(x => x.Nombre == nombre);
+            _seleccionada = u;
             if (u != null) MostrarDetalle(u);
             ActualizarBotones();
         }
 
-        private IUnidadDeVenta UnidadSeleccionada()
-        {
-            if (dgvCatalogo.SelectedRows.Count == 0) return null;
-            string nombre = dgvCatalogo.SelectedRows[0].Cells["Nombre"].Value?.ToString();
-            return _vista?.Find(x => x.Nombre == nombre);
-        }
+        private IUnidadDeVenta UnidadSeleccionada() => _seleccionada;
 
         private void ActualizarBotones()
         {

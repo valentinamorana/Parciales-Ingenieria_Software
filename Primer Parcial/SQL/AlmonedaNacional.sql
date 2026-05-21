@@ -239,6 +239,15 @@ BEGIN
         (@idLoteH, @idTaladro),
         (@idLoteH, @idAmolad);
 END
+ELSE
+BEGIN
+    -- Restaurar ítems de demo que hayan quedado Retirados entre pruebas
+    UPDATE UnidadesDeVenta
+    SET    Estado = 'Disponible'
+    WHERE  Estado = 'Retirado'
+      AND  Nombre IN ('Taladro Industrial', 'Amoladora', 'Set de Repuestos',
+                      'Máquina CNC', 'Lote Herramientas');
+END
 GO
 
 -- ─────────────────────────────────────────────

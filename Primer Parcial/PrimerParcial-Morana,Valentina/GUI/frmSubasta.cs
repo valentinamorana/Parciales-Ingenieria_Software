@@ -339,7 +339,7 @@ namespace GUI
 
         private static string FormatearDuracion(int seg)
         {
-            return DuracionEnPalabras(seg / 86400, (seg % 86400) / 3600);
+            return DuracionEnPalabras(seg / 86400, (seg % 86400) / 3600, (seg % 3600) / 60);
         }
 
         private void AutoCerrarSubasta()
@@ -398,7 +398,7 @@ namespace GUI
             using (var dlg = new Form())
             {
                 dlg.Text            = "Duración de la subasta";
-                dlg.ClientSize      = new Size(290, 215);
+                dlg.ClientSize      = new Size(290, 252);
                 dlg.StartPosition   = FormStartPosition.CenterParent;
                 dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
                 dlg.MaximizeBox     = false;
@@ -431,26 +431,31 @@ namespace GUI
                     return nud;
                 };
 
-                var nudDias  = fila("Días:",  52, 9999, 0);
-                var nudHoras = fila("Horas:", 90, 23,   1);
+                var nudDias    = fila("Días:",    52,  9999, 0);
+                var nudHoras   = fila("Horas:",   90,  23,   0);
+                var nudMinutos = fila("Minutos:", 128, 59,   5);
 
                 var lblTotal = new Label
                 {
-                    Location = new Point(20, 128), Size = new Size(250, 36),
+                    Location = new Point(20, 166), Size = new Size(250, 36),
                     Font = new Font("Segoe UI", 9.5F, FontStyle.Italic),
                     ForeColor = Color.FromArgb(100, 100, 135)
                 };
                 dlg.Controls.Add(lblTotal);
 
-                Action actualizar = () => { lblTotal.Text = DuracionEnPalabras((int)nudDias.Value, (int)nudHoras.Value); };
-                nudDias.ValueChanged  += (s2, e2) => actualizar();
-                nudHoras.ValueChanged += (s2, e2) => actualizar();
+                Action actualizar = () =>
+                {
+                    lblTotal.Text = DuracionEnPalabras((int)nudDias.Value, (int)nudHoras.Value, (int)nudMinutos.Value);
+                };
+                nudDias.ValueChanged    += (s2, e2) => actualizar();
+                nudHoras.ValueChanged   += (s2, e2) => actualizar();
+                nudMinutos.ValueChanged += (s2, e2) => actualizar();
                 actualizar();
 
                 var btnOk = new Button
                 {
                     Text = "Confirmar", DialogResult = DialogResult.OK,
-                    Location = new Point(30, 174), Size = new Size(100, 28),
+                    Location = new Point(30, 212), Size = new Size(100, 28),
                     BackColor = Color.FromArgb(210, 100, 135), ForeColor = Color.White,
                     FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9F, FontStyle.Bold)
                 };
@@ -459,7 +464,7 @@ namespace GUI
                 var btnCan = new Button
                 {
                     Text = "Cancelar", DialogResult = DialogResult.Cancel,
-                    Location = new Point(158, 174), Size = new Size(100, 28),
+                    Location = new Point(158, 212), Size = new Size(100, 28),
                     BackColor = Color.FromArgb(200, 200, 210), ForeColor = Color.FromArgb(64, 64, 64),
                     FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9F, FontStyle.Bold)
                 };
@@ -472,22 +477,27 @@ namespace GUI
 
                 if (dlg.ShowDialog(this) != DialogResult.OK) return -1;
 
-                long total = (long)nudDias.Value * 86400 + (long)nudHoras.Value * 3600;
+                long total = (long)nudDias.Value * 86400 + (long)nudHoras.Value * 3600 + (long)nudMinutos.Value * 60;
                 if (total <= 0)
                     throw new InvalidOperationException("La duración debe ser mayor a cero.");
                 return (int)total;
             }
         }
 
-        private static string DuracionEnPalabras(int dias, int horas)
+        private static string DuracionEnPalabras(int dias, int horas, int minutos)
         {
-            if (dias == 0 && horas == 0) return "Seleccioná al menos 1 hora.";
+            if (dias == 0 && horas == 0 && minutos == 0) return "Seleccioná al menos 1 minuto.";
 
-            string parteDias  = dias  == 1 ? "1 día"         : dias  > 1 ? $"{dias} días"  : null;
-            string parteHoras = horas == 1 ? "1 hora"        : horas > 1 ? $"{horas} horas" : null;
+            string parteDias    = dias    == 1 ? "1 día"    : dias    > 1 ? $"{dias} días"     : null;
+            string parteHoras   = horas   == 1 ? "1 hora"   : horas   > 1 ? $"{horas} horas"   : null;
+            string parteMinutos = minutos == 1 ? "1 minuto" : minutos > 1 ? $"{minutos} minutos" : null;
 
-            if (parteDias != null && parteHoras != null) return $"{parteDias} y {parteHoras}";
-            return parteDias ?? parteHoras;
+            var partes = new System.Collections.Generic.List<string>();
+            if (parteDias    != null) partes.Add(parteDias);
+            if (parteHoras   != null) partes.Add(parteHoras);
+            if (parteMinutos != null) partes.Add(parteMinutos);
+
+            return string.Join(" y ", partes);
         }
 
         // ─────────────────────────────────────────────
