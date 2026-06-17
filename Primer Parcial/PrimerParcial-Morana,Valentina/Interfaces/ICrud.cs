@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Interfaces
 {
-    // Contrato de persistencia genérico — igual al ICrud del ejemplo de cátedra.
+    // Contrato de persistencia genérico
     // Define las 4 operaciones básicas de acceso a datos para cualquier entidad T.
     //
     // La restricción "where T : IEntidad" garantiza que T siempre tenga Id,

@@ -5,7 +5,7 @@ using Seguridad;
 
 namespace BLL
 {
-    public class MartilleroBLL
+    public class MartilleroBLL // La lógica de autenticación.
     {
         private const int MAX_INTENTOS    = 3;
         private const int MINUTOS_BLOQUEO = 10;
