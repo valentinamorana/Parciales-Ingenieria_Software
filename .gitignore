@@ -13,3 +13,6 @@
 
 # Archivos de índice de VS
 **/FileContentIndex/
+
+# Claude Code
+**/.claude/
