@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Patrones de Diseño — Guía Interactiva</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0d1117;color:#c9d1d9;display:flex;height:100vh;overflow:hidden}
+#sidebar{width:230px;background:#161b22;border-right:1px solid #30363d;display:flex;flex-direction:column;flex-shrink:0}
+#sidebar h2{padding:16px 20px;font-size:11px;color:#58a6ff;border-bottom:1px solid #30363d;text-transform:uppercase;letter-spacing:1px}
+.nav-item{padding:12px 20px;cursor:pointer;border-left:3px solid transparent;font-size:13px;transition:all .15s;display:flex;justify-content:space-between;align-items:center}
+.nav-item:hover{background:#1f2937;border-left-color:#58a6ff}
+.nav-item.active{background:#1f2937;border-left-color:#58a6ff;color:#e6edf3}
+.nav-badge{font-size:10px;background:#3fb950;color:#0d1117;padding:1px 6px;border-radius:10px;font-weight:bold}
+.tag{font-size:10px;padding:2px 7px;border-radius:10px}
+.tc{background:#1a3a5c;color:#58a6ff}.te{background:#2d1a5c;color:#d2a8ff}.tb{background:#1a3d2b;color:#3fb950}
+#main{flex:1;overflow-y:auto}
+.section{display:none;padding:32px 42px;max-width:900px}
+.section.active{display:block}
+h1{font-size:25px;color:#e6edf3;margin:8px 0 4px}
+.subtitle{color:#8b949e;font-size:13px;margin-bottom:24px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:18px}
+.card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#58a6ff;margin-bottom:14px}
+.analogy{background:#1c2128;border-left:4px solid #f0883e;padding:13px 17px;border-radius:0 6px 6px 0;margin-bottom:18px}
+.analogy .lbl{font-size:10px;text-transform:uppercase;color:#f0883e;margin-bottom:5px;letter-spacing:1px}
+.analogy p{font-size:13px;line-height:1.7}
+/* Ejemplos cotidianos */
+.egrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px}
+.ecard{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:14px}
+.ecard .eicon{font-size:22px;margin-bottom:8px}
+.ecard .etitle{font-size:12px;font-weight:bold;color:#e6edf3;margin-bottom:5px}
+.ecard .edesc{font-size:12px;color:#8b949e;line-height:1.6}
+.ecard .elink{font-size:11px;color:#58a6ff;margin-top:7px;font-style:italic}
+/* Code blocks */
+.cb{background:#010409;border:1px solid #30363d;border-radius:6px;overflow:hidden;margin:10px 0}
+.ch{background:#161b22;padding:6px 14px;font-size:11px;color:#8b949e;border-bottom:1px solid #30363d}
+.cd{padding:13px 15px;overflow-x:auto}
+pre{font-family:'Cascadia Code','Consolas',monospace;font-size:12.5px;line-height:1.7}
+.kw{color:#ff7b72}.cl{color:#79c0ff}.st{color:#a5d6ff}.cm{color:#6e7681;font-style:italic}.mt{color:#d2a8ff}.nu{color:#f0883e}
+/* Steps */
+.step{display:flex;gap:13px;margin:11px 0;align-items:flex-start}
+.sn{background:#58a6ff;color:#0d1117;width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;flex-shrink:0;margin-top:3px}
+.st2{font-size:13px;line-height:1.7}
+.st2 strong{color:#e6edf3}
+.st2 code{background:#21262d;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:11px;color:#79c0ff}
+.hb{border-radius:6px;padding:11px 14px;margin:10px 0;font-size:13px;line-height:1.6}
+.hb.blue{background:#0d2847;border-left:3px solid #58a6ff}
+.hb.green{background:#0d2818;border-left:3px solid #3fb950}
+.hb.orange{background:#2d1f0a;border-left:3px solid #f0883e}
+.hb.purple{background:#1a0d33;border-left:3px solid #d2a8ff}
+.diagram{font-family:'Cascadia Code','Consolas',monospace;font-size:12px;line-height:1.9;color:#8b949e}
+.diagram .dc{color:#79c0ff}.diagram .da{color:#d2a8ff;font-style:italic}.diagram .dr{color:#3fb950}
+/* Terminal */
+.terminal{background:#010409;border:1px solid #3fb950;border-radius:8px;overflow:hidden;margin-top:18px}
+.th{background:#161b22;padding:8px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #21262d}
+.dot{width:11px;height:11px;border-radius:50%}
+.drd{background:#ff5f57}.dyw{background:#febc2e}.dgn{background:#28c840}
+.tt{font-size:11px;color:#8b949e;margin-left:6px}
+.tb2{padding:14px 16px;min-height:220px;font-family:'Cascadia Code','Consolas',monospace;font-size:12.5px}
+.to{white-space:pre-wrap;line-height:1.7}
+.os{color:#3fb950}.op{color:#58a6ff}.oe{color:#ff7b72}.ot{color:#f0883e;font-weight:bold}
+.ow{color:#e6edf3}.og{color:#8b949e;font-style:italic}.oy{color:#f0883e}
+.tir{display:flex;align-items:center;gap:8px;margin-top:8px;border-top:1px solid #21262d;padding-top:8px}
+.tp{color:#3fb950;font-family:monospace;font-size:13px}
+.ti{background:transparent;border:none;outline:none;color:#e6edf3;font-family:'Cascadia Code','Consolas',monospace;font-size:12.5px;flex:1;caret-color:#3fb950}
+/* Buttons */
+.btn{border:none;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;transition:background .15s}
+.btnp{background:#238636;color:#fff}.btnp:hover{background:#2ea043}
+.btns{background:#21262d;border:1px solid #30363d;color:#c9d1d9}.btns:hover{background:#30363d}
+/* Progress */
+.prog{padding:14px 20px;margin-top:auto;border-top:1px solid #30363d}
+.pb{height:3px;background:#21262d;border-radius:2px;margin-top:7px}
+.pf{height:100%;background:#58a6ff;border-radius:2px;transition:width .3s}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.chnum{color:#f0883e;font-size:11px;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <h2>Patrones de Diseño</h2>
+  <div class="nav-item active" onclick="show('fm',this)"><span>1. Factory Method</span><span class="tag tc">Creacional</span></div>
+  <div class="nav-item" onclick="show('af',this)"><span>2. Abstract Factory</span><span class="tag tc">Creacional</span></div>
+  <div class="nav-item" onclick="show('ad',this)"><span>3. Adapter</span><span class="tag te">Estructural</span></div>
+  <div class="nav-item" onclick="show('dc',this)"><span>4. Decorator</span><span class="tag te">Estructural</span></div>
+  <div class="nav-item" onclick="show('mm',this)"><span>5. Memento</span><span class="tag tb">Conductual</span></div>
+  <div class="prog">
+    <div style="font-size:11px;color:#8b949e" id="ptxt">0 / 5 completados</div>
+    <div class="pb"><div class="pf" id="pbar" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div id="main">
+
+<!-- ══════════════════════ FACTORY METHOD ══════════════════════ -->
+<div id="fm" class="section active">
+  <span class="tag tc">Creacional</span>
+  <h1>Factory Method</h1>
+  <p class="subtitle">Define una interfaz para crear un objeto, pero deja que las subclases decidan qué clase instanciar.</p>
+
+  <div class="analogy">
+    <div class="lbl">Analogía principal</div>
+    <p>Una cadena de pizzerías define <em>cómo se pide una pizza</em>, pero cada sucursal decide <em>qué pizza concreta hacer</em>. El cliente pide "una napolitana" sin saber cómo se fabrica.</p>
+  </div>
+
+  <div class="card">
+    <h3>Ejemplos del día a día</h3>
+    <div class="egrid">
+      <div class="ecard">
+        <div class="eicon">🖨️</div>
+        <div class="etitle">Driver de impresora</div>
+        <div class="edesc">Tu PC manda "imprimir documento". No sabe si es HP, Epson o Canon. Cada driver (subclase) implementa el método imprimir() a su manera.</div>
+        <div class="elink">Pizzeria = tu PC · Pizza = documento · Subclase = cada driver</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">🎮</div>
+        <div class="etitle">Spawn de enemigos</div>
+        <div class="edesc">Un juego tiene un método SpawnEnemigo(). Cada nivel (subclase) decide qué enemigo concreto crear: zombie, esqueleto o dragón, según la dificultad.</div>
+        <div class="elink">Nivel = subclase · Enemigo = Pizza · SpawnEnemigo = CrearPizza</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">🚗</div>
+        <div class="etitle">Concesionaria de autos</div>
+        <div class="edesc">Una empresa pide "crear vehículo". La concesionaria Toyota crea un Corolla, la BMW crea un Serie 3. El cliente habla con "Concesionaria", nunca con la marca directamente.</div>
+        <div class="elink">Concesionaria = Pizzeria abstracta · Auto = Pizza abstracta</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Estructura</h3>
+    <div class="diagram"><pre>
+  <span class="da">«abstract»</span> <span class="dc">Pizzeria</span>
+  └── <span style="color:#d2a8ff">CrearPizza(tipo)</span>   <span class="cm">← Factory Method abstracto</span>
+       │
+       <span class="dr">├──▶</span> <span class="dc">PizzeriaArgentina</span>  <span class="dr">──▶</span> <span class="dc">PizzaCancha</span>("Argentina")
+       <span class="dr">└──▶</span> <span class="dc">PizzeriaItaliana</span>   <span class="dr">──▶</span> <span class="dc">PizzaNapolitana</span>("Italia")
+
+  <span class="da">«abstract»</span> <span class="dc">Pizza</span>
+  ├── <span class="dc">PizzaCancha</span>
+  └── <span class="dc">PizzaNapolitana</span></pre></div>
+  </div>
+
+  <div class="card">
+    <h3>Código paso a paso</h3>
+    <div class="step"><div class="sn">1</div><div class="st2"><strong>Pizza</strong> — clase base <code>abstract</code>. Tiene <code>_descripcion</code> y <code>_origen</code>. Su método <code>Render()</code> imprime ambos. No se puede instanciar directamente.</div></div>
+    <div class="cb"><div class="ch">Pizza.cs</div><div class="cd"><pre><span class="kw">public abstract class</span> <span class="cl">Pizza</span>
+{
+    <span class="kw">protected string</span> _descripcion;
+    <span class="kw">protected string</span> _origen;
+
+    <span class="kw">public void</span> <span class="mt">Render</span>()
+        => Console.<span class="mt">WriteLine</span>(<span class="st">$"Pizza de {_descripcion} hecha en {_origen}"</span>);
+}</pre></div></div>
+
+    <div class="step"><div class="sn">2</div><div class="st2"><strong>PizzaCancha / PizzaNapolitana</strong> — subclases concretas. Solo asignan <code>_descripcion</code> y reciben <code>_origen</code> del constructor. Heredan <code>Render()</code> gratis.</div></div>
+    <div class="cb"><div class="ch">PizzaCancha.cs</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">PizzaCancha</span> : <span class="cl">Pizza</span>
+{
+    <span class="kw">public</span> <span class="mt">PizzaCancha</span>(<span class="kw">string</span> origen)
+    {
+        _descripcion = <span class="st">"Pizza de cancha"</span>;
+        _origen = origen;  <span class="cm">// quien la crea decide el origen</span>
+    }
+}</pre></div></div>
+
+    <div class="step"><div class="sn">3</div><div class="st2"><strong>Pizzeria</strong> — contiene el Factory Method abstracto. Declara <code>CrearPizza(tipo)</code> sin cuerpo: "sé que hay que crear una pizza, pero no sé cuál".</div></div>
+    <div class="cb"><div class="ch">Pizzeria.cs</div><div class="cd"><pre><span class="kw">public abstract class</span> <span class="cl">Pizzeria</span>
+{
+    <span class="kw">public abstract</span> <span class="cl">Pizza</span> <span class="mt">CrearPizza</span>(<span class="kw">string</span> tipo);  <span class="cm">← Factory Method</span>
+}</pre></div></div>
+
+    <div class="step"><div class="sn">4</div><div class="st2"><strong>PizzeriaArgentina / PizzeriaItaliana</strong> — implementan el método con <code>override</code>. Cada una decide qué objeto Pizza concreto crear.</div></div>
+    <div class="cb"><div class="ch">PizzeriaArgentina.cs</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">PizzeriaArgentina</span> : <span class="cl">Pizzeria</span>
+{
+    <span class="kw">public override</span> <span class="cl">Pizza</span> <span class="mt">CrearPizza</span>(<span class="kw">string</span> tipo)
+    {
+        <span class="kw">if</span> (tipo == <span class="st">"cancha"</span>)  <span class="kw">return new</span> <span class="cl">PizzaCancha</span>(<span class="st">"Argentina"</span>);
+        <span class="kw">if</span> (tipo == <span class="st">"napo"</span>)    <span class="kw">return new</span> <span class="cl">PizzaNapolitana</span>(<span class="st">"Argentina"</span>);
+        <span class="kw">return null</span>;
+    }
+}</pre></div></div>
+
+    <div class="step"><div class="sn">5</div><div class="st2"><strong>Program.cs</strong> — el cliente habla solo con <code>Pizzeria</code> y <code>Pizza</code>. Cambiar de pizzería no toca el código que pide pizzas.</div></div>
+    <div class="cb"><div class="ch">Program.cs</div><div class="cd"><pre><span class="cl">Pizzeria</span> pizzeria = <span class="kw">new</span> <span class="cl">PizzeriaArgentina</span>();
+<span class="cl">Pizza</span> pizza = pizzeria.<span class="mt">CrearPizza</span>(<span class="st">"napo"</span>);
+pizza.<span class="mt">Render</span>();  <span class="cm">// Pizza de Pizza napolitana! hecha en Argentina</span>
+
+pizzeria = <span class="kw">new</span> <span class="cl">PizzeriaItaliana</span>();  <span class="cm">// solo cambiamos la fábrica</span>
+pizza = pizzeria.<span class="mt">CrearPizza</span>(<span class="st">"cancha"</span>);
+pizza.<span class="mt">Render</span>();  <span class="cm">// Pizza de Pizza de cancha hecha en Italia</span></pre></div></div>
+
+    <div class="hb blue"><strong>Clave:</strong> el cliente nunca instancia <code>PizzaCancha</code> ni <code>PizzeriaArgentina</code> directamente. Siempre habla con las abstracciones. Agregar nueva pizzería o tipo de pizza no rompe al cliente.</div>
+  </div>
+
+  <div class="terminal">
+    <div class="th"><div class="dot drd"></div><div class="dot dyw"></div><div class="dot dgn"></div><div class="tt">Consola de código — Factory Method (5 desafíos)</div></div>
+    <div class="tb2"><div class="to" id="fm-out"></div><div class="tir"><span class="tp">▶</span><input class="ti" id="fm-in" placeholder="Escribí tu código y presioná Enter..." onkeydown="if(event.key==='Enter')fmS()" autocomplete="off" spellcheck="false"></div></div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:8px">
+    <button class="btn btns" onclick="fmR()">↺ Reiniciar</button>
+    <button class="btn btnp" onclick="done('fm')">✓ Marcar completado</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ ABSTRACT FACTORY ══════════════════════ -->
+<div id="af" class="section">
+  <span class="tag tc">Creacional</span>
+  <h1>Abstract Factory</h1>
+  <p class="subtitle">Proporciona una interfaz para crear <strong>familias</strong> de objetos relacionados sin especificar sus clases concretas.</p>
+
+  <div class="analogy">
+    <div class="lbl">Analogía principal</div>
+    <p>Cada pizzería no solo hace pizzas sino también empanadas. La PizzeriaArgentina siempre da pizza de cancha + empanada de carne (su "familia"). No podés mezclar pizza italiana con empanada de ceviche.</p>
+  </div>
+
+  <div class="card">
+    <h3>Ejemplos del día a día</h3>
+    <div class="egrid">
+      <div class="ecard">
+        <div class="eicon">📱</div>
+        <div class="etitle">Apple vs Android</div>
+        <div class="edesc">Apple fabrica iPhone + AirPods + Apple Watch (familia consistente). Google fabrica Pixel + Pixel Buds + Pixel Watch. No mezclás AirPods con Android: son familias distintas.</div>
+        <div class="elink">Marca = fábrica abstracta · Dispositivos = familia de productos</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">🖥️</div>
+        <div class="etitle">PC Gamer vs PC Trabajo</div>
+        <div class="edesc">Una "fábrica Gamer" crea placa de video potente + monitor 144hz + teclado mecánico. Una "fábrica Trabajo" crea monitor 60hz + teclado básico. Familia coherente por fábrica.</div>
+        <div class="elink">Tipo de PC = fábrica · Componentes = familia de productos</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">🍔</div>
+        <div class="etitle">McDonald's vs Burger King</div>
+        <div class="edesc">Cada cadena tiene su Hamburguesa + Papas + Bebida propias. No pedís una BigMac con las papas de Burger King. Cada fábrica garantiza consistencia dentro de su familia.</div>
+        <div class="elink">Cadena = fábrica · Combo = familia de productos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Factory Method vs Abstract Factory</h3>
+    <div class="grid2">
+      <div class="hb blue"><strong>Factory Method</strong><br>Crea un solo tipo de objeto<br><code>CrearPizza(tipo)</code> → un Pizza</div>
+      <div class="hb purple"><strong>Abstract Factory</strong><br>Crea una familia entera<br><code>CrearPizza()</code> + <code>CrearEmpanada()</code></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Estructura</h3>
+    <div class="diagram"><pre>
+  <span class="da">«abstract»</span> <span class="dc">Pizzeria</span>
+  ├── <span style="color:#d2a8ff">CrearPizza()</span>       <span class="cm">← producto 1</span>
+  └── <span style="color:#d2a8ff">CrearEmpanada()</span>    <span class="cm">← producto 2 (familia)</span>
+
+  <span class="dr">├──▶</span> <span class="dc">PizzeriaArgentina</span>  →  <span class="dc">PizzaCancha</span>      + <span class="dc">EmpanadaDeCarne</span>
+  <span class="dr">├──▶</span> <span class="dc">PizzeriaItaliana</span>   →  <span class="dc">PizzaNapolitana</span>  + <span class="dc">EmpanadaCapresse</span>
+  <span class="dr">└──▶</span> <span class="dc">PizzeriaChina</span>      →  <span class="dc">PizzaSushi</span>       + <span class="dc">EmpanadaCeviche</span></pre></div>
+  </div>
+
+  <div class="card">
+    <h3>Código paso a paso</h3>
+    <div class="step"><div class="sn">1</div><div class="st2"><strong>Pizzeria (Abstract Factory)</strong> — ahora tiene <em>dos</em> métodos abstractos, uno por producto. Sin parámetros: la fábrica concreta ya sabe qué crear.</div></div>
+    <div class="cb"><div class="ch">Pizzeria.cs</div><div class="cd"><pre><span class="kw">public abstract class</span> <span class="cl">Pizzeria</span>
+{
+    <span class="kw">public abstract</span> <span class="cl">Pizza</span>    <span class="mt">CrearPizza</span>();     <span class="cm">// sin parámetro</span>
+    <span class="kw">public abstract</span> <span class="cl">Empanada</span> <span class="mt">CrearEmpanada</span>();  <span class="cm">// sin parámetro</span>
+}</pre></div></div>
+
+    <div class="step"><div class="sn">2</div><div class="st2"><strong>Fábricas concretas</strong> — implementan ambos métodos y siempre retornan la familia consistente.</div></div>
+    <div class="cb"><div class="ch">PizzeriaArgentina.cs / PizzeriaChina.cs</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">PizzeriaArgentina</span> : <span class="cl">Pizzeria</span>
+{
+    <span class="kw">public override</span> <span class="cl">Pizza</span>    <span class="mt">CrearPizza</span>()     => <span class="kw">new</span> <span class="cl">PizzaCancha</span>();
+    <span class="kw">public override</span> <span class="cl">Empanada</span> <span class="mt">CrearEmpanada</span>() => <span class="kw">new</span> <span class="cl">EmpanadaDeCarne</span>();
+}
+<span class="kw">public class</span> <span class="cl">PizzeriaChina</span> : <span class="cl">Pizzeria</span>
+{
+    <span class="kw">public override</span> <span class="cl">Pizza</span>    <span class="mt">CrearPizza</span>()     => <span class="kw">new</span> <span class="cl">PizzaSushi</span>();
+    <span class="kw">public override</span> <span class="cl">Empanada</span> <span class="mt">CrearEmpanada</span>() => <span class="kw">new</span> <span class="cl">EmpanadaCeviche</span>();
+}</pre></div></div>
+
+    <div class="step"><div class="sn">3</div><div class="st2"><strong>Program.cs</strong> — el cliente solo cambia la fábrica y automáticamente recibe la familia correcta.</div></div>
+    <div class="cb"><div class="ch">Program.cs</div><div class="cd"><pre><span class="cl">Pizzeria</span> fabrica = <span class="kw">new</span> <span class="cl">PizzeriaArgentina</span>();
+<span class="cl">Pizza</span> pizza = fabrica.<span class="mt">CrearPizza</span>();
+<span class="cl">Empanada</span> emp = fabrica.<span class="mt">CrearEmpanada</span>();
+Console.<span class="mt">WriteLine</span>(<span class="st">$"Pizza: {pizza.Descripcion}, Empanada: {emp.Descripcion}"</span>);
+<span class="cm">// Pizza: Pizza de cancha, Empanada: Empanada de carne</span>
+
+fabrica = <span class="kw">new</span> <span class="cl">PizzeriaChina</span>();  <span class="cm">// solo esto cambia</span>
+<span class="cm">// Pizza: Pizza especial de sushi, Empanada: Empada de ceviche</span></pre></div></div>
+
+    <div class="hb purple"><strong>Clave:</strong> garantiza que los productos sean siempre de la misma familia. Es imposible mezclar PizzaCancha con EmpanadaCeviche usando el patrón correctamente.</div>
+  </div>
+
+  <div class="terminal">
+    <div class="th"><div class="dot drd"></div><div class="dot dyw"></div><div class="dot dgn"></div><div class="tt">Consola de código — Abstract Factory (5 desafíos)</div></div>
+    <div class="tb2"><div class="to" id="af-out"></div><div class="tir"><span class="tp">▶</span><input class="ti" id="af-in" placeholder="Escribí tu código y presioná Enter..." onkeydown="if(event.key==='Enter')afS()" autocomplete="off" spellcheck="false"></div></div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:8px">
+    <button class="btn btns" onclick="afR()">↺ Reiniciar</button>
+    <button class="btn btnp" onclick="done('af')">✓ Marcar completado</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ ADAPTER ══════════════════════ -->
+<div id="ad" class="section">
+  <span class="tag te">Estructural</span>
+  <h1>Adapter</h1>
+  <p class="subtitle">Permite que interfaces incompatibles trabajen juntas convirtiendo la interfaz de una clase en la que el cliente espera.</p>
+
+  <div class="analogy">
+    <div class="lbl">Analogía principal</div>
+    <p>Tu auto espera un motor con <code>Arrancar()</code>, <code>Acelerar()</code>. El motor eléctrico habla en <code>Conectar()</code>, <code>Mover()</code>. El Adapter es el "traductor" en el medio.</p>
+  </div>
+
+  <div class="card">
+    <h3>Ejemplos del día a día</h3>
+    <div class="egrid">
+      <div class="ecard">
+        <div class="eicon">🔌</div>
+        <div class="etitle">Cable HDMI a VGA</div>
+        <div class="edesc">Tu notebook tiene salida HDMI. El proyector del aula tiene entrada VGA. El cable adaptador convierte la señal sin que vos ni el proyector tengan que cambiar.</div>
+        <div class="elink">Notebook = cliente · Proyector = clase incompatible · Cable = Adapter</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">🌐</div>
+        <div class="etitle">Traductor simultáneo</div>
+        <div class="edesc">El presidente japonés habla en japonés (interfaz A). La audiencia argentina espera español (interfaz B). El intérprete (Adapter) traduce en tiempo real sin que ninguno cambie cómo habla.</div>
+        <div class="elink">Audiencia = cliente · Japonés = clase incompatible · Intérprete = Adapter</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">💳</div>
+        <div class="etitle">Gateway de pagos</div>
+        <div class="edesc">Tu app llama a <code>ProcesarPago(monto)</code>. MercadoPago tiene <code>IniciarTransaccion()</code>, PayPal tiene <code>SendMoney()</code>. Un Adapter por cada gateway traduce al mismo contrato.</div>
+        <div class="elink">Tu app = cliente · Gateways = clases incompatibles · Adapters = traductores</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Estructura</h3>
+    <div class="diagram"><pre>
+  <span class="da">«abstract»</span> <span class="dc">Motor</span>               <span class="cm">← interfaz que el cliente usa</span>
+  ├── Arrancar() / Acelerar()
+  ├── Detener() / CargarCombustible()
+
+  <span class="dr">├──▶</span> <span class="dc">MotorNaftero</span>           <span class="cm">← implementa directamente</span>
+  <span class="dr">├──▶</span> <span class="dc">MotorDiesel</span>            <span class="cm">← implementa directamente</span>
+  <span class="dr">└──▶</span> <span class="dc">MotorElectricoAdapter</span>   <span class="cm">← el Adapter</span>
+         └── <span class="dc">MotorElectrico</span>      <span class="cm">← clase incompatible</span>
+              ├── Conectar() / Activar()
+              └── Mover() / Parar() / Enchufar()</pre></div>
+  </div>
+
+  <div class="card">
+    <h3>Código paso a paso</h3>
+    <div class="step"><div class="sn">1</div><div class="st2"><strong>Motor</strong> — contrato abstracto que el cliente conoce. Cuatro métodos. El cliente solo habla con esta abstracción.</div></div>
+    <div class="cb"><div class="ch">Motor.cs</div><div class="cd"><pre><span class="kw">public abstract class</span> <span class="cl">Motor</span>
+{
+    <span class="kw">public abstract void</span> <span class="mt">Arrancar</span>();
+    <span class="kw">public abstract void</span> <span class="mt">Acelerar</span>();
+    <span class="kw">public abstract void</span> <span class="mt">Detener</span>();
+    <span class="kw">public abstract void</span> <span class="mt">CargarCombustible</span>();
+}</pre></div></div>
+
+    <div class="step"><div class="sn">2</div><div class="st2"><strong>MotorElectrico</strong> — clase existente que no hereda de <code>Motor</code> y tiene métodos con nombres distintos. No podés modificarla.</div></div>
+    <div class="cb"><div class="ch">MotorElectrico.cs — clase incompatible</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">MotorElectrico</span>    <span class="cm">// NO hereda de Motor</span>
+{
+    <span class="kw">public void</span> <span class="mt">Conectar</span>()    { ... }   <span class="cm">// ≈ Arrancar parte 1</span>
+    <span class="kw">public void</span> <span class="mt">Activar</span>()     { ... }   <span class="cm">// ≈ Arrancar parte 2</span>
+    <span class="kw">public void</span> <span class="mt">Mover</span>()       { ... }   <span class="cm">// ≈ Acelerar</span>
+    <span class="kw">public void</span> <span class="mt">Parar</span>()       { ... }   <span class="cm">// ≈ parte de Detener</span>
+    <span class="kw">public void</span> <span class="mt">Desactivar</span>()  { ... }   <span class="cm">// ≈ parte de Detener</span>
+    <span class="kw">public void</span> <span class="mt">Enchufar</span>()    { ... }   <span class="cm">// ≈ CargarCombustible</span>
+}</pre></div></div>
+
+    <div class="step"><div class="sn">3</div><div class="st2"><strong>MotorElectricoAdapter</strong> — hereda de <code>Motor</code> (contrato del cliente) y <em>contiene</em> un <code>MotorElectrico</code>. Traduce cada llamada.</div></div>
+    <div class="cb"><div class="ch">MotorElectricoAdapter.cs</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">MotorElectricoAdapter</span> : <span class="cl">Motor</span>
+{
+    <span class="cl">MotorElectrico</span> motorElectrico = <span class="kw">new</span> <span class="cl">MotorElectrico</span>();
+
+    <span class="kw">public override void</span> <span class="mt">Arrancar</span>()
+    {
+        motorElectrico.<span class="mt">Conectar</span>();   <span class="cm">// 1 llamada se convierte en 2</span>
+        motorElectrico.<span class="mt">Activar</span>();
+    }
+    <span class="kw">public override void</span> <span class="mt">Acelerar</span>()         => motorElectrico.<span class="mt">Mover</span>();
+    <span class="kw">public override void</span> <span class="mt">Detener</span>()
+    {
+        motorElectrico.<span class="mt">Desactivar</span>();
+        motorElectrico.<span class="mt">Parar</span>();
+    }
+    <span class="kw">public override void</span> <span class="mt">CargarCombustible</span>() => motorElectrico.<span class="mt">Enchufar</span>();
+}</pre></div></div>
+
+    <div class="step"><div class="sn">4</div><div class="st2"><strong>Program.cs</strong> — el cliente llama los mismos 4 métodos en los tres motores. No sabe que internamente el eléctrico hace llamadas distintas.</div></div>
+    <div class="cb"><div class="ch">Program.cs</div><div class="cd"><pre><span class="cl">Motor</span> m3 = <span class="kw">new</span> <span class="cl">MotorElectricoAdapter</span>();
+m3.<span class="mt">Arrancar</span>();  <span class="cm">// → Conectar() + Activar()</span>
+m3.<span class="mt">Acelerar</span>();  <span class="cm">// → Mover()</span>
+m3.<span class="mt">Detener</span>();   <span class="cm">// → Desactivar() + Parar()</span></pre></div></div>
+
+    <div class="hb green"><strong>Clave:</strong> el cliente nunca sabe que existe <code>MotorElectrico</code>. El Adapter absorbe la incompatibilidad. Para agregar un motor de hidrógeno, solo creás <code>MotorHidrogenoAdapter</code> sin tocar nada más.</div>
+  </div>
+
+  <div class="terminal">
+    <div class="th"><div class="dot drd"></div><div class="dot dyw"></div><div class="dot dgn"></div><div class="tt">Consola de código — Adapter (5 desafíos)</div></div>
+    <div class="tb2"><div class="to" id="ad-out"></div><div class="tir"><span class="tp">▶</span><input class="ti" id="ad-in" placeholder="Escribí tu código y presioná Enter..." onkeydown="if(event.key==='Enter')adS()" autocomplete="off" spellcheck="false"></div></div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:8px">
+    <button class="btn btns" onclick="adR()">↺ Reiniciar</button>
+    <button class="btn btnp" onclick="done('ad')">✓ Marcar completado</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ DECORATOR ══════════════════════ -->
+<div id="dc" class="section">
+  <span class="tag te">Estructural</span>
+  <h1>Decorator</h1>
+  <p class="subtitle">Agrega responsabilidades a un objeto dinámicamente. Alternativa flexible a la herencia para extender funcionalidad.</p>
+
+  <div class="analogy">
+    <div class="lbl">Analogía principal</div>
+    <p>Café solo ($10) + leche (+$2) + azúcar (+$0.50) + crema (+$4). Cada topping envuelve la bebida anterior sumando al costo y la descripción. No creás <code>CafeConLecheYCremaYAzucar</code>.</p>
+  </div>
+
+  <div class="card">
+    <h3>Ejemplos del día a día</h3>
+    <div class="egrid">
+      <div class="ecard">
+        <div class="eicon">🎵</div>
+        <div class="etitle">Suscripciones Spotify</div>
+        <div class="edesc">Free (base) → Premium (+sin ads, +calidad) → Family Premium (+6 cuentas) → Duo (+2 premium). Cada nivel decora al anterior sin reescribir la clase base.</div>
+        <div class="elink">Free = bebida base · Premium = Decorator · Funciones = Costo + Descripcion</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">🚗</div>
+        <div class="etitle">Accesorios de auto</div>
+        <div class="edesc">Auto base ($20k) + GPS (+$2k) + sistema de sonido (+$3k) + techo solar (+$4k). Cada accesorio envuelve el auto anterior sin cambiar el modelo base.</div>
+        <div class="elink">Auto base = BebidaComponent · Accesorio = AgregadoDecorator</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">📸</div>
+        <div class="etitle">Filtros de Instagram</div>
+        <div class="edesc">Foto original → filtro Clarendon → sticker → texto. Cada elemento envuelve al anterior y agrega su efecto. La foto base no cambia.</div>
+        <div class="elink">Foto = Component · Filtro/Sticker = Decorador · Render = Descripcion</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Estructura</h3>
+    <div class="diagram"><pre>
+  <span class="da">«abstract»</span> <span class="dc">BebidaComponent</span>       <span class="cm">← interfaz común</span>
+  ├── Costo: double
+  └── Descripcion: string
+
+  Bases (Component concreto):          Decoradores:
+  <span class="dr">├──▶</span> <span class="dc">CafeSolo</span>         $10         <span class="da">«abstract»</span> <span class="dc">AgregadoDecorator</span> : <span class="dc">BebidaComponent</span>
+  <span class="dr">├──▶</span> <span class="dc">CafeExpresso</span>      $12         └── _bebida: <span class="dc">BebidaComponent</span>
+  <span class="dr">├──▶</span> <span class="dc">CafeDescafeinado</span>  $15
+  <span class="dr">└──▶</span> <span class="dc">TeTradicional</span>     $8          <span class="dr">├──▶</span> <span class="dc">Leche</span> +$2 / <span class="dc">Azucar</span> +$0.50
+                                       <span class="dr">├──▶</span> <span class="dc">Crema</span> +$4 / <span class="dc">Canela</span> +$1.75
+                                       <span class="dr">└──▶</span> <span class="dc">Edulcorante</span> +$1</pre></div>
+  </div>
+
+  <div class="card">
+    <h3>Código paso a paso</h3>
+    <div class="step"><div class="sn">1</div><div class="st2"><strong>BebidaComponent</strong> — interfaz común para bebidas y decoradores. Al tener el mismo tipo, podés pasar un decorador donde se espera una bebida.</div></div>
+    <div class="cb"><div class="ch">BebidaComponent.cs</div><div class="cd"><pre><span class="kw">public abstract class</span> <span class="cl">BebidaComponent</span>
+{
+    <span class="kw">public abstract double</span> Costo { <span class="kw">get</span>; }
+    <span class="kw">public abstract string</span> Descripcion { <span class="kw">get</span>; }
+}</pre></div></div>
+
+    <div class="step"><div class="sn">2</div><div class="st2"><strong>AgregadoDecorator</strong> — hereda de <code>BebidaComponent</code> Y tiene una <code>BebidaComponent</code> adentro (<code>_bebida</code>). Esto habilita el apilado infinito.</div></div>
+    <div class="cb"><div class="ch">AgregadoDecorator.cs — el corazón del patrón</div><div class="cd"><pre><span class="kw">public abstract class</span> <span class="cl">AgregadoDecorator</span> : <span class="cl">BebidaComponent</span>
+{
+    <span class="kw">protected</span> <span class="cl">BebidaComponent</span> _bebida;  <span class="cm">// envuelve a otra bebida</span>
+
+    <span class="kw">public</span> <span class="mt">AgregadoDecorator</span>(<span class="cl">BebidaComponent</span> bebida) { _bebida = bebida; }
+}</pre></div></div>
+
+    <div class="step"><div class="sn">3</div><div class="st2"><strong>Decoradores concretos</strong> — cada uno suma su precio y agrega su nombre. El patrón siempre es <code>_bebida.Costo + miCosto</code>.</div></div>
+    <div class="cb"><div class="ch">Leche.cs / Crema.cs</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">Leche</span> : <span class="cl">AgregadoDecorator</span>
+{
+    <span class="kw">public</span> <span class="mt">Leche</span>(<span class="cl">BebidaComponent</span> b) : <span class="kw">base</span>(b) { }
+    <span class="kw">public override double</span> Costo       => _bebida.Costo + <span class="nu">2</span>;
+    <span class="kw">public override string</span> Descripcion => <span class="st">$"{_bebida.Descripcion}, Leche"</span>;
+}
+<span class="kw">public class</span> <span class="cl">Crema</span> : <span class="cl">AgregadoDecorator</span>
+{
+    <span class="kw">public</span> <span class="mt">Crema</span>(<span class="cl">BebidaComponent</span> b) : <span class="kw">base</span>(b) { }
+    <span class="kw">public override double</span> Costo       => _bebida.Costo + <span class="nu">4</span>;
+    <span class="kw">public override string</span> Descripcion => <span class="st">$"{_bebida.Descripcion}, Crema"</span>;
+}</pre></div></div>
+
+    <div class="step"><div class="sn">4</div><div class="st2"><strong>Program.cs</strong> — el apilado en acción. Cada línea envuelve la anterior. La variable siempre es de tipo <code>BebidaComponent</code>.</div></div>
+    <div class="cb"><div class="ch">Program.cs</div><div class="cd"><pre><span class="cl">BebidaComponent</span> cafe = <span class="kw">new</span> <span class="cl">CafeDescafeinado</span>(); <span class="cm">// $15</span>
+cafe = <span class="kw">new</span> <span class="cl">Crema</span>(cafe);                          <span class="cm">// +$4 → $19</span>
+cafe = <span class="kw">new</span> <span class="cl">Edulcorante</span>(cafe);                    <span class="cm">// +$1 → $20</span>
+cafe = <span class="kw">new</span> <span class="cl">Canela</span>(cafe);                         <span class="cm">// +$1.75 → $21.75</span>
+
+<span class="cm">// Café descafeinado, Crema, Edulcorante, Canela - $21.75</span></pre></div></div>
+
+    <div class="hb orange"><strong>Clave:</strong> con 4 decoradores y 4 bebidas base generás miles de combinaciones sin explotar en herencia. Sin Decorator necesitarías una clase por cada combinación posible.</div>
+  </div>
+
+  <div class="terminal">
+    <div class="th"><div class="dot drd"></div><div class="dot dyw"></div><div class="dot dgn"></div><div class="tt">Consola de código — Decorator (5 desafíos)</div></div>
+    <div class="tb2"><div class="to" id="dc-out"></div><div class="tir"><span class="tp">▶</span><input class="ti" id="dc-in" placeholder="Escribí tu código y presioná Enter..." onkeydown="if(event.key==='Enter')dcS()" autocomplete="off" spellcheck="false"></div></div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:8px">
+    <button class="btn btns" onclick="dcR()">↺ Reiniciar</button>
+    <button class="btn btnp" onclick="done('dc')">✓ Marcar completado</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ MEMENTO ══════════════════════ -->
+<div id="mm" class="section">
+  <span class="tag tb">Conductual</span>
+  <h1>Memento</h1>
+  <p class="subtitle">Captura y externaliza el estado interno de un objeto para que pueda restaurarse luego, sin violar el encapsulamiento.</p>
+
+  <div class="analogy">
+    <div class="lbl">Analogía principal</div>
+    <p>Es el <strong>Ctrl+Z</strong> de tu editor. Cada vez que modificás, el editor guarda un snapshot. Al deshacer, restaura el anterior. El historial = CareTaker, cada snapshot = Memento, el documento = Originator.</p>
+  </div>
+
+  <div class="card">
+    <h3>Ejemplos del día a día</h3>
+    <div class="egrid">
+      <div class="ecard">
+        <div class="eicon">💾</div>
+        <div class="etitle">Git commits</div>
+        <div class="edesc">Cada <code>git commit</code> es un Memento del código. <code>git checkout abc123</code> es restoreToMemento. El repositorio es el CareTaker: guarda todos los commits sin entender su contenido.</div>
+        <div class="elink">Tu código = Originator · Commit = Memento · Repo = CareTaker</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">🎮</div>
+        <div class="etitle">Puntos de guardado</div>
+        <div class="edesc">En un videojuego, llegás a un checkpoint y guardás. Si morís, cargás el guardado. El juego no sabe qué hay en el archivo de guardado, solo lo restaura.</div>
+        <div class="elink">Personaje = Originator · Archivo guardado = Memento · Lista de saves = CareTaker</div>
+      </div>
+      <div class="ecard">
+        <div class="eicon">📝</div>
+        <div class="etitle">Historial de Photoshop</div>
+        <div class="edesc">Cada acción en Photoshop (aplicar filtro, cortar, pintar) guarda un estado en el panel "Historial". Podés volver a cualquier punto anterior de la edición.</div>
+        <div class="elink">Imagen editada = Originator · Estado guardado = Memento · Panel historial = CareTaker</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Los tres roles</h3>
+    <div class="grid3">
+      <div class="hb blue"><strong>Originator</strong><br><code>Persona</code><br><br>El objeto cuyo estado queremos guardar y restaurar</div>
+      <div class="hb green"><strong>Memento</strong><br><code>Memento</code><br><br>Snapshot del estado. Solo el Originator sabe qué hay adentro</div>
+      <div class="hb orange"><strong>CareTaker</strong><br><code>CareTaker</code><br><br>Guarda los Mementos sin examinar su contenido</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Código paso a paso</h3>
+    <div class="step"><div class="sn">1</div><div class="st2"><strong>Memento</strong> — el snapshot. Guarda <code>_estado</code> como readonly (solo getter). Una vez creado, nadie puede modificarlo.</div></div>
+    <div class="cb"><div class="ch">Memento.cs</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">Memento</span>
+{
+    <span class="kw">private string</span> _estado;
+    <span class="kw">public</span> <span class="mt">Memento</span>(<span class="kw">string</span> estado) { _estado = estado; }
+    <span class="kw">public string</span> Estado => _estado;  <span class="cm">// solo lectura</span>
+}</pre></div></div>
+
+    <div class="step"><div class="sn">2</div><div class="st2"><strong>CareTaker</strong> — historial de snapshots. Solo tiene <code>Add()</code> y <code>GetMemento(índice)</code>. Nunca interpreta el contenido.</div></div>
+    <div class="cb"><div class="ch">CareTaker.cs</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">CareTaker</span>
+{
+    <span class="kw">private</span> List&lt;<span class="cl">Memento</span>&gt; _mementos = <span class="kw">new</span> List&lt;<span class="cl">Memento</span>&gt;();
+    <span class="kw">public void</span>    <span class="mt">Add</span>(<span class="cl">Memento</span> m)       => _mementos.<span class="mt">Add</span>(m);
+    <span class="kw">public</span> <span class="cl">Memento</span> <span class="mt">GetMemento</span>(<span class="kw">int</span> i)   => _mementos[i];
+}</pre></div></div>
+
+    <div class="step"><div class="sn">3</div><div class="st2"><strong>Persona (Originator)</strong> — <code>saveToMemento()</code> crea un snapshot del estado actual. <code>restoreToMemento()</code> lo aplica.</div></div>
+    <div class="cb"><div class="ch">Persona.cs</div><div class="cd"><pre><span class="kw">public class</span> <span class="cl">Persona</span>
+{
+    <span class="kw">public string</span> Nombre { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+    <span class="kw">public</span> <span class="cl">Memento</span> <span class="mt">saveToMemento</span>()
+    {
+        Console.<span class="mt">WriteLine</span>(<span class="st">"Originator: Guardando memento para "</span> + Nombre);
+        <span class="kw">return new</span> <span class="cl">Memento</span>(Nombre);    <span class="cm">// snapshot del estado actual</span>
+    }
+
+    <span class="kw">public void</span> <span class="mt">restoreToMemento</span>(<span class="cl">Memento</span> m)
+    {
+        Nombre = m.Estado;              <span class="cm">// restaura el estado</span>
+        Console.<span class="mt">WriteLine</span>(<span class="st">"Originator: Recuperando memento  "</span> + Nombre);
+    }
+}</pre></div></div>
+
+    <div class="step"><div class="sn">4</div><div class="st2"><strong>Program.cs</strong> — guardar y restaurar estados en cualquier orden.</div></div>
+    <div class="cb"><div class="ch">Program.cs</div><div class="cd"><pre><span class="kw">var</span> p = <span class="kw">new</span> <span class="cl">Persona</span>();
+<span class="kw">var</span> caretaker = <span class="kw">new</span> <span class="cl">CareTaker</span>();
+
+p.Nombre = <span class="st">"Pepe"</span>;
+caretaker.<span class="mt">Add</span>(p.<span class="mt">saveToMemento</span>());   <span class="cm">// índice 0</span>
+
+p.Nombre = <span class="st">"Pepe1"</span>;
+caretaker.<span class="mt">Add</span>(p.<span class="mt">saveToMemento</span>());   <span class="cm">// índice 1</span>
+
+p.<span class="mt">restoreToMemento</span>(caretaker.<span class="mt">GetMemento</span>(<span class="nu">0</span>));  <span class="cm">// vuelve a "Pepe"</span>
+p.<span class="mt">restoreToMemento</span>(caretaker.<span class="mt">GetMemento</span>(<span class="nu">1</span>));  <span class="cm">// vuelve a "Pepe1"</span></pre></div></div>
+
+    <div class="hb green"><strong>Clave:</strong> CareTaker nunca lee el contenido de los Mementos. Son "cajas negras" para él. Solo Persona sabe cómo interpretar un Memento. Eso preserva el encapsulamiento.</div>
+  </div>
+
+  <div class="terminal">
+    <div class="th"><div class="dot drd"></div><div class="dot dyw"></div><div class="dot dgn"></div><div class="tt">Consola de código — Memento (5 desafíos)</div></div>
+    <div class="tb2"><div class="to" id="mm-out"></div><div class="tir"><span class="tp">▶</span><input class="ti" id="mm-in" placeholder="Escribí tu código y presioná Enter..." onkeydown="if(event.key==='Enter')mmS()" autocomplete="off" spellcheck="false"></div></div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:8px">
+    <button class="btn btns" onclick="mmR()">↺ Reiniciar</button>
+    <button class="btn btnp" onclick="done('mm')">✓ Marcar completado</button>
+  </div>
+</div>
+
+</div><!-- #main -->
+
+<script>
+// ── Navegación ───────────────────────────────────────────────────────────────
+function show(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  if (id==='fm' && fmStep===0) fmI();
+  if (id==='af' && afStep===0) afI();
+  if (id==='ad' && adStep===0) adI();
+  if (id==='dc' && dcStep===0) dcI();
+  if (id==='mm' && mmStep===0) mmI();
+}
+
+// ── Progreso ─────────────────────────────────────────────────────────────────
+const completed = new Set();
+function done(id) {
+  completed.add(id);
+  document.getElementById('pbar').style.width = (completed.size/5*100)+'%';
+  document.getElementById('ptxt').textContent = completed.size+' / 5 completados';
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'")&&!n.querySelector('.nav-badge')) {
+      const b=document.createElement('span'); b.className='nav-badge'; b.textContent='✓';
+      n.appendChild(b);
+    }
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function w(id, text, cls) {
+  const el = document.getElementById(id);
+  el.innerHTML += (cls ? `<span class="${cls}">${escH(text)}</span>` : escH(text)) + '\n';
+  el.parentElement.parentElement.scrollTop = 99999;
+}
+function escH(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function clr(id){ document.getElementById(id).innerHTML=''; }
+function inp(id){ const e=document.getElementById(id); const v=e.value.trim(); e.value=''; return v; }
+
+// Validación flexible
+const nrm = s => s.toLowerCase().replace(/\s+/g,' ').trim();
+function has(input, ...tokens){ const n=nrm(input); return tokens.every(t=>n.includes(t.toLowerCase())); }
+function is(input, ...options){ const n=nrm(input); return options.some(o=>n===nrm(o)); }
+
+// Mostrar un desafío de código en el terminal
+function challenge(outId, num, total, titulo, contexto, pregunta) {
+  w(outId,'');
+  w(outId, `══ DESAFÍO ${num}/${total} — ${titulo} ══════════════════`, 'ot');
+  w(outId,'');
+  if (contexto) { w(outId, contexto, 'og'); w(outId,''); }
+  w(outId, '  ' + pregunta, 'op');
+  w(outId,'');
+}
+
+// ═══════════════════════ FACTORY METHOD ═════════════════════════════════════
+let fmStep=0;
+function fmI(){
+  clr('fm-out');
+  w('fm-out','╔═══════════════════════════════════════════╗','ot');
+  w('fm-out','║   Desafíos de código — Factory Method     ║','ot');
+  w('fm-out','╚═══════════════════════════════════════════╝','ot');
+  w('fm-out','  Escribís código C# real. Se validan los tokens clave.','og');
+  fmStep=1; fmCh();
+}
+function fmCh(){
+  if(fmStep===1) challenge('fm-out',1,5,'Clase abstracta',
+    '  public _______ class Pizza\n  {\n      protected string _descripcion;\n      protected string _origen;\n      public void Render() { ... }\n  }',
+    '¿Qué palabra va en el espacio para que Pizza no pueda instanciarse directamente?');
+  else if(fmStep===2) challenge('fm-out',2,5,'El Factory Method',
+    '  public abstract class Pizzeria\n  {\n      // Escribí la firma del Factory Method completo:\n      // (modificador + tipo retorno + nombre + parámetro)\n  }',
+    'Escribí la línea del Factory Method (debe ser abstract, retornar Pizza, llamarse CrearPizza):');
+  else if(fmStep===3) challenge('fm-out',3,5,'Subclase concreta',
+    '  public class PizzeriaArgentina : Pizzeria\n  {\n      public override Pizza CrearPizza(string tipo)\n      {\n          if (tipo == "cancha")\n              return new _______("Argentina");\n      }\n  }',
+    '¿Qué clase concreta va en el espacio? (la pizza argentina de cancha)');
+  else if(fmStep===4) challenge('fm-out',4,5,'Uso del cliente',
+    '  // En Program.cs, el cliente usa el tipo ABSTRACTO Pizzeria,\n  // no PizzeriaItaliana directamente.',
+    'Escribí la línea que crea una PizzeriaItaliana guardada en una variable de tipo Pizzeria:');
+  else if(fmStep===5) challenge('fm-out',5,5,'Llamar al Factory Method',
+    '  Pizzeria pizzeria = new PizzeriaArgentina();\n  Pizza pizza = ?',
+    'Escribí la llamada que crea una pizza "napo" usando la variable pizzeria:');
+}
+function fmS(){
+  const v=inp('fm-in');
+  w('fm-out','▶ '+v,'ow');
+  if(fmStep===99){w('fm-out','Ya completaste esta sección.','op');return;}
+  if(fmStep===1){
+    if(has(v,'abstract')){ w('fm-out','✓ Correcto. "abstract" impide instanciar Pizza directamente y obliga a heredar.','os'); fmStep=2; fmCh(); }
+    else{ w('fm-out','✗ Pensá: es la misma palabra que usan los métodos sin cuerpo. Pista: "abst..."','oe'); }
+  } else if(fmStep===2){
+    if(has(v,'abstract','pizza','crearpizza','string')){ w('fm-out','✓ Correcto. "public abstract Pizza CrearPizza(string tipo);" — sin cuerpo, la subclase lo implementa.','os'); fmStep=3; fmCh(); }
+    else if(has(v,'abstract','pizza','crearpizza')){ w('fm-out','✓ Casi perfecto. Solo faltó el parámetro string tipo, pero la idea es correcta.','os'); fmStep=3; fmCh(); }
+    else{ w('fm-out','✗ Necesita: la palabra "abstract", tipo de retorno "Pizza", nombre "CrearPizza" y parámetro "string tipo".','oe'); }
+  } else if(fmStep===3){
+    if(has(v,'pizzacancha')){ w('fm-out','✓ Exacto. PizzaCancha("Argentina") — la subclase sabe qué objeto concreto crear.','os'); fmStep=4; fmCh(); }
+    else{ w('fm-out','✗ Buscá la clase concreta que representa la pizza de cancha (el nombre está en PizzaCancha.cs).','oe'); }
+  } else if(fmStep===4){
+    if(has(v,'pizzeria','pizzeriaitaliana')){ w('fm-out','✓ Correcto. La variable es de tipo Pizzeria (abstracto), el objeto es PizzeriaItaliana (concreto).','os'); fmStep=5; fmCh(); }
+    else if(has(v,'pizzeriaitaliana') && !has(v,'pizzeria')){ w('fm-out','✗ Casi. El tipo de la variable debe ser "Pizzeria" (la abstracción), no "PizzeriaItaliana". Ej: Pizzeria p = new PizzeriaItaliana();','oe'); }
+    else{ w('fm-out','✗ Necesitás: tipo Pizzeria como tipo de variable, y PizzeriaItaliana como objeto. Ej: Pizzeria p = new PizzeriaItaliana();','oe'); }
+  } else if(fmStep===5){
+    if(has(v,'crearpizza') && has(v,'napo')){ w('fm-out','✓ Perfecto. pizzeria.CrearPizza("napo") — el cliente pide sin saber qué clase concreta se crea.','os'); w('fm-out',''); w('fm-out','🏆 ¡Completaste los 5 desafíos de Factory Method!','os'); fmStep=99; }
+    else if(has(v,'crearpizza')){ w('fm-out','✗ Falta el argumento. CrearPizza recibe el tipo como string. ¿Cuál es el tipo que queremos?','oe'); }
+    else{ w('fm-out','✗ Necesitás llamar al método CrearPizza sobre la variable pizzeria, pasando "napo".','oe'); }
+  }
+}
+function fmR(){ fmStep=0; fmI(); }
+
+// ═══════════════════════ ABSTRACT FACTORY ════════════════════════════════════
+let afStep=0;
+function afI(){
+  clr('af-out');
+  w('af-out','╔═══════════════════════════════════════════╗','ot');
+  w('af-out','║   Desafíos de código — Abstract Factory   ║','ot');
+  w('af-out','╚═══════════════════════════════════════════╝','ot');
+  w('af-out','  Escribís código C# real. Se validan los tokens clave.','og');
+  afStep=1; afCh();
+}
+function afCh(){
+  if(afStep===1) challenge('af-out',1,5,'Firma de la Abstract Factory',
+    '  public abstract class Pizzeria\n  {\n      public abstract Pizza    CrearPizza();       // producto 1\n      public abstract Empanada CrearEmpanada();    // producto 2\n  }',
+    '¿Cuántos métodos abstractos tiene Pizzeria en Abstract Factory? (escribí el número)');
+  else if(afStep===2) challenge('af-out',2,5,'Fábrica concreta — PizzeriaChina',
+    '  public class PizzeriaChina : Pizzeria\n  {\n      public override Pizza CrearPizza() => new _______();\n      // ...\n  }',
+    'Completá: ¿qué clase Pizza concreta crea PizzeriaChina? (mirá PizzeriaChina.cs)');
+  else if(afStep===3) challenge('af-out',3,5,'Fábrica concreta — PizzeriaItaliana',
+    '  public class PizzeriaItaliana : Pizzeria\n  {\n      // ...\n      public override Empanada CrearEmpanada() => new _______();\n  }',
+    'Completá: ¿qué Empanada crea PizzeriaItaliana? (mirá PizzeriaItaliana.cs)');
+  else if(afStep===4) challenge('af-out',4,5,'Crear la fábrica china',
+    '  // El cliente quiere cambiar a la fábrica china.\n  // La variable debe ser de tipo abstracto Pizzeria.',
+    'Escribí la línea que crea una PizzeriaChina guardada en una variable de tipo Pizzeria:');
+  else if(afStep===5) challenge('af-out',5,5,'Salida del programa',
+    '  Pizzeria fabrica = new PizzeriaArgentina();\n  Pizza p = fabrica.CrearPizza();\n  Empanada e = fabrica.CrearEmpanada();\n  Console.WriteLine($"Pizza: {p.Descripcion}, Empanada: {e.Descripcion}");',
+    'Sin ejecutar el código, ¿qué imprime ese Console.WriteLine? (escribí la salida exacta)');
+}
+function afS(){
+  const v=inp('af-in');
+  w('af-out','▶ '+v,'ow');
+  if(afStep===99){w('af-out','Ya completaste esta sección.','op');return;}
+  if(afStep===1){
+    if(is(v,'2')){ w('af-out','✓ Exacto. Dos métodos: CrearPizza() y CrearEmpanada(). Eso define la "familia" de productos.','os'); afStep=2; afCh(); }
+    else{ w('af-out','✗ Contá los métodos en el código de arriba: ¿cuántos "public abstract" hay en Pizzeria?','oe'); }
+  } else if(afStep===2){
+    if(has(v,'pizzasushi')){ w('af-out','✓ Correcto. PizzeriaChina crea PizzaSushi — pizza especial de sushi.','os'); afStep=3; afCh(); }
+    else{ w('af-out','✗ Mirá PizzeriaChina.cs: CrearPizza() hace "return new ????()". ¿Qué tipo de pizza hace una pizzería china?','oe'); }
+  } else if(afStep===3){
+    if(has(v,'empanadacapresse')){ w('af-out','✓ Exacto. EmpanadaCapresse — la italiana hace una empanada al estilo caprese.','os'); afStep=4; afCh(); }
+    else{ w('af-out','✗ Mirá PizzeriaItaliana.cs: CrearEmpanada() retorna... ¿qué clase de Empanada?','oe'); }
+  } else if(afStep===4){
+    if(has(v,'pizzeria','pizzeriachina')){ w('af-out','✓ Correcto. Pizzeria fabrica = new PizzeriaChina(); — tipo abstracto, objeto concreto.','os'); afStep=5; afCh(); }
+    else if(has(v,'pizzeriachina')){ w('af-out','✗ Casi. El tipo de variable debe ser "Pizzeria" (abstracción). Ej: Pizzeria f = new PizzeriaChina();','oe'); }
+    else{ w('af-out','✗ Necesitás tipo Pizzeria y objeto PizzeriaChina. Ej: Pizzeria f = new PizzeriaChina();','oe'); }
+  } else if(afStep===5){
+    if(has(v,'pizza de cancha') && has(v,'empanada de carne')){ w('af-out','✓ ¡Perfecto! "Pizza: Pizza de cancha, Empanada: Empanada de carne" — la familia argentina completa.','os'); w('af-out',''); w('af-out','🏆 ¡Completaste los 5 desafíos de Abstract Factory!','os'); afStep=99; }
+    else if(has(v,'pizza de cancha')){ w('af-out','✗ La pizza está bien. ¿Y la empanada que hace PizzeriaArgentina?','oe'); }
+    else if(has(v,'empanada de carne')){ w('af-out','✗ La empanada está bien. ¿Y qué pizza crea PizzeriaArgentina?','oe'); }
+    else{ w('af-out','✗ Mirá PizzeriaArgentina.cs: CrearPizza() → PizzaCancha ("Pizza de cancha"), CrearEmpanada() → EmpanadaDeCarne ("Empanada de carne").','oe'); }
+  }
+}
+function afR(){ afStep=0; afI(); }
+
+// ═══════════════════════ ADAPTER ═════════════════════════════════════════════
+let adStep=0;
+function adI(){
+  clr('ad-out');
+  w('ad-out','╔═══════════════════════════════════════════╗','ot');
+  w('ad-out','║   Desafíos de código — Adapter            ║','ot');
+  w('ad-out','╚═══════════════════════════════════════════╝','ot');
+  w('ad-out','  Escribís código C# real. Se validan los tokens clave.','og');
+  adStep=1; adCh();
+}
+function adCh(){
+  if(adStep===1) challenge('ad-out',1,5,'Herencia del Adapter',
+    '  public class MotorElectricoAdapter : _______\n  {\n      MotorElectrico motorElectrico = new MotorElectrico();\n      // ...\n  }',
+    'Completá: ¿de qué clase debe heredar MotorElectricoAdapter para que el cliente pueda usarlo como Motor?');
+  else if(adStep===2) challenge('ad-out',2,5,'Método Arrancar() del Adapter',
+    '  public override void Arrancar()\n  {\n      // Dos llamadas al motor eléctrico...\n  }',
+    'Escribí las dos llamadas que van dentro de Arrancar() (mirá MotorElectricoAdapter.cs):');
+  else if(adStep===3) challenge('ad-out',3,5,'Método Acelerar() del Adapter',
+    '  // Acelerar() del cliente se traduce en una sola llamada al motor eléctrico.',
+    'Escribí el método Acelerar() completo del Adapter (con public override void):');
+  else if(adStep===4) challenge('ad-out',4,5,'Uso en Program.cs',
+    '  Motor m1 = new MotorNaftero();\n  Motor m2 = new MotorDiesel();\n  Motor m3 = ???',
+    'Escribí la línea que crea el motor eléctrico usando el Adapter, guardado en variable de tipo Motor:');
+  else if(adStep===5) challenge('ad-out',5,5,'¿Qué traduce Detener()?',
+    '  public override void Detener()\n  {\n      motorElectrico._______();\n      motorElectrico._______();\n  }',
+    'Escribí los dos métodos de MotorElectrico que llama Detener() (separados por coma o en dos líneas):');
+}
+function adS(){
+  const v=inp('ad-in');
+  w('ad-out','▶ '+v,'ow');
+  if(adStep===99){w('ad-out','Ya completaste esta sección.','op');return;}
+  if(adStep===1){
+    if(has(v,'motor')&&!has(v,'motorelectrico')){ w('ad-out','✓ Correcto. "public class MotorElectricoAdapter : Motor" — hereda de Motor para cumplir el contrato del cliente.','os'); adStep=2; adCh(); }
+    else if(has(v,'motorelectrico')){ w('ad-out','✗ Cerca, pero MotorElectrico es la clase incompatible. El Adapter hereda de la clase que el CLIENTE espera, que se llama solo "Motor".','oe'); }
+    else{ w('ad-out','✗ Escribí el nombre de la clase que representa el contrato que el cliente conoce (Motor.cs).','oe'); }
+  } else if(adStep===2){
+    if(has(v,'conectar')&&has(v,'activar')){ w('ad-out','✓ Perfecto. motorElectrico.Conectar() y motorElectrico.Activar() — una llamada del cliente se convierte en dos.','os'); adStep=3; adCh(); }
+    else if(has(v,'conectar')){ w('ad-out','✗ Conectar está bien. Falta la segunda llamada que activa el motor.','oe'); }
+    else if(has(v,'activar')){ w('ad-out','✗ Activar está bien. Falta la primera llamada que conecta el motor.','oe'); }
+    else{ w('ad-out','✗ Mirá MotorElectricoAdapter.cs: Arrancar() llama a dos métodos del motor eléctrico antes de que se mueva.','oe'); }
+  } else if(adStep===3){
+    if(has(v,'override','acelerar','mover')){ w('ad-out','✓ Correcto. Acelerar() se traduce en motorElectrico.Mover() — una llamada a otra.','os'); adStep=4; adCh(); }
+    else if(has(v,'mover')){ w('ad-out','✓ La lógica es correcta (Mover). Asegurate de incluir "public override void Acelerar()" como firma.','os'); adStep=4; adCh(); }
+    else{ w('ad-out','✗ Acelerar() del adapter llama a un solo método del motor eléctrico: el que mueve el vehículo.','oe'); }
+  } else if(adStep===4){
+    if(has(v,'motor','motorelectricoadapter')){ w('ad-out','✓ Exacto. Motor m3 = new MotorElectricoAdapter(); — el cliente usa tipo Motor, sin saber del Adapter.','os'); adStep=5; adCh(); }
+    else if(has(v,'motorelectricoadapter')){ w('ad-out','✗ Casi. El tipo de la variable debe ser "Motor" (abstracción). Ej: Motor m3 = new MotorElectricoAdapter();','oe'); }
+    else{ w('ad-out','✗ Necesitás: tipo Motor y objeto MotorElectricoAdapter. Ej: Motor m3 = new MotorElectricoAdapter();','oe'); }
+  } else if(adStep===5){
+    if(has(v,'desactivar')&&has(v,'parar')){ w('ad-out','✓ Perfecto. Desactivar() y Parar() — igual que Arrancar usaba dos llamadas, Detener también.','os'); w('ad-out',''); w('ad-out','🏆 ¡Completaste los 5 desafíos de Adapter!','os'); adStep=99; }
+    else if(has(v,'desactivar')){ w('ad-out','✗ Desactivar está bien. ¿Cuál es la segunda llamada? (la que detiene el movimiento)','oe'); }
+    else if(has(v,'parar')){ w('ad-out','✗ Parar está bien. ¿Cuál es la primera? (la que desactiva el motor antes de parar)','oe'); }
+    else{ w('ad-out','✗ Mirá MotorElectricoAdapter.cs: el método Detener() hace dos llamadas al motorElectrico.','oe'); }
+  }
+}
+function adR(){ adStep=0; adI(); }
+
+// ═══════════════════════ DECORATOR ═══════════════════════════════════════════
+let dcStep=0;
+function dcI(){
+  clr('dc-out');
+  w('dc-out','╔═══════════════════════════════════════════╗','ot');
+  w('dc-out','║   Desafíos de código — Decorator          ║','ot');
+  w('dc-out','╚═══════════════════════════════════════════╝','ot');
+  w('dc-out','  Escribís código C# real. Se validan los tokens clave.','og');
+  dcStep=1; dcCh();
+}
+function dcCh(){
+  if(dcStep===1) challenge('dc-out',1,5,'Herencia del Decorator abstracto',
+    '  public abstract class AgregadoDecorator : _______\n  {\n      protected BebidaComponent _bebida;\n      public AgregadoDecorator(BebidaComponent b) { _bebida = b; }\n  }',
+    'Completá: ¿de qué clase hereda AgregadoDecorator? (clave del patrón: debe ser el mismo tipo que las bebidas base)');
+  else if(dcStep===2) challenge('dc-out',2,5,'Propiedad Costo del Decorator',
+    '  public class Leche : AgregadoDecorator\n  {\n      public Leche(BebidaComponent b) : base(b) { }\n      public override double Costo => _______.Costo + 2;\n      // ...\n  }',
+    'Completá el espacio: ¿qué variable se usa para acceder a la bebida que Leche envuelve?');
+  else if(dcStep===3) challenge('dc-out',3,5,'Propiedad Descripcion del Decorator',
+    '  public class Canela : AgregadoDecorator\n  {\n      // Costo = _bebida.Costo + 1.75;\n      public override string Descripcion => $"{_______.Descripcion}, Canela";\n  }',
+    'Completá: ¿qué va en el espacio para acceder a la descripción de la bebida envuelta?');
+  else if(dcStep===4) challenge('dc-out',4,5,'Apilando decoradores — una capa',
+    '  // Querés un CafeExpresso con Leche encima.\n  // La variable es de tipo BebidaComponent.',
+    'Escribí la expresión que crea el CafeExpresso decorado con Leche (sin asignar a variable):');
+  else if(dcStep===5) challenge('dc-out',5,5,'Apilando decoradores — dos capas',
+    '  // Querés un CafeDescafeinado con Crema abajo y Edulcorante arriba.\n  // Crema envuelve al café, Edulcorante envuelve a la Crema.',
+    'Escribí la expresión completa con los tres apilados (sin asignar a variable):');
+}
+function dcS(){
+  const v=inp('dc-in');
+  w('dc-out','▶ '+v,'ow');
+  if(dcStep===99){w('dc-out','Ya completaste esta sección.','op');return;}
+  if(dcStep===1){
+    if(has(v,'bebidacomponent')){ w('dc-out','✓ Exacto. AgregadoDecorator hereda de BebidaComponent: así un decorator ES una bebida y puede pasarse donde se espera una.','os'); dcStep=2; dcCh(); }
+    else{ w('dc-out','✗ Pensá: para que new Crema(cafe) funcione, Crema debe poder asignarse a una variable BebidaComponent. ¿De qué hereda entonces?','oe'); }
+  } else if(dcStep===2){
+    if(has(v,'_bebida')){ w('dc-out','✓ Correcto. "_bebida.Costo + 2" — accede al costo de la bebida que envuelve y le suma el propio.','os'); dcStep=3; dcCh(); }
+    else{ w('dc-out','✗ Mirá el campo protegido que guarda la referencia a la bebida envuelta (está en AgregadoDecorator.cs).','oe'); }
+  } else if(dcStep===3){
+    if(has(v,'_bebida')){ w('dc-out','✓ Correcto. $"{_bebida.Descripcion}, Canela" — concatena la descripción de la bebida envuelta con el propio ingrediente.','os'); dcStep=4; dcCh(); }
+    else{ w('dc-out','✗ Es la misma variable que en el desafío anterior. Se accede a su propiedad Descripcion.','oe'); }
+  } else if(dcStep===4){
+    if(has(v,'leche')&&has(v,'cafeexpresso')){ w('dc-out','✓ Correcto. new Leche(new CafeExpresso()) — Leche envuelve al CafeExpresso.','os'); dcStep=5; dcCh(); }
+    else if(has(v,'cafeexpresso')&&!has(v,'leche')){ w('dc-out','✗ Falta el decorator. El CafeExpresso va dentro del constructor de Leche: new Leche(new CafeExpresso()).','oe'); }
+    else{ w('dc-out','✗ Necesitás: new Leche(new CafeExpresso()) — la bebida base va adentro del decorador.','oe'); }
+  } else if(dcStep===5){
+    if(has(v,'edulcorante')&&has(v,'crema')&&has(v,'cafedescafeinado')){ w('dc-out','✓ ¡Perfecto! new Edulcorante(new Crema(new CafeDescafeinado())) — los tres apilados correctamente.','os'); w('dc-out',''); w('dc-out','🏆 ¡Completaste los 5 desafíos de Decorator!','os'); dcStep=99; }
+    else if(!has(v,'cafedescafeinado')){ w('dc-out','✗ Falta la base. CafeDescafeinado va en el centro: new Edulcorante(new Crema(new CafeDescafeinado())).','oe'); }
+    else if(!has(v,'crema')){ w('dc-out','✗ Falta la Crema. El orden: Edulcorante envuelve a Crema que envuelve al café.','oe'); }
+    else{ w('dc-out','✗ Falta el Edulcorante arriba de todo. Orden: Edulcorante(Crema(CafeDescafeinado())).','oe'); }
+  }
+}
+function dcR(){ dcStep=0; dcI(); }
+
+// ═══════════════════════ MEMENTO ═════════════════════════════════════════════
+let mmStep=0;
+function mmI(){
+  clr('mm-out');
+  w('mm-out','╔═══════════════════════════════════════════╗','ot');
+  w('mm-out','║   Desafíos de código — Memento            ║','ot');
+  w('mm-out','╚═══════════════════════════════════════════╝','ot');
+  w('mm-out','  Escribís código C# real. Se validan los tokens clave.','og');
+  mmStep=1; mmCh();
+}
+function mmCh(){
+  if(mmStep===1) challenge('mm-out',1,5,'Tipo de retorno de saveToMemento',
+    '  public class Persona\n  {\n      public string Nombre { get; set; }\n\n      public _______ saveToMemento()\n      {\n          return new Memento(Nombre);\n      }\n  }',
+    'Completá: ¿qué tipo de dato retorna saveToMemento()?');
+  else if(mmStep===2) challenge('mm-out',2,5,'Cuerpo de saveToMemento',
+    '  public Memento saveToMemento()\n  {\n      Console.WriteLine("Guardando memento para " + Nombre);\n      return new Memento(_______);  // ← ¿qué va acá?\n  }',
+    'Completá: ¿qué propiedad de Persona se pasa al constructor de Memento para guardar el estado?');
+  else if(mmStep===3) challenge('mm-out',3,5,'Cuerpo de restoreToMemento',
+    '  public void restoreToMemento(Memento m)\n  {\n      _______ = m.Estado;  // restaura el estado\n      Console.WriteLine("Recuperando memento " + Nombre);\n  }',
+    'Completá: ¿qué propiedad de Persona se actualiza con m.Estado para restaurar el estado?');
+  else if(mmStep===4) challenge('mm-out',4,5,'Guardar estado en CareTaker',
+    '  var p = new Persona();\n  var caretaker = new CareTaker();\n  p.Nombre = "Pepe";\n  // Guardá el estado actual de p en el caretaker:',
+    'Escribí la línea que guarda el estado de p en caretaker:');
+  else if(mmStep===5) challenge('mm-out',5,5,'Restaurar un estado guardado',
+    '  // caretaker tiene 3 mementos guardados (índices 0, 1, 2)\n  // Querés volver al estado del índice 1.',
+    'Escribí la línea que restaura a p al estado guardado en el índice 1:');
+}
+function mmS(){
+  const v=inp('mm-in');
+  w('mm-out','▶ '+v,'ow');
+  if(mmStep===99){w('mm-out','Ya completaste esta sección.','op');return;}
+  if(mmStep===1){
+    if(has(v,'memento')){ w('mm-out','✓ Correcto. saveToMemento() retorna un objeto Memento — el snapshot del estado.','os'); mmStep=2; mmCh(); }
+    else{ w('mm-out','✗ Mirá la línea "return new Memento(Nombre)". ¿Qué tipo retorna esa expresión?','oe'); }
+  } else if(mmStep===2){
+    if(is(v,'nombre')||has(v,'nombre')){ w('mm-out','✓ Exacto. new Memento(Nombre) — guarda el valor actual de Nombre en el snapshot.','os'); mmStep=3; mmCh(); }
+    else{ w('mm-out','✗ El método saveToMemento captura el estado actual de Persona. ¿Cuál es la única propiedad pública de Persona?','oe'); }
+  } else if(mmStep===3){
+    if(is(v,'nombre')||has(v,'nombre')&&!has(v,'m.estado')){ w('mm-out','✓ Correcto. Nombre = m.Estado; — restaura el estado del Originator desde el Memento.','os'); mmStep=4; mmCh(); }
+    else if(has(v,'m.estado')&&!has(v,'nombre')){ w('mm-out','✗ m.Estado está bien como lado derecho. ¿Qué propiedad de Persona recibe ese valor?','oe'); }
+    else{ w('mm-out','✗ La asignación es: [propiedad de Persona] = m.Estado. ¿Qué propiedad tiene Persona?','oe'); }
+  } else if(mmStep===4){
+    if(has(v,'caretaker')&&has(v,'savememento')||has(v,'caretaker.add')&&has(v,'savememento')){
+      w('mm-out','✓ Perfecto. caretaker.Add(p.saveToMemento()); — el Originator crea el Memento y el CareTaker lo guarda.','os'); mmStep=5; mmCh();
+    } else if(has(v,'savememento')&&!has(v,'caretaker')){ w('mm-out','✗ saveToMemento() está bien. Falta pasarlo al caretaker con Add(). Ej: caretaker.Add(p.saveToMemento());','oe'); }
+    else if(has(v,'caretaker')&&!has(v,'savememento')){ w('mm-out','✗ Usás caretaker bien. Falta el método que crea el Memento: p.saveToMemento().','oe'); }
+    else{ w('mm-out','✗ Necesitás: caretaker.Add(p.saveToMemento()); — Add recibe el Memento que crea saveToMemento.','oe'); }
+  } else if(mmStep===5){
+    if(has(v,'restorememento')&&has(v,'getmemento')&&has(v,'1')){
+      w('mm-out','✓ ¡Perfecto! p.restoreToMemento(caretaker.GetMemento(1)); — el CareTaker entrega el snapshot, el Originator lo aplica.','os');
+      w('mm-out',''); w('mm-out','🏆 ¡Completaste los 5 desafíos de Memento!','os'); mmStep=99;
+    } else if(has(v,'restorememento')&&has(v,'getmemento')&&!has(v,'1')){ w('mm-out','✗ Casi perfecto. Falta el índice correcto: GetMemento(1) para el estado del índice 1.','oe'); }
+    else if(has(v,'restorememento')&&!has(v,'getmemento')){ w('mm-out','✗ restoreToMemento está bien. Falta obtener el Memento del caretaker: caretaker.GetMemento(1).','oe'); }
+    else{ w('mm-out','✗ Necesitás: p.restoreToMemento(caretaker.GetMemento(1));','oe'); }
+  }
+}
+function mmR(){ mmStep=0; mmI(); }
+
+// ── Arranque ──────────────────────────────────────────────────────────────────
+window.onload = () => { fmI(); document.getElementById('fm-in').focus(); };
+</script>
+</body>
+</html>
