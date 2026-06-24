@@ -1,0 +1,7 @@
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AdapterEjercicios\AdapterEjercicios\bin\Debug\AdapterEjercicios.exe.config
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AdapterEjercicios\AdapterEjercicios\bin\Debug\AdapterEjercicios.exe
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AdapterEjercicios\AdapterEjercicios\bin\Debug\AdapterEjercicios.pdb
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AdapterEjercicios\AdapterEjercicios\obj\Debug\AdapterEjercicios.csproj.AssemblyReference.cache
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AdapterEjercicios\AdapterEjercicios\obj\Debug\AdapterEjercicios.csproj.CoreCompileInputs.cache
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AdapterEjercicios\AdapterEjercicios\obj\Debug\AdapterEjercicios.exe
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AdapterEjercicios\AdapterEjercicios\obj\Debug\AdapterEjercicios.pdb

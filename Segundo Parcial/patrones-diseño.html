@@ -74,6 +74,13 @@ pre{font-family:'Cascadia Code','Consolas',monospace;font-size:12.5px;line-heigh
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .chnum{color:#f0883e;font-size:11px;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+/* Diagramas de clases (Mermaid) */
+.mmd{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:16px;text-align:center;overflow-x:auto;min-height:50px;margin:6px 0 4px}
+.mmd svg{max-width:100%;height:auto}
+.mmderr{color:#f85149;font-family:monospace;font-size:12px;text-align:left;white-space:pre-wrap}
+.exh{font-size:12px;color:#f0883e;text-transform:uppercase;letter-spacing:.5px;margin:18px 0 6px;font-weight:bold;border-top:1px solid #21262d;padding-top:14px}
+.exh:first-of-type{border-top:none;padding-top:0;margin-top:6px}
+.exctx{font-size:12px;color:#8b949e;line-height:1.6;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -193,6 +200,75 @@ pizza.<span class="mt">Render</span>();  <span class="cm">// Pizza de Pizza de c
     <div class="hb blue"><strong>Clave:</strong> el cliente nunca instancia <code>PizzaCancha</code> ni <code>PizzeriaArgentina</code> directamente. Siempre habla con las abstracciones. Agregar nueva pizzería o tipo de pizza no rompe al cliente.</div>
   </div>
 
+  <div class="card">
+    <h3>Diagrama de clases (Mermaid)</h3>
+    <div class="chnum">Ejemplo de la cátedra — Pizzeria</div>
+    <div class="mmd" id="cat_fm"></div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Nuestros ejercicios de práctica</h3>
+
+    <div class="exh">Ejercicio 1 — Logística (Transporte)</div>
+    <p class="exctx">Cada sucursal (Nacional / Internacional) decide, según el <code>tipo</code>, si crea un Camión o un Barco. Mismo estilo parametrizado de la cátedra, con dominio propio.</p>
+    <div class="cb"><div class="ch">Logistica.cs — Factory Method</div><div class="cd"><pre>public abstract class Transporte
+{
+    protected string _medio;
+    protected string _sucursal;
+    public void Entregar()
+        =&gt; Console.WriteLine($"Entregando con {_medio} desde la sucursal {_sucursal}.");
+}
+public class Camion : Transporte
+{
+    public Camion(string sucursal) { _medio = "camión"; _sucursal = sucursal; }
+}
+
+public abstract class Logistica
+{
+    public abstract Transporte CrearTransporte(string tipo);   // Factory Method
+}
+public class LogisticaNacional : Logistica
+{
+    public override Transporte CrearTransporte(string tipo)
+    {
+        if (tipo == "camion") return new Camion("Nacional");
+        if (tipo == "barco")  return new Barco("Nacional");
+        return null;
+    }
+}</pre></div></div>
+    <div class="mmd" id="ex_fm1"></div>
+
+    <div class="exh">Ejercicio 2 — Notificaciones</div>
+    <p class="exctx">Cada app (Tienda / Banco) decide, según el <code>tipo</code>, si crea una notificación de Email, SMS o Push.</p>
+    <div class="cb"><div class="ch">Notificaciones.cs — Factory Method</div><div class="cd"><pre>public abstract class Notificacion
+{
+    protected string _canal;
+    protected string _remitente;
+    public void Notificar()
+        =&gt; Console.WriteLine($"Enviando notificación por {_canal} desde {_remitente}.");
+}
+public class NotificacionEmail : Notificacion
+{
+    public NotificacionEmail(string remitente) { _canal = "Email"; _remitente = remitente; }
+}
+
+public abstract class Aplicacion
+{
+    public abstract Notificacion CrearNotificacion(string tipo);
+}
+public class AppTienda : Aplicacion
+{
+    public override Notificacion CrearNotificacion(string tipo)
+    {
+        if (tipo == "email") return new NotificacionEmail("Tienda");
+        if (tipo == "sms")   return new NotificacionSms("Tienda");
+        if (tipo == "push")  return new NotificacionPush("Tienda");
+        return null;
+    }
+}</pre></div></div>
+    <div class="mmd" id="ex_fm2"></div>
+  </div>
+
   <div class="terminal">
     <div class="th"><div class="dot drd"></div><div class="dot dyw"></div><div class="dot dgn"></div><div class="tt">Consola de código — Factory Method (5 desafíos)</div></div>
     <div class="tb2"><div class="to" id="fm-out"></div><div class="tir"><span class="tp">▶</span><input class="ti" id="fm-in" placeholder="Escribí tu código y presioná Enter..." onkeydown="if(event.key==='Enter')fmS()" autocomplete="off" spellcheck="false"></div></div>
@@ -290,6 +366,53 @@ fabrica = <span class="kw">new</span> <span class="cl">PizzeriaChina</span>();  
 <span class="cm">// Pizza: Pizza especial de sushi, Empanada: Empada de ceviche</span></pre></div></div>
 
     <div class="hb purple"><strong>Clave:</strong> garantiza que los productos sean siempre de la misma familia. Es imposible mezclar PizzaCancha con EmpanadaCeviche usando el patrón correctamente.</div>
+  </div>
+
+  <div class="card">
+    <h3>Diagrama de clases (Mermaid)</h3>
+    <div class="chnum">Ejemplo de la cátedra — Pizzeria + Empanada</div>
+    <div class="mmd" id="cat_af"></div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Nuestros ejercicios de práctica</h3>
+
+    <div class="exh">Ejercicio 1 — Facciones de un videojuego</div>
+    <p class="exctx">Cada facción (Humanos / Orcos) crea su propio Soldado y su propio Vehículo: una familia coherente, todo en memoria, sin botones ni conexiones.</p>
+    <div class="cb"><div class="ch">FabricaFaccion.cs — Abstract Factory</div><div class="cd"><pre>public abstract class Soldado  { public abstract string Atacar(); }
+public abstract class Vehiculo { public abstract string Mover();  }
+
+public class SoldadoHumano  : Soldado  { public override string Atacar() =&gt; "Soldado humano dispara su rifle."; }
+public class VehiculoHumano : Vehiculo { public override string Mover()  =&gt; "Tanque humano avanza sobre sus orugas."; }
+
+public abstract class FabricaFaccion
+{
+    public abstract Soldado  CrearSoldado();    // producto 1
+    public abstract Vehiculo CrearVehiculo();   // producto 2 (familia)
+}
+public class FabricaHumanos : FabricaFaccion
+{
+    public override Soldado  CrearSoldado()  =&gt; new SoldadoHumano();
+    public override Vehiculo CrearVehiculo() =&gt; new VehiculoHumano();
+}</pre></div></div>
+    <div class="mmd" id="ex_af1"></div>
+
+    <div class="exh">Ejercicio 2 — Mobiliario por estilo</div>
+    <p class="exctx">Cada estilo (Moderna / Clásica) entrega una Silla y una Mesa que combinan entre sí.</p>
+    <div class="cb"><div class="ch">FabricaMuebles.cs — Abstract Factory</div><div class="cd"><pre>public abstract class Silla { public abstract string Describir(); }
+public abstract class Mesa  { public abstract string Describir(); }
+
+public abstract class FabricaMuebles
+{
+    public abstract Silla CrearSilla();
+    public abstract Mesa  CrearMesa();
+}
+public class FabricaModerna : FabricaMuebles
+{
+    public override Silla CrearSilla() =&gt; new SillaModerna();
+    public override Mesa  CrearMesa()  =&gt; new MesaModerna();
+}</pre></div></div>
+    <div class="mmd" id="ex_af2"></div>
   </div>
 
   <div class="terminal">
@@ -402,6 +525,59 @@ m3.<span class="mt">Detener</span>();   <span class="cm">// → Desactivar() + P
     <div class="hb green"><strong>Clave:</strong> el cliente nunca sabe que existe <code>MotorElectrico</code>. El Adapter absorbe la incompatibilidad. Para agregar un motor de hidrógeno, solo creás <code>MotorHidrogenoAdapter</code> sin tocar nada más.</div>
   </div>
 
+  <div class="card">
+    <h3>Diagrama de clases (Mermaid)</h3>
+    <div class="chnum">Ejemplo de la cátedra — Motor / MotorElectrico</div>
+    <div class="mmd" id="cat_ad"></div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Nuestros ejercicios de práctica</h3>
+
+    <div class="exh">Ejercicio 1 — Pasarela de pagos</div>
+    <p class="exctx">El sistema espera <code>ProcesadorPago.Pagar()</code>; la librería PayPal usa Login + RealizarTransaccion. El Adapter envuelve y traduce.</p>
+    <div class="cb"><div class="ch">PayPalAdapter.cs — Adapter</div><div class="cd"><pre>public abstract class ProcesadorPago          // Target: lo que el sistema espera
+{
+    public abstract void Pagar(double monto);
+}
+public class PayPalApi                          // Adaptee: otra interfaz, no se modifica
+{
+    public void Login() { ... }
+    public void RealizarTransaccion(double total) { ... }
+}
+public class PayPalAdapter : ProcesadorPago     // Adapter: implementa Target, envuelve Adaptee
+{
+    private PayPalApi _paypal = new PayPalApi();
+    public override void Pagar(double monto)
+    {
+        _paypal.Login();
+        _paypal.RealizarTransaccion(monto);
+    }
+}</pre></div></div>
+    <div class="mmd" id="ex_ad1"></div>
+
+    <div class="exh">Ejercicio 2 — Sensor de temperatura</div>
+    <p class="exctx">El tablero espera Celsius; el sensor importado sólo da Fahrenheit. El Adapter convierte la unidad.</p>
+    <div class="cb"><div class="ch">SensorFahrenheitAdapter.cs — Adapter</div><div class="cd"><pre>public abstract class Termometro
+{
+    public abstract double LeerCelsius();
+}
+public class SensorFahrenheit                   // Adaptee: sólo sabe de Fahrenheit
+{
+    public double ObtenerFahrenheit() =&gt; 98.6;
+}
+public class SensorFahrenheitAdapter : Termometro
+{
+    private SensorFahrenheit _sensor = new SensorFahrenheit();
+    public override double LeerCelsius()
+    {
+        double f = _sensor.ObtenerFahrenheit();
+        return (f - 32) * 5 / 9;                // conversión F -&gt; C
+    }
+}</pre></div></div>
+    <div class="mmd" id="ex_ad2"></div>
+  </div>
+
   <div class="terminal">
     <div class="th"><div class="dot drd"></div><div class="dot dyw"></div><div class="dot dgn"></div><div class="tt">Consola de código — Adapter (5 desafíos)</div></div>
     <div class="tb2"><div class="to" id="ad-out"></div><div class="tir"><span class="tp">▶</span><input class="ti" id="ad-in" placeholder="Escribí tu código y presioná Enter..." onkeydown="if(event.key==='Enter')adS()" autocomplete="off" spellcheck="false"></div></div>
@@ -503,6 +679,64 @@ cafe = <span class="kw">new</span> <span class="cl">Canela</span>(cafe);        
 <span class="cm">// Café descafeinado, Crema, Edulcorante, Canela - $21.75</span></pre></div></div>
 
     <div class="hb orange"><strong>Clave:</strong> con 4 decoradores y 4 bebidas base generás miles de combinaciones sin explotar en herencia. Sin Decorator necesitarías una clase por cada combinación posible.</div>
+  </div>
+
+  <div class="card">
+    <h3>Diagrama de clases (Mermaid)</h3>
+    <div class="chnum">Ejemplo de la cátedra — BebidaComponent (café)</div>
+    <div class="mmd" id="cat_dc"></div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Nuestros ejercicios de práctica</h3>
+
+    <div class="exh">Ejercicio 1 — Pizza con ingredientes</div>
+    <p class="exctx">A una pizza base se le apilan ingredientes (queso extra, jamón, aceitunas) que suman costo y descripción. Misma estructura que el café de la cátedra.</p>
+    <div class="cb"><div class="ch">Pizza.cs — Decorator</div><div class="cd"><pre>public abstract class Pizza
+{
+    public abstract double Costo { get; }
+    public abstract string Descripcion { get; }
+}
+public class PizzaMuzzarella : Pizza
+{
+    public override double Costo =&gt; 2000;
+    public override string Descripcion =&gt; "Pizza de muzzarella";
+}
+public abstract class IngredienteDecorator : Pizza   // corazón del patrón
+{
+    protected Pizza _pizza;
+    public IngredienteDecorator(Pizza pizza) { _pizza = pizza; }
+}
+public class QuesoExtra : IngredienteDecorator
+{
+    public QuesoExtra(Pizza pizza) : base(pizza) { }
+    public override double Costo =&gt; _pizza.Costo + 500;
+    public override string Descripcion =&gt; $"{_pizza.Descripcion}, queso extra";
+}</pre></div></div>
+    <div class="mmd" id="ex_dc1"></div>
+
+    <div class="exh">Ejercicio 2 — Notificaciones con canales</div>
+    <p class="exctx">A una notificación base se le decoran canales adicionales (Email y/o SMS) que se suman al envío.</p>
+    <div class="cb"><div class="ch">Notificador.cs — Decorator</div><div class="cd"><pre>public abstract class Notificador
+{
+    public abstract string Enviar(string mensaje);
+}
+public class NotificadorBase : Notificador
+{
+    public override string Enviar(string mensaje) =&gt; $"App: {mensaje}";
+}
+public abstract class NotificadorDecorator : Notificador
+{
+    protected Notificador _notificador;
+    public NotificadorDecorator(Notificador n) { _notificador = n; }
+}
+public class DecoradorEmail : NotificadorDecorator
+{
+    public DecoradorEmail(Notificador n) : base(n) { }
+    public override string Enviar(string mensaje)
+        =&gt; _notificador.Enviar(mensaje) + $" | Email: {mensaje}";
+}</pre></div></div>
+    <div class="mmd" id="ex_dc2"></div>
   </div>
 
   <div class="terminal">
@@ -609,6 +843,62 @@ p.<span class="mt">restoreToMemento</span>(caretaker.<span class="mt">GetMemento
 p.<span class="mt">restoreToMemento</span>(caretaker.<span class="mt">GetMemento</span>(<span class="nu">1</span>));  <span class="cm">// vuelve a "Pepe1"</span></pre></div></div>
 
     <div class="hb green"><strong>Clave:</strong> CareTaker nunca lee el contenido de los Mementos. Son "cajas negras" para él. Solo Persona sabe cómo interpretar un Memento. Eso preserva el encapsulamiento.</div>
+  </div>
+
+  <div class="card">
+    <h3>Diagrama de clases (Mermaid)</h3>
+    <div class="chnum">Ejemplo de la cátedra — Persona / Memento / CareTaker</div>
+    <div class="mmd" id="cat_mm"></div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Nuestros ejercicios de práctica</h3>
+
+    <div class="exh">Ejercicio 1 — Editor de texto con "Deshacer"</div>
+    <p class="exctx">El editor guarda checkpoints de su contenido; el historial los almacena para volver atrás, sin exponer los campos internos.</p>
+    <div class="cb"><div class="ch">Editor.cs — Memento</div><div class="cd"><pre>public class MementoTexto                       // Memento
+{
+    private readonly string _contenido;
+    public MementoTexto(string contenido) { _contenido = contenido; }
+    public string Contenido =&gt; _contenido;     // sólo lectura
+}
+public class Editor                            // Originator
+{
+    private string _contenido = "";
+    public void Escribir(string texto) { _contenido += texto; }
+    public MementoTexto GuardarCheckpoint() =&gt; new MementoTexto(_contenido);
+    public void Restaurar(MementoTexto m) { _contenido = m.Contenido; }
+}
+public class HistorialEdicion                  // Caretaker
+{
+    private List&lt;MementoTexto&gt; _checkpoints = new List&lt;MementoTexto&gt;();
+    public void Guardar(MementoTexto m) =&gt; _checkpoints.Add(m);
+    public MementoTexto Recuperar(int i) =&gt; _checkpoints[i];
+}</pre></div></div>
+    <div class="mmd" id="ex_mm1"></div>
+
+    <div class="exh">Ejercicio 2 — Checkpoints de un videojuego</div>
+    <p class="exctx">El personaje guarda su progreso (vida y nivel); el gestor de partidas conserva los guardados para recargar.</p>
+    <div class="cb"><div class="ch">Personaje.cs — Memento</div><div class="cd"><pre>public class MementoJuego                       // Memento
+{
+    public int Vida { get; }
+    public int Nivel { get; }
+    public MementoJuego(int vida, int nivel) { Vida = vida; Nivel = nivel; }
+}
+public class Personaje                         // Originator
+{
+    private int _vida = 100;
+    private int _nivel = 1;
+    public MementoJuego Guardar() =&gt; new MementoJuego(_vida, _nivel);
+    public void Cargar(MementoJuego m) { _vida = m.Vida; _nivel = m.Nivel; }
+}
+public class GestorPartidas                    // Caretaker
+{
+    private List&lt;MementoJuego&gt; _guardados = new List&lt;MementoJuego&gt;();
+    public void Guardar(MementoJuego m) =&gt; _guardados.Add(m);
+    public MementoJuego UltimoGuardado() =&gt; _guardados[_guardados.Count - 1];
+}</pre></div></div>
+    <div class="mmd" id="ex_mm2"></div>
   </div>
 
   <div class="terminal">
@@ -952,6 +1242,364 @@ function mmR(){ mmStep=0; mmI(); }
 
 // ── Arranque ──────────────────────────────────────────────────────────────────
 window.onload = () => { fmI(); document.getElementById('fm-in').focus(); };
+</script>
+
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+// Diagramas como strings JS (con < y > reales, sin entidades HTML). Líneas en columna 0.
+const D = {
+// ───── CÁTEDRA ─────
+cat_fm: `classDiagram
+class Pizzeria {
+<<abstract>>
++CrearPizza(tipo) Pizza
+}
+class PizzeriaArgentina
+class PizzeriaItaliana
+class Pizza {
+<<abstract>>
+#descripcion
+#origen
++Render()
+}
+class PizzaCancha
+class PizzaNapolitana
+Pizzeria <|-- PizzeriaArgentina
+Pizzeria <|-- PizzeriaItaliana
+Pizza <|-- PizzaCancha
+Pizza <|-- PizzaNapolitana
+PizzeriaArgentina --> PizzaCancha : crea`,
+
+cat_af: `classDiagram
+class Pizzeria {
+<<abstract>>
++CrearPizza() Pizza
++CrearEmpanada() Empanada
+}
+class PizzeriaArgentina
+class PizzeriaChina
+class Pizza {
+<<abstract>>
+}
+class Empanada {
+<<abstract>>
+}
+class PizzaCancha
+class PizzaSushi
+class EmpanadaDeCarne
+class EmpanadaCeviche
+Pizzeria <|-- PizzeriaArgentina
+Pizzeria <|-- PizzeriaChina
+Pizza <|-- PizzaCancha
+Pizza <|-- PizzaSushi
+Empanada <|-- EmpanadaDeCarne
+Empanada <|-- EmpanadaCeviche`,
+
+cat_ad: `classDiagram
+class Motor {
+<<abstract>>
++Arrancar()
++Acelerar()
++Detener()
++CargarCombustible()
+}
+class MotorNaftero
+class MotorDiesel
+class MotorElectricoAdapter
+class MotorElectrico {
++Conectar()
++Activar()
++Mover()
++Parar()
++Desactivar()
++Enchufar()
+}
+Motor <|-- MotorNaftero
+Motor <|-- MotorDiesel
+Motor <|-- MotorElectricoAdapter
+MotorElectricoAdapter o--> MotorElectrico : envuelve`,
+
+cat_dc: `classDiagram
+class BebidaComponent {
+<<abstract>>
++Costo double
++Descripcion string
+}
+class CafeSolo
+class CafeExpresso
+class TeTradicional
+class AgregadoDecorator {
+<<abstract>>
+#bebida BebidaComponent
+}
+class Leche
+class Crema
+class Edulcorante
+BebidaComponent <|-- CafeSolo
+BebidaComponent <|-- CafeExpresso
+BebidaComponent <|-- TeTradicional
+BebidaComponent <|-- AgregadoDecorator
+AgregadoDecorator <|-- Leche
+AgregadoDecorator <|-- Crema
+AgregadoDecorator <|-- Edulcorante
+AgregadoDecorator o--> BebidaComponent : envuelve`,
+
+cat_mm: `classDiagram
+class Persona {
++Nombre string
++saveToMemento() Memento
++restoreToMemento(m)
+}
+class Memento {
+-estado string
++Estado string
+}
+class CareTaker {
+-mementos List
++Add(m)
++GetMemento(i) Memento
+}
+Persona --> Memento : crea
+CareTaker o--> Memento : almacena`,
+
+// ───── EJERCICIOS ─────
+ex_fm1: `classDiagram
+class Logistica {
+<<abstract>>
++CrearTransporte(tipo) Transporte
+}
+class LogisticaNacional
+class LogisticaInternacional
+class Transporte {
+<<abstract>>
+#medio
+#sucursal
++Entregar()
+}
+class Camion
+class Barco
+Logistica <|-- LogisticaNacional
+Logistica <|-- LogisticaInternacional
+Transporte <|-- Camion
+Transporte <|-- Barco
+LogisticaNacional --> Camion : crea
+LogisticaInternacional --> Barco : crea`,
+
+ex_fm2: `classDiagram
+class Aplicacion {
+<<abstract>>
++CrearNotificacion(tipo) Notificacion
+}
+class AppTienda
+class AppBanco
+class Notificacion {
+<<abstract>>
+#canal
+#remitente
++Notificar()
+}
+class NotificacionEmail
+class NotificacionSms
+class NotificacionPush
+Aplicacion <|-- AppTienda
+Aplicacion <|-- AppBanco
+Notificacion <|-- NotificacionEmail
+Notificacion <|-- NotificacionSms
+Notificacion <|-- NotificacionPush`,
+
+ex_af1: `classDiagram
+class FabricaFaccion {
+<<abstract>>
++CrearSoldado() Soldado
++CrearVehiculo() Vehiculo
+}
+class FabricaHumanos
+class FabricaOrcos
+class Soldado {
+<<abstract>>
++Atacar()
+}
+class Vehiculo {
+<<abstract>>
++Mover()
+}
+class SoldadoHumano
+class SoldadoOrco
+class VehiculoHumano
+class VehiculoOrco
+FabricaFaccion <|-- FabricaHumanos
+FabricaFaccion <|-- FabricaOrcos
+Soldado <|-- SoldadoHumano
+Soldado <|-- SoldadoOrco
+Vehiculo <|-- VehiculoHumano
+Vehiculo <|-- VehiculoOrco
+FabricaHumanos --> SoldadoHumano : crea
+FabricaOrcos --> SoldadoOrco : crea`,
+
+ex_af2: `classDiagram
+class FabricaMuebles {
+<<abstract>>
++CrearSilla() Silla
++CrearMesa() Mesa
+}
+class FabricaModerna
+class FabricaClasica
+class Silla {
+<<abstract>>
++Describir()
+}
+class Mesa {
+<<abstract>>
++Describir()
+}
+class SillaModerna
+class SillaClasica
+class MesaModerna
+class MesaClasica
+FabricaMuebles <|-- FabricaModerna
+FabricaMuebles <|-- FabricaClasica
+Silla <|-- SillaModerna
+Silla <|-- SillaClasica
+Mesa <|-- MesaModerna
+Mesa <|-- MesaClasica`,
+
+ex_ad1: `classDiagram
+class ProcesadorPago {
+<<abstract>>
++Pagar(monto)
+}
+class PayPalAdapter {
+-paypal PayPalApi
++Pagar(monto)
+}
+class PayPalApi {
++Login()
++RealizarTransaccion(total)
+}
+ProcesadorPago <|-- PayPalAdapter
+PayPalAdapter o--> PayPalApi : envuelve`,
+
+ex_ad2: `classDiagram
+class Termometro {
+<<abstract>>
++LeerCelsius() double
+}
+class SensorFahrenheitAdapter {
+-sensor SensorFahrenheit
++LeerCelsius() double
+}
+class SensorFahrenheit {
++ObtenerFahrenheit() double
+}
+Termometro <|-- SensorFahrenheitAdapter
+SensorFahrenheitAdapter o--> SensorFahrenheit : envuelve`,
+
+ex_dc1: `classDiagram
+class Pizza {
+<<abstract>>
++Costo double
++Descripcion string
+}
+class PizzaMuzzarella
+class IngredienteDecorator {
+<<abstract>>
+#pizza Pizza
+}
+class QuesoExtra
+class Jamon
+class Aceitunas
+Pizza <|-- PizzaMuzzarella
+Pizza <|-- IngredienteDecorator
+IngredienteDecorator <|-- QuesoExtra
+IngredienteDecorator <|-- Jamon
+IngredienteDecorator <|-- Aceitunas
+IngredienteDecorator o--> Pizza : envuelve`,
+
+ex_dc2: `classDiagram
+class Notificador {
+<<abstract>>
++Enviar(mensaje) string
+}
+class NotificadorBase
+class NotificadorDecorator {
+<<abstract>>
+#notificador Notificador
+}
+class DecoradorEmail
+class DecoradorSms
+Notificador <|-- NotificadorBase
+Notificador <|-- NotificadorDecorator
+NotificadorDecorator <|-- DecoradorEmail
+NotificadorDecorator <|-- DecoradorSms
+NotificadorDecorator o--> Notificador : envuelve`,
+
+ex_mm1: `classDiagram
+class Editor {
+-contenido string
++Escribir(texto)
++GuardarCheckpoint() MementoTexto
++Restaurar(m)
++MostrarContenido()
+}
+class MementoTexto {
+-contenido string
++Contenido string
+}
+class HistorialEdicion {
+-checkpoints List
++Guardar(m)
++Recuperar(i) MementoTexto
+}
+Editor --> MementoTexto : crea
+HistorialEdicion o--> MementoTexto : almacena`,
+
+ex_mm2: `classDiagram
+class Personaje {
+-vida int
+-nivel int
++Jugar(danio, sube)
++Guardar() MementoJuego
++Cargar(m)
+}
+class MementoJuego {
++Vida int
++Nivel int
+}
+class GestorPartidas {
+-guardados List
++Guardar(m)
++UltimoGuardado() MementoJuego
+}
+Personaje --> MementoJuego : crea
+GestorPartidas o--> MementoJuego : almacena`
+};
+
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#161b22',
+    primaryBorderColor: '#58a6ff',
+    primaryTextColor: '#e6edf3',
+    lineColor: '#8b949e',
+    fontSize: '14px'
+  }
+});
+
+(async function renderAll() {
+  for (const [id, def] of Object.entries(D)) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    try {
+      const { svg } = await mermaid.render('svg_' + id, def);
+      el.innerHTML = svg;
+    } catch (e) {
+      el.innerHTML = '<div class="mmderr">Error al dibujar (' + id + '): ' +
+        (e && e.message ? e.message : e) + '</div>';
+    }
+  }
+})();
 </script>
 </body>
 </html>

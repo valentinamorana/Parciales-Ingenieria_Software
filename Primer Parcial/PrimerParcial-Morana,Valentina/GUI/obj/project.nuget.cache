@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "bLDFE5d7Z7c=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\valen\\Documents\\UAI\\INGENIERIA DE SOFTWARE\\Parciales\\Primer Parcial\\PrimerParcial-Morana,Valentina\\GUI\\GUI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\valen\\.nuget\\packages\\bouncycastle\\1.8.9\\bouncycastle.1.8.9.nupkg.sha512",
+    "C:\\Users\\valen\\.nuget\\packages\\itextsharp\\5.5.13.3\\itextsharp.5.5.13.3.nupkg.sha512"
+  ],
+  "logs": []
+}

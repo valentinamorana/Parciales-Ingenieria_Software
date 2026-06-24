@@ -1,0 +1,7 @@
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AbstractFactoryEjercicios\AbstractFactoryEjercicios\bin\Debug\AbstractFactoryEjercicios.exe.config
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AbstractFactoryEjercicios\AbstractFactoryEjercicios\bin\Debug\AbstractFactoryEjercicios.exe
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AbstractFactoryEjercicios\AbstractFactoryEjercicios\bin\Debug\AbstractFactoryEjercicios.pdb
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AbstractFactoryEjercicios\AbstractFactoryEjercicios\obj\Debug\AbstractFactoryEjercicios.csproj.AssemblyReference.cache
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AbstractFactoryEjercicios\AbstractFactoryEjercicios\obj\Debug\AbstractFactoryEjercicios.csproj.CoreCompileInputs.cache
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AbstractFactoryEjercicios\AbstractFactoryEjercicios\obj\Debug\AbstractFactoryEjercicios.exe
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\AbstractFactoryEjercicios\AbstractFactoryEjercicios\obj\Debug\AbstractFactoryEjercicios.pdb

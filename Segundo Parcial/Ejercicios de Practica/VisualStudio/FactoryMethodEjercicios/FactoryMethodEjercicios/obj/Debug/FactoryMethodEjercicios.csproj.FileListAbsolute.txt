@@ -1,0 +1,7 @@
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\FactoryMethodEjercicios\FactoryMethodEjercicios\bin\Debug\FactoryMethodEjercicios.exe.config
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\FactoryMethodEjercicios\FactoryMethodEjercicios\bin\Debug\FactoryMethodEjercicios.exe
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\FactoryMethodEjercicios\FactoryMethodEjercicios\bin\Debug\FactoryMethodEjercicios.pdb
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\FactoryMethodEjercicios\FactoryMethodEjercicios\obj\Debug\FactoryMethodEjercicios.csproj.AssemblyReference.cache
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\FactoryMethodEjercicios\FactoryMethodEjercicios\obj\Debug\FactoryMethodEjercicios.csproj.CoreCompileInputs.cache
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\FactoryMethodEjercicios\FactoryMethodEjercicios\obj\Debug\FactoryMethodEjercicios.exe
+C:\Users\valen\Documents\UAI\INGENIERIA DE SOFTWARE\Parciales\Segundo Parcial\Ejercicios de Practica\VisualStudio\FactoryMethodEjercicios\FactoryMethodEjercicios\obj\Debug\FactoryMethodEjercicios.pdb
